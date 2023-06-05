@@ -1,0 +1,14 @@
+.session-status {
+  font-size: 1.5em;
+  color: #2D2;
+  display: grid;
+  grid: 80px / auto auto;
+}
+
+.left{
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}

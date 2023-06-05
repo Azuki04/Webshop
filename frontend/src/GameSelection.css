@@ -1,0 +1,16 @@
+ul.topics {
+    list-style: none;
+    padding-left: 0%;
+}
+
+ul.topics li {
+    border: 5px solid blue;
+    border-radius: 1em;
+    width: 100%;
+    padding: 10px 50px;
+    margin: 0 0 5px 0;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
