@@ -1,0 +1,47 @@
+/* UserProfil.css */
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.profile-box {
+    background: #f5f5f5;
+    padding: 50px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.profile-row {
+    margin-bottom: 10px;
+}
+
+h2.profile-name {
+    font-size: 20px;
+    color: #333;
+}
+
+span.profile-email {
+    font-size: 16px;
+    color: #666;
+}
+
+span.profile-subscribe {
+    font-size: 18px;
+    color: crimson;
+}
+
+.logout {
+    display: inline-block;
+    padding: 10px 20px;
+    background: crimson;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.logout:hover {
+    background: crimson;
+}

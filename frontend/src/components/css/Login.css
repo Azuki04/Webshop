@@ -1,0 +1,66 @@
+.login-form,
+.register-form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-form h2,
+.register-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form form,
+.register-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form .row,
+.register-form .row {
+    margin-bottom: 10px;
+}
+
+.login-form label,
+.register-form label {
+    font-weight: bold;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"],
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"],
+.register-form input[type="checkbox"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-form button,
+.register-form button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-form button:hover,
+.register-form button:hover {
+    background-color: #45a049;
+}
+
+.login-form p,
+.register-form p {
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+}

@@ -1,0 +1,76 @@
+
+
+.btn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn--delete {
+  background-color: rgba(185, 7, 7, 0.904);
+  color: #fff;
+  border: 1px solid black;
+
+}
+
+.btn--update {
+  background-color: rgb(0, 255, 64);
+  color: #fff;
+  border: 1px solid black;
+
+}
+
+.btn--normal {
+  background: #333;
+    color: white;
+    border: 1px solid black;
+}
+
+.btn--submit {
+  background-color: transparent;
+  color: #fff;
+  padding: 8px 20px;
+  border: 1px solid  #fff;
+  transition: all 0.3s ease-out;
+}
+
+.btn--small {
+  padding: 4px 20px;
+  font-size: 16px;
+}
+
+.btn--medium {
+  padding: 8px 20px;
+  font-size: 18px;
+}
+
+.btn--large {
+  padding: 4px 26px;
+  font-size: 20px;
+  width: 200px;
+}
+
+.btn--large:hover,
+.btn--medium:hover {
+  transition: all 0.3s ease-out;
+  background: rgb(126, 123, 123);
+  color: #242424;
+  transition: 250ms;
+}
+
+.btn--delete:hover{
+  transition: all 0.3s ease-out;
+  background: rgb(197, 103, 103);
+  color: #242424;
+  transition: 250ms;
+}
+
+.btn--update:hover{
+  transition: all 0.3s ease-out;
+  background: rgb(121, 209, 143);
+  color: #242424;
+  transition: 250ms;
+}
+
