@@ -1,6 +1,6 @@
 {
-  "short_name": "React Wiss Quiz",
-  "name": "React Wiss - Quiz",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#FF00FF",
-  "background_color": "#000000"
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }
