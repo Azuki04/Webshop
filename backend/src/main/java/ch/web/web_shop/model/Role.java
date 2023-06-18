@@ -1,6 +1,6 @@
 package ch.web.web_shop.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "role")
