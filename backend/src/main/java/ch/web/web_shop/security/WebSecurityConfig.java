@@ -1,5 +1,6 @@
 package ch.web.web_shop.security;
 
+import ch.web.web_shop.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
