@@ -1,5 +1,6 @@
 package ch.web.web_shop.security;
 
+import ch.web.web_shop.security.jwt.AuthTokenFilter;
 import ch.web.web_shop.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-    @Autowired private AuthenticationEntryPoint unauthorizedHandler;
+
 
     private final static String[] WHITELIST = { "/api/auth/**", "/category", "/quiz", "/api/**" };
     private final static String[] SECURELIST = { "/question", "/category/admin/**" };
@@ -53,7 +54,6 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests((authz) ->
                         authz.requestMatchers(WHITELIST).permitAll()
