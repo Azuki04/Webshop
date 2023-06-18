@@ -6,7 +6,7 @@ import ch.web.web_shop.service.NewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
