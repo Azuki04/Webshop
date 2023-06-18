@@ -49,7 +49,7 @@ import ch.web.web_shop.service.CategoryService;
  * @version 1.0
  * @see Category
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
