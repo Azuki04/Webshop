@@ -22,7 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
+    @Autowired
+    private AuthenticationEntryPoint unauthorizedHandler;
 
     private final static String[] WHITELIST = { "/api/auth/**", "/category", "/quiz", "/api/**" };
     private final static String[] SECURELIST = { "/question", "/category/admin/**" };
@@ -54,6 +55,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests((authz) ->
                         authz.requestMatchers(WHITELIST).permitAll()
