@@ -15,10 +15,10 @@ class ProductTest {
         int price = 100;
         int stock = 10;
         Category category = new Category("Test Category");
-        User user = new User("Test User","email@email.ch",false, "password");
+
 
         // Create a new product
-        Product product = new Product(title, description, content, price, stock, category, user);
+        Product product = new Product(title, description, content, price, stock, category);
 
         // Test the product attributes
         Assertions.assertEquals(title, product.getTitle());
@@ -27,6 +27,5 @@ class ProductTest {
         Assertions.assertEquals(price, product.getPrice());
         Assertions.assertEquals(stock, product.getStock());
         Assertions.assertEquals(category, product.getCategory());
-        Assertions.assertEquals(user, product.getUser());
     }
 }
