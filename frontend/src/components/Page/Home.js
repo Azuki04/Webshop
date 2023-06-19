@@ -32,7 +32,7 @@ class Home extends React.Component {
       currentIndex: -1,
     });
     let title = this.state.searchTitle;
-    fetch("http://localhost:8080/api/products?title=" + title)
+    fetch(process.env.REACT_APP_API_URL +"/products?title=" + title)
       .then((response) => response.json())
       .then((data) => this.setState({ products: data }));
   }
@@ -40,7 +40,7 @@ class Home extends React.Component {
   // get all published products
   componentDidMount() {
     if (this.state.products == null || this.state.products.length === 0) {
-      fetch("http://localhost:8080/api/products/published")
+      fetch(process.env.REACT_APP_API_URL +"/products/published")
         .then((response) => response.json())
         .then((data) => this.setState({ products: data }));
     }

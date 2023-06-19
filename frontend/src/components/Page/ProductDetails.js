@@ -25,7 +25,7 @@ class ProductDetails extends React.Component {
 
   //get productsDetails from the current productlsList
   getProduct(id) {
-    fetch("http://localhost:8080/api/products/" + id)
+    fetch(process.env.REACT_APP_API_URL +"/products/product/" + id)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

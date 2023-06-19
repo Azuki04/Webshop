@@ -39,7 +39,7 @@ class EditProduct extends React.Component {
 
   componentDidMount() {
     this.getProduct(this.props.router.params.id);
-    fetch("http://localhost:8080/api/category")
+    fetch(process.env.REACT_APP_API_URL +"/category")
       .then((response) => response.json())
       .then((data) => this.setState({ categories: data }));
   }
@@ -104,7 +104,7 @@ class EditProduct extends React.Component {
 
   //get products
   getProduct(id) {
-    fetch("http://localhost:8080/api/products/" + id)
+    fetch(process.env.REACT_APP_API_URL +"/products/" + id)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -138,7 +138,7 @@ class EditProduct extends React.Component {
     };
     let id = this.state.currentProduct.id;
 
-    fetch("http://localhost:8080/api/products/" + id, data)
+    fetch(process.env.REACT_APP_API_URL +"/products/" + id, data)
       .then((response) => response.json())
       .then((jsonData) => {
         console.log(jsonData);
@@ -163,7 +163,7 @@ class EditProduct extends React.Component {
       body: JSON.stringify(this.state.currentProduct),
     };
     let id = this.state.currentProduct.id;
-    fetch("http://localhost:8080/api/products/" + id, data)
+    fetch(process.env.REACT_APP_API_URL +"/products/" + id, data)
       .then((response) => response.json())
       .then((jsonData) => {
         console.log(jsonData);
@@ -178,7 +178,7 @@ class EditProduct extends React.Component {
   // delete fetch
   deleteProduct() {
     let id = this.state.currentProduct.id;
-    fetch("http://localhost:8080/api/products/" + id, { method: "DELETE" })
+    fetch(process.env.REACT_APP_API_URL +"/products/" + id, { method: "DELETE" })
       .then((response) => response.json())
       .then((data) => this.setState({ id: data }));
     this.props.router.navigate("/products");

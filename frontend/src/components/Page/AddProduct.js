@@ -69,7 +69,7 @@ class AddProduct extends React.Component {
   };
 
   componentDidMount() {
-    fetch("http://localhost:8080/api/category")
+    fetch(process.env.REACT_APP_API_URL +"/category")
       .then((response) => response.json())
       .then((data) => this.setState({ categories: data }));
   }

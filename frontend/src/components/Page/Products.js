@@ -30,7 +30,7 @@ class Products extends React.Component {
   // Fetch get
   componentDidMount() {
     if (this.state.products == null || this.state.products.length === 0) {
-      fetch("http://localhost:8080/api/products")
+      fetch(process.env.REACT_APP_API_URL +"/products")
         .then((response) => response.json())
         .then((data) => this.setState({ products: data }));
     }
@@ -41,7 +41,7 @@ class Products extends React.Component {
     const requestOptions = {
       method: "DELETE",
     };
-    fetch("http://localhost:8080/api/products", requestOptions)
+    fetch(process.env.REACT_APP_API_URL +"/products", requestOptions)
       .then((response) => response.json())
       .then((data) => this.setState({ products: data }));
       window.location.reload();
@@ -55,7 +55,7 @@ class Products extends React.Component {
       currentIndex: -1,
     });
     let title = this.state.searchTitle;
-    fetch("http://localhost:8080/api/products?title=" + title)
+    fetch(process.env.REACT_APP_API_URL +"/products?title=" + title)
       .then((response) => response.json())
       .then((data) => this.setState({ products: data }));
   }
