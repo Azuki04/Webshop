@@ -23,7 +23,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(title);
 
@@ -34,8 +34,7 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-
-    @GetMapping("/{id}")
+    @GetMapping("/product/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
         Product product = productService.getProductById(id);
@@ -50,6 +49,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDTO productDTO) {
         Product updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/admin")
+    @DeleteMapping("")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteAllProducts() {
         productService.deleteAllProducts();
@@ -78,5 +78,11 @@ public class ProductController {
         }
 
         return ResponseEntity.ok(publishedProducts);
+    }
+
+    @GetMapping("/published/{id}")
+    public ResponseEntity<List<Product>> getPublishedProductById(@PathVariable("id") long id) {
+       //TODO: Get published product by id
+        return null;
     }
 }

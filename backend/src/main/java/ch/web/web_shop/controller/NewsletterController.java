@@ -22,7 +22,6 @@ public class NewsletterController {
 	}
 
 	@PostMapping("")
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public Newsletter createNewsletter(@Valid @RequestBody NewsletterDTO newsletterDTO) {
 		return newsletterService.createNewsletter(newsletterDTO);
 	}

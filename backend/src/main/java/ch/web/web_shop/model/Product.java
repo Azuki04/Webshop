@@ -37,9 +37,6 @@ public class Product {
 	@NotNull(message = "Stock cannot be null")
 	private int stock;
 
-	@Column(name = "src")
-	private String src;
-
 	@Column(name = "published")
 	private boolean published;
 

@@ -25,8 +25,8 @@ public class WebSecurityConfig {
     @Autowired
     private AuthenticationEntryPoint unauthorizedHandler;
 
-    private final static String[] WHITELIST = { "/api/auth/**", "/category", "/products/published","/newsletter","/api/**" };
-    private final static String[] SECURELIST = { "/products", "/products/admin" };
+    private final static String[] WHITELIST = { "/api/auth/**", "/category", "/products/published/**","/newsletter","/api/**" };
+    private final static String[] SECURELIST = { "/products","/products/product/**"};
     private final static String[] ROLES = { "MODERATOR", "ADMIN"};
 
     @Bean
