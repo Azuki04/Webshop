@@ -21,7 +21,7 @@ public class PublicController {
     @GetMapping(path = "/user")
     public ResponseEntity<String> getUserPage() {
         ResponseEntity<String> result = ResponseEntity.ok()
-                .body("Guggus");
+                .body("Test");
         return result;
     }
 }

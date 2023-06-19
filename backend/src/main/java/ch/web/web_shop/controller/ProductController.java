@@ -16,7 +16,7 @@ import ch.web.web_shop.service.ProductService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/admin")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteAllProducts() {
         productService.deleteAllProducts();
@@ -70,7 +70,6 @@ public class ProductController {
     }
 
     @GetMapping("/published")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Product>> findByPublished() {
         List<Product> publishedProducts = productService.getPublishedProducts();
 

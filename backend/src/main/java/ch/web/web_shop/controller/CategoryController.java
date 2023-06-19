@@ -51,7 +51,7 @@ import ch.web.web_shop.service.CategoryService;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/category")
 public class CategoryController {
 	private final CategoryService categoryService;
 
