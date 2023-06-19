@@ -8,6 +8,16 @@ import "./css/GlobalNavigation.css";
 import Auth from "./services/Auth";
 
 class GlobalNavigation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+    this.state = {
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+    };
+  }
+
   state = {
     toggle: false,
   };
@@ -54,7 +64,7 @@ class GlobalNavigation extends React.Component {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {currentUser || showModeratorBoard || showAdminBoard && (
+            {(currentUser || showModeratorBoard || showAdminBoard) && (
                 <li>
                   <Link to="/products">my_Products</Link>
                 </li>
@@ -65,11 +75,17 @@ class GlobalNavigation extends React.Component {
             <li>
               <Link to="/about">About</Link>
             </li>
-            {currentUser || showModeratorBoard || showAdminBoard && (
+            {(currentUser || showModeratorBoard || showAdminBoard) && (
                 <li>
                   <Link to="/add">Create</Link>
                 </li>
             )}
+            {(currentUser || showModeratorBoard || showAdminBoard) && (
+                <li>
+                  <li><Link to="/login" onClick={this.logOut}> LogOut </Link></li>
+                </li>
+            )}
+
             <li className="close" onClick={this.menuToggle}>
               <img src={Close} alt="" width="20" />
             </li>
@@ -81,7 +97,6 @@ class GlobalNavigation extends React.Component {
                     <img src={User} alt="user" width="25" />
                   </Link>
                 </div>
-                <li><a href="/login" onClick={this.logOut}> LogOut </a></li>
               </ul>
           ) : (
               <ul>
