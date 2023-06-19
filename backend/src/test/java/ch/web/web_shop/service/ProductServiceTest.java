@@ -15,8 +15,6 @@ class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private UserRepository userRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -88,7 +86,6 @@ class ProductServiceTest {
         productDTO.setStock(5);
         productDTO.setPublished(false);
         productDTO.setCategory(new Category());
-        productDTO.setUser(new User());
 
         Product product = new Product();
         product.setTitle("Test Product");
@@ -97,7 +94,6 @@ class ProductServiceTest {
         product.setStock(5);
         product.setPublished(false);
         product.setCategory(new Category());
-        product.setUser(new User());
 
         when(productRepository.save(Mockito.any(Product.class))).thenReturn(product);
 

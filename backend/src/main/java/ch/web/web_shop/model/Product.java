@@ -1,10 +1,10 @@
 package ch.web.web_shop.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -36,9 +36,6 @@ public class Product {
 	@Min(value = 1, message = "Stock should not be less than 1")
 	@NotNull(message = "Stock cannot be null")
 	private int stock;
-
-	@Column(name = "src")
-	private String src;
 
 	@Column(name = "published")
 	private boolean published;

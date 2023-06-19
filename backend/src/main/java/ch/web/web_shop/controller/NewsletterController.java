@@ -4,13 +4,14 @@ import ch.web.web_shop.dto.NewsletterDTO;
 import ch.web.web_shop.model.Newsletter;
 import ch.web.web_shop.service.NewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/newsletter")
+@RequestMapping("/newsletter")
 public class NewsletterController {
 
 	private final NewsletterService newsletterService;
