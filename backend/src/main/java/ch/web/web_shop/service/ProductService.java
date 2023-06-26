@@ -122,5 +122,6 @@ public class ProductService {
         product.setContent(productDTO.getContent());
         product.setPublished(productDTO.isPublished());
         product.setCategory(productDTO.getCategory());
+        product.setUser(productDTO.getUser());
     }
 }
