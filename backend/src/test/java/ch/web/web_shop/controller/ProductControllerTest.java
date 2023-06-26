@@ -79,7 +79,7 @@ class ProductControllerTest {
     void testCreateProduct() {
         // Create test data
         ProductDTO productDTO = new ProductDTO("Test Product", "Test Description", null, 10, 5,
-                new Category());
+                new Category(),new User());
 
         // Mock the productService
         Product createdProduct = new Product("Test Product", "Test Description", null, 10, 5,
@@ -99,7 +99,7 @@ class ProductControllerTest {
         // Create test data
         long productId = 1;
         ProductDTO productDTO = new ProductDTO("Test Product", "Test Description", null, 10, 5,
-                new Category());
+                new Category(),new User());
 
         // Mock the productService
         Product updatedProduct = new Product("Test Product", "Test Description", null, 10, 5,
