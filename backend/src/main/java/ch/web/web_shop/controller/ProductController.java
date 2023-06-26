@@ -22,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("")
+    @GetMapping("/admin")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(title);
@@ -62,7 +62,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/admin")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteAllProducts() {
         productService.deleteAllProducts();

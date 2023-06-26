@@ -36,7 +36,7 @@ class AdminDashboard extends React.Component {
             headers:
                 authHeader()
         };
-        axios.get(process.env.REACT_APP_API_URL+"/products", config)
+        axios.get(process.env.REACT_APP_API_URL+"/products/admin", config)
             .then(response => response.data)
             .then(data => this.setState({products: data}))
             .catch(err => {console.log(err)})
@@ -49,7 +49,7 @@ class AdminDashboard extends React.Component {
             headers:
                 authHeader()
         };
-        axios.delete(process.env.REACT_APP_API_URL+"/products", config)
+        axios.delete(process.env.REACT_APP_API_URL+"/products/admin", config)
             .then(response => response.data)
             .then(data => this.setState({products: data}))
             .catch(err => {console.log(err)})
@@ -68,7 +68,7 @@ class AdminDashboard extends React.Component {
             headers:
                 authHeader()
         };
-        axios.get(process.env.REACT_APP_API_URL+"/products?title=" + title, config)
+        axios.get(process.env.REACT_APP_API_URL+"/products/admin?title=" + title, config)
             .then(response => response.data)
             .then(data => this.setState({products: data}))
             .catch(err => {console.log(err)})
