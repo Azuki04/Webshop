@@ -41,6 +41,17 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Product>> getAllProductsByUserId(@PathVariable("userId") long userId) {
+        List<Product> products = productService.getAllProducts(userId);
+
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(products);
+    }
+
     @PostMapping("")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {

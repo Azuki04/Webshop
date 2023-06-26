@@ -45,13 +45,18 @@ public class Product {
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 
+	// user 1:n
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
 
 	public Product() {
 		// Default constructor required by JPA
 	}
 
 	public Product(String title, String description, String content, int price, int stock,
-				   Category category) {
+				   Category category, User user) {
 		this.title = title;
 		this.description = description;
 		this.content = content;
@@ -59,6 +64,7 @@ public class Product {
 		this.stock = stock;
 		this.published = false;
 		this.category = category;
+		this.user = user;
 	}
 
 	public String getTitle() {
@@ -115,6 +121,13 @@ public class Product {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

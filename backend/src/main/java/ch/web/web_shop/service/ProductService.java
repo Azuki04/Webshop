@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import ch.web.web_shop.dto.ProductDTO;
 import ch.web.web_shop.exception.*;
+import ch.web.web_shop.model.User;
+import ch.web.web_shop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     public List<Product> getAllProducts(String title) {
@@ -27,6 +31,23 @@ public class ProductService {
             }
         } catch (Exception ex) {
             throw new ProductLoadException("Product load failed");
+        }
+    }
+
+    // Get all products for a user
+    public List<Product> getAllProducts(long userId) {
+        try {
+            // Retrieve the user based on the user ID
+            Optional<User> user = userRepository.findById(userId);
+
+            if (user.isPresent()) {
+                // Retrieve all products associated with the user
+                return productRepository.findByUser(user.get());
+            } else {
+                throw new ResourceNotFoundException("User not found");
+            }
+        } catch (Exception ex) {
+            throw new ProductLoadException("Failed to load products for user");
         }
     }
 
