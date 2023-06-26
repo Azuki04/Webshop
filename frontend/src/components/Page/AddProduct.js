@@ -3,6 +3,8 @@ import { withRouter } from "../../common/with-router";
 import "../css/CreateProduct.css";
 
 import { Button } from "../Button";
+import axios from "axios";
+import authHeader from "../services/Auth-header";
 
 class AddProduct extends React.Component {
   constructor(props) {
@@ -68,13 +70,19 @@ class AddProduct extends React.Component {
     this.setState({ category: event.target.value });
   };
 
+  /**
+   * Fetches the categories from the API and sets them in the state
+   */
   componentDidMount() {
     fetch(process.env.REACT_APP_API_URL +"/category")
       .then((response) => response.json())
       .then((data) => this.setState({ categories: data }));
   }
 
-  //Post fetch
+
+  /**
+   * Handles the form submission and sends a POST request to create a new product
+   */
   handleSubmit(event) {
     event.preventDefault();
     let product = {
@@ -91,30 +99,49 @@ class AddProduct extends React.Component {
 
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // fetch the jwt token from local storage
+        ...authHeader(),
+      },
       body: JSON.stringify(product),
     };
 
+
     const isValid = this.validateForm();
     if (isValid) {
-      fetch("http://localhost:8080/api/products", requestOptions)
-        .then((response) => response.json())
-        .then((jsonData) => {
-          // wir überprüfen die ID in der Konsole
-          console.log(jsonData);
+      axios.post(process.env.REACT_APP_API_URL +"/products", product, requestOptions).then((response) => {
+        this.setState({
+          id: response.data.id,
+          title: response.data.title,
+          description: response.data.description,
+          content: response.data.content,
+          price: response.data.price,
+          stock: response.data.stock,
+          src: response.data.src,
+          category: response.data.category,
+          published: response.data.published,
+          submitted: true,
         });
-      this.setState({
-        submitted: true,
+      }).catch((err) => {
+        console.log(err);
+        alert("You are not logged in!");
+        this.props.router.navigate("/login");
       });
     }
+
   }
 
-  //cancel
+  /**
+   * Resets the state to empty values when the "Cancel" button is clicked
+   */
   cancel() {
     this.props.router.navigate("/products");
   }
 
-  //click on the button then the information will be deleted
+  /**
+   * Resets the state to empty values when the "Back" button is clicked after successful submission
+   */
   newProduct() {
     this.setState({
       id: null,
@@ -131,6 +158,10 @@ class AddProduct extends React.Component {
     });
   }
 
+  /**
+   * Validates the form inputs and displays error messages if any
+   * Returns true if the form is valid, otherwise false
+   */
   validateForm() {
     let titleError = "";
     let priceError = "";

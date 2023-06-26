@@ -25,10 +25,10 @@ public class WebSecurityConfig {
     @Autowired
     private AuthenticationEntryPoint unauthorizedHandler;
 
-    private final static String[] WHITELIST = { "/api/auth/**", "/category", "/products/published/**","/newsletter","/products" };
-    private final static String[] SECURELIST = { "/products/admin" };
+    private final static String[] WHITELIST = { "/api/auth/**", "/category", "/products/published/**","/newsletter" };
+    private final static String[] SECURELIST = { "/products/admin/**", "/products"};
 
-    private final static String[] ROLES = { "MODERATOR", "ADMIN"};
+    private final static String[] ROLES = { "MODERATOR", "ADMIN", "USER"};
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
