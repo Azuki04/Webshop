@@ -2,13 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import "../css/Products.css";
+import Auth from "../services/Auth";
+import authHeader from "../services/Auth-header";
+import axios from "axios";
 
 class Products extends React.Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
 
-    this.removeAllProducts = this.removeAllProducts.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
 
     this.state = {
@@ -27,28 +29,23 @@ class Products extends React.Component {
     });
   }
 
-  // Fetch get
+  // fetch get all products endpoint for login user
   componentDidMount() {
-    if (this.state.products == null || this.state.products.length === 0) {
-      fetch(process.env.REACT_APP_API_URL +"/products")
-        .then((response) => response.json())
-        .then((data) => this.setState({ products: data }));
-    }
-  }
-
-  // delelte all products
-  removeAllProducts() {
-    const requestOptions = {
-      method: "DELETE",
+    // fetch the jwt token from local storage
+    const config = {
+      headers:
+          authHeader()
     };
-    fetch(process.env.REACT_APP_API_URL +"/products", requestOptions)
-      .then((response) => response.json())
-      .then((data) => this.setState({ products: data }));
-      window.location.reload();
-    alert("you have successfully deleted if not relod your page");
+    // get the current user
+    let currentUser = Auth.getCurrentUser();
+
+    axios.get(process.env.REACT_APP_API_URL +"/products/user/" + currentUser.id, config)
+        .then(response => response.data)
+        .then(data => this.setState({products: data}))
+        .catch(err => {console.log(err)})
   }
 
-  //sechrch for title
+  //search for title
   searchTitle() {
     this.setState({
       currentProduct: null,
@@ -110,11 +107,6 @@ class Products extends React.Component {
                 </div>
               </div>
             ))}
-          </div>
-          <div style={{ margin: "35px" }}>
-            <Button buttonStyle="btn--delete" onClick={this.removeAllProducts}>
-              Remove All
-            </Button>
           </div>
         </div>
       );
