@@ -1,10 +1,12 @@
 import React from "react";
 import { withRouter } from "../../common/with-router";
+import axios from "axios";
+import authHeader from "../services/Auth-header";
+import Auth from "../services/Auth";
 import "../css/CreateProduct.css";
 
 import { Button } from "../Button";
-import axios from "axios";
-import authHeader from "../services/Auth-header";
+
 
 class AddProduct extends React.Component {
   constructor(props) {
@@ -85,6 +87,7 @@ class AddProduct extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault();
+    const userId= Auth.getCurrentUser().id;
     let product = {
       title: this.state.title,
       description: this.state.description,
@@ -95,6 +98,9 @@ class AddProduct extends React.Component {
       category: {
         id: this.state.category,
       },
+      user: {
+        id: userId,
+      }
     };
 
     const requestOptions = {
@@ -120,6 +126,7 @@ class AddProduct extends React.Component {
           stock: response.data.stock,
           src: response.data.src,
           category: response.data.category,
+          user: response.data.user,
           published: response.data.published,
           submitted: true,
         });
