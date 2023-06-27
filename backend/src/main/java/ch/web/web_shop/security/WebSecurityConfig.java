@@ -25,8 +25,10 @@ public class WebSecurityConfig {
     @Autowired
     private AuthenticationEntryPoint unauthorizedHandler;
 
+    // endpoints that are accessible without authentication
     private final static String[] WHITELIST = { "/api/auth/**", "/category", "/products/published/**","/newsletter" };
-    private final static String[] SECURELIST = { "/products/admin/**", "/products"};
+    // endpoints that are accessible with authentication
+    private final static String[] SECURELIST = { "/products/admin/**", "/products/user/**"};
 
     private final static String[] ROLES = { "MODERATOR", "ADMIN", "USER"};
 

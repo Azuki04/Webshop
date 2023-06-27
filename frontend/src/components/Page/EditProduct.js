@@ -104,24 +104,29 @@ class EditProduct extends React.Component {
     this.setState({ category: event.target.value });
   };
 
-  //get products
+  //get products with axios fetch with jwt token
   getProduct(id) {
-    fetch(process.env.REACT_APP_API_URL +"/products/" + id)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({
-          currentProduct: data,
+    const config = {
+      headers:
+          authHeader()
+    };
+    axios
+        .get(process.env.REACT_APP_API_URL +"/products/admin/" + id, config)
+        .then((response) => {
+          this.setState({
+            currentProduct: response.data,
+            });
+            console.log(response.data); // response.data is the product
         });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   }
 
-  // publish fetch (put)
+  // publish fetch product with jwt token
   updatePublished(status) {
-    var products = {
+    const config = {
+      headers:
+          authHeader()
+    };
+    var data = {
       id: this.state.currentProduct.id,
       title: this.state.currentProduct.title,
       description: this.state.currentProduct.description,
@@ -129,63 +134,63 @@ class EditProduct extends React.Component {
       price: this.state.currentProduct.price,
       stock: this.state.currentProduct.stock,
       src: this.state.currentProduct.src,
-
+      category: this.state.currentProduct.category,
       published: status,
     };
-
-    const data = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(products),
-    };
-    let id = this.state.currentProduct.id;
-
-    fetch(process.env.REACT_APP_API_URL +"/products/" + id, data)
-      .then((response) => response.json())
-      .then((jsonData) => {
-        console.log(jsonData);
-        this.setState((prevState) => ({
-          currentProduct: {
-            ...prevState.currentProduct,
-            published: status,
-          },
-        }));
-        console.log(jsonData);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  // put fetch request
-  updateProduct() {
-    const data = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.state.currentProduct),
-    };
-    let id = this.state.currentProduct.id;
-    fetch(process.env.REACT_APP_API_URL +"/products/" + id, data)
-      .then((response) => response.json())
-      .then((jsonData) => {
-        console.log(jsonData);
-        this.setState({
-          message: "The Product was updated successfully!",
+    axios
+        .put(process.env.REACT_APP_API_URL +"/products/admin/" + this.state.currentProduct.id, data, config)
+        .then((response) => {
+          this.setState((prevState) => ({
+            currentProduct: {
+              ...prevState.currentProduct,
+              published: status,
+            },
+          }));
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
         });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   }
-  // delete fetch
+
+  // UPDATE fetch product with jwt token
+  updateProduct() {
+    const config = {
+      headers:
+          authHeader()
+    };
+    axios
+        .put(process.env.REACT_APP_API_URL +"/products/" + this.state.currentProduct.id, this.state.currentProduct, config)
+        .then((response) => {
+          console.log(response.data);
+          this.setState({
+            message: "The product was updated successfully!",
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+  }
+
+  // delete fetch with jwt token
   deleteProduct() {
     let id = this.state.currentProduct.id;
-    fetch(process.env.REACT_APP_API_URL +"/products/" + id, { method: "DELETE" })
-      .then((response) => response.json())
-      .then((data) => this.setState({ id: data }));
-    this.props.router.navigate("/products");
-    window.location.reload();
+    const config = {
+      headers:
+          authHeader()
+    };
+    axios
+        .delete(process.env.REACT_APP_API_URL +"/products/admin/" + id, config)
+        .then((response) => {
+          console.log(response.data);
+          this.props.router.push("/admin");
+          window.location.reload();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
   }
+
 
   render() {
     const { currentProduct } = this.state;
