@@ -14,4 +14,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 	List<Product> findByUser(User user);
 
     Product findByPublishedAndId(boolean b, long productId);
+
+	List<Product> findByUserAndTitleContaining(User user, String title);
 }

@@ -64,8 +64,8 @@ public class ProductController {
 
     // get all products by user id
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Product>> getAllProductsByUserId(@PathVariable("userId") long userId) {
-        List<Product> products = productService.getAllProducts(userId);
+    public ResponseEntity<List<Product>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
+        List<Product> products = productService.getAllProducts(userId, title);
 
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();

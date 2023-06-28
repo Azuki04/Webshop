@@ -35,16 +35,17 @@ public class ProductService {
     }
 
     // Get all products for a user
-    public List<Product> getAllProducts(long userId) {
+    public List<Product> getAllProducts(long userId, String title) {
         try {
             // Retrieve the user based on the user ID
             Optional<User> user = userRepository.findById(userId);
 
-            if (user.isPresent()) {
+            if (user.isPresent() && title == null) {
                 // Retrieve all products associated with the user
                 return productRepository.findByUser(user.get());
             } else {
-                throw new ResourceNotFoundException("User not found");
+                // Retrieve all products associated with the user and containing the title
+                return productRepository.findByUserAndTitleContaining(user.get(), title);
             }
         } catch (Exception ex) {
             throw new ProductLoadException("Failed to load products for user");

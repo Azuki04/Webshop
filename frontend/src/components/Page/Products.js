@@ -52,9 +52,18 @@ class Products extends React.Component {
       currentIndex: -1,
     });
     let title = this.state.searchTitle;
-    fetch(process.env.REACT_APP_API_URL +"/products?title=" + title)
-      .then((response) => response.json())
-      .then((data) => this.setState({ products: data }));
+    // fetch the jwt token from local storage
+    const config = {
+      headers:
+          authHeader()
+    };
+    // get the current user
+    let currentUser = Auth.getCurrentUser();
+    
+    axios.get(process.env.REACT_APP_API_URL+"/products/user/" + currentUser.id +"?title=" + title, config)
+        .then(response => response.data)
+        .then(data => this.setState({products: data}))
+        .catch(err => {console.log(err)})
   }
 
   render() {

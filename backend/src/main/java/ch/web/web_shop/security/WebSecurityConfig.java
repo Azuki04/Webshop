@@ -28,9 +28,9 @@ public class WebSecurityConfig {
     // endpoints that are accessible without authentication
     private final static String[] WHITELIST = { "/api/auth/**", "/category", "/products/published/**","/newsletter" };
     // endpoints that are accessible with authentication
-    private final static String[] SECURELIST = { "/products/admin/**", "/products/user/**"};
-
-    private final static String[] ROLES = { "MODERATOR", "ADMIN", "USER"};
+    private final static String[] SECURELIST = { "/products/admin/**"};
+    // roles that are allowed to access the secure endpoints
+    private final static String[] ROLES = { "MODERATOR", "ADMIN"};
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
