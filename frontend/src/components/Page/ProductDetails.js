@@ -2,7 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../css/ProductDetails.css";
 import { withRouter } from "../../common/with-router";
-
+import Auth from "../services/Auth";
+import authHeader from "../services/Auth-header";
+import axios from "axios";
+const currentUser = Auth.getCurrentUser();
 class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -20,23 +23,62 @@ class ProductDetails extends React.Component {
   }
 
   componentDidMount() {
-    this.getProduct(this.props.router.params.id);
+    if (currentUser.roles.includes("ROLE_ADMIN")) {
+      this.getProduct(this.props.router.params.id);
+
+    } else {
+      this.getPublishedProduct(this.props.router.params.id);
+      this.getUserProduct(this.props.router.params.id);
+    }
   }
 
   //get productsDetails from the current productlsList
-  getProduct(id) {
-    fetch(process.env.REACT_APP_API_URL +"/products/product/" + id)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({
-          currentProduct: data,
+    getProduct(id) {
+      const config = {
+        headers: authHeader(),
+      };
+      axios
+          .get(process.env.REACT_APP_API_URL + "/products/admin/" + id, config)
+          .then((response) => {
+            this.setState({ currentProduct: response.data });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }
+
+  getUserProduct(id) {
+    const currentUser = Auth.getCurrentUser();
+
+    const config = {
+      headers: authHeader(),
+    };
+    axios
+        .get(`${process.env.REACT_APP_API_URL}/products/user/${currentUser.id}/${id}`,config)
+        .then((response) => {
+          this.setState({ currentProduct: response.data });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   }
+
+  getPublishedProduct(id) {
+    const currentUser = Auth.getCurrentUser();
+
+    const config = {
+      headers: authHeader(),
+    };
+    axios
+        .get(`${process.env.REACT_APP_API_URL}/products/published/${id}`,config)
+        .then((response) => {
+          this.setState({ currentProduct: response.data });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }
+
 
   render() {
     const { currentProduct } = this.state;
