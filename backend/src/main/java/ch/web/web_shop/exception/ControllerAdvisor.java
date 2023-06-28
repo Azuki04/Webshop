@@ -18,13 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-	@Override
+
 	public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
 																	   HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return createDefaultErrorResponse(ex.getMessage());
 	}
 
-	@Override
+
 	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 															   HttpHeaders headers, HttpStatus status, WebRequest request) {
 		Map<String, String> errors = new HashMap<>();

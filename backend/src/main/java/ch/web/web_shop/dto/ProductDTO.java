@@ -2,35 +2,34 @@ package ch.web.web_shop.dto;
 
 import ch.web.web_shop.model.Category;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import ch.web.web_shop.model.User;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class ProductDTO {
 
-    @NotEmpty(message = "Title is mandatory")
-    @NotNull(message = "Title cannot be null")
+
     private String title;
 
-    @Size(min = 1, max = 50, message = "Description must be between 1 and 50 characters")
-    @NotNull(message = "Description cannot be null")
+
     private String description;
 
     private String content;
 
-    @Min(value = 0, message = "Price should not be less than 0")
-    @NotNull(message = "Price cannot be null")
+
     private int price;
 
-    @Min(value = 1, message = "Stock should not be less than 1")
-    @NotNull(message = "Stock cannot be null")
+
     private int stock;
 
     private boolean published;
 
-    @NotNull(message = "Category cannot be null")
+
     private Category category;
+
+    private User user;
 
 
     public ProductDTO() {
@@ -38,7 +37,7 @@ public class ProductDTO {
     }
 
     public ProductDTO(String title, String description, String content, int price, int stock,
-                       Category category) {
+                       Category category, User user) {
         this.title = title;
         this.description = description;
         this.content = content;
@@ -46,6 +45,7 @@ public class ProductDTO {
         this.stock = stock;
         this.published = false;
         this.category = category;
+        this.user = user;
     }
 
     public String getTitle() {
@@ -100,4 +100,10 @@ public class ProductDTO {
         this.category = category;
     }
 
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

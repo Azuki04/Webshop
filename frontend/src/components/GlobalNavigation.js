@@ -5,8 +5,19 @@ import CartIcon from "./svg/shopping-cart-solid.svg";
 import User from "./svg/user.svg";
 import { Link } from "react-router-dom";
 import "./css/GlobalNavigation.css";
+import Auth from "./services/Auth";
 
 class GlobalNavigation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+    this.state = {
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+    };
+  }
+
   state = {
     toggle: false,
   };
@@ -15,8 +26,29 @@ class GlobalNavigation extends React.Component {
     this.setState({ toggle: !this.state.toggle });
   };
 
+  componentDidMount() {
+    const user = Auth.getCurrentUser();
+    if (user) {
+      this.setState({
+        currentUser: user,
+        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+      });
+    }
+  }
+
+  logOut() {
+    Auth.logout();
+    this.setState({
+      showModeratorBoard: false,
+      showAdminBoard: false,
+      currentUser: undefined,
+    });
+  }
+
   render() {
     const { toggle } = this.state;
+    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
       <header>
         <div className="menu" onClick={this.menuToggle}>
@@ -30,29 +62,55 @@ class GlobalNavigation extends React.Component {
         <nav>
           <ul className={toggle ? "toggle" : ""}>
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/products">my_Products</Link>
-            </li>
+            {(currentUser) && (
+                <li>
+                  <Link to="/products">My ads</Link>
+                </li>
+            )}
+            {(showModeratorBoard || showAdminBoard) && (
+                <li>
+                  <Link to="/admin">Dashboard</Link>
+                </li>
+            )}
             <li>
               <Link to="/contact">Contact</Link>
             </li>
             <li>
               <Link to="/about">About</Link>
             </li>
-            <li>
-              <Link to="/add">Create</Link>
-            </li>
+            {(currentUser || showModeratorBoard || showAdminBoard) && (
+                <li>
+                  <Link to="/add">Create</Link>
+                </li>
+            )}
+            {(currentUser || showModeratorBoard || showAdminBoard) && (
+                <li>
+                  <li><Link to="/login" onClick={this.logOut}> LogOut </Link></li>
+                </li>
+            )}
+
             <li className="close" onClick={this.menuToggle}>
               <img src={Close} alt="" width="20" />
             </li>
           </ul>
-          <div className="nav-user">
-            <Link to="/user">
-              <img src={User} alt="user" width="25" />
-            </Link>
-          </div>
+          {currentUser ? (
+              <ul>
+                <div className="nav-user">
+                  <Link to="/profile">
+                    <img src={User} alt="user" width="25" />
+                  </Link>
+                </div>
+              </ul>
+          ) : (
+              <ul>
+                <li><Link to={"/login"}> Login </Link></li>
+
+                <li><Link to={"/register"}> Sign Up </Link></li>
+              </ul>
+          )}
+
           <div className="nav-cart">
             <span>0</span>
             <Link to="/cart">
