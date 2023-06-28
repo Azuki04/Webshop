@@ -64,9 +64,14 @@ class GlobalNavigation extends React.Component {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {(currentUser || showModeratorBoard || showAdminBoard) && (
+            {(currentUser) && (
                 <li>
-                  <Link to="/products">my_Products</Link>
+                  <Link to="/products">My ads</Link>
+                </li>
+            )}
+            {(showModeratorBoard || showAdminBoard) && (
+                <li>
+                  <Link to="/admin">Dashboard</Link>
                 </li>
             )}
             <li>

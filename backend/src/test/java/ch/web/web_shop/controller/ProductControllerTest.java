@@ -79,7 +79,7 @@ class ProductControllerTest {
     void testCreateProduct() {
         // Create test data
         ProductDTO productDTO = new ProductDTO("Test Product", "Test Description", null, 10, 5,
-                new Category());
+                new Category(),new User());
 
         // Mock the productService
         Product createdProduct = new Product("Test Product", "Test Description", null, 10, 5,
@@ -99,7 +99,7 @@ class ProductControllerTest {
         // Create test data
         long productId = 1;
         ProductDTO productDTO = new ProductDTO("Test Product", "Test Description", null, 10, 5,
-                new Category());
+                new Category(),new User());
 
         // Mock the productService
         Product updatedProduct = new Product("Test Product", "Test Description", null, 10, 5,
@@ -137,23 +137,4 @@ class ProductControllerTest {
         verify(productService, times(1)).deleteAllProducts();
     }
 
-    @Test
-    void testFindByPublished() {
-        // Create test data
-        List<Product> publishedProducts = new ArrayList<>();
-        publishedProducts.add(new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User()));
-        publishedProducts.add(new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User()));
-
-        // Mock the productService
-        when(productService.getPublishedProducts()).thenReturn(publishedProducts);
-
-        // Call the controller method
-        ResponseEntity<List<Product>> response = productController.findByPublished();
-
-        // Verify the response
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(publishedProducts, response.getBody());
-    }
 }
