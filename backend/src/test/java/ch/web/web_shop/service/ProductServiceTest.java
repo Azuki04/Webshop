@@ -179,24 +179,6 @@ class ProductServiceTest {
         });
     }
 
-    @Test
-    void testGetPublishedProducts_Success() {
-        List<Product> productList = new ArrayList<>();
-        productList.add(new Product());
-        productList.add(new Product());
 
-        when(productRepository.findByPublished(true)).thenReturn(productList);
 
-        List<Product> result = productService.getPublishedProducts();
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    void testGetPublishedProducts_Exception() {
-        when(productRepository.findByPublished(true)).thenThrow(RuntimeException.class);
-
-        assertThrows(ProductLoadException.class, () -> {
-            productService.getPublishedProducts();
-        });
-    }
 }

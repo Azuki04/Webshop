@@ -112,8 +112,8 @@ public class ProductController {
 
     //Get all published product Rest API
     @GetMapping("/published")
-    public ResponseEntity<List<Product>> findByPublished() {
-        List<Product> publishedProducts = productService.getPublishedProducts();
+    public ResponseEntity<List<Product>> findByPublished(@RequestParam(required = false) String title) {
+        List<Product> publishedProducts = productService.getPublishedProducts(title);
 
         if (publishedProducts.isEmpty()) {
             return ResponseEntity.noContent().build();

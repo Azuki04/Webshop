@@ -188,9 +188,13 @@ public class ProductService {
         }
     }
 
-    public List<Product> getPublishedProducts() {
+    public List<Product> getPublishedProducts(String title) {
         try {
-            return productRepository.findByPublished(true);
+            if (title == null) {
+                return productRepository.findByPublished(true);
+            } else {
+                return productRepository.findByTitleContainingAndPublished(title, true);
+            }
         } catch (Exception e) {
             throw new ProductLoadException("Product load failed");
 
