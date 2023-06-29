@@ -87,7 +87,7 @@ class AdminDashboard extends React.Component {
         } else {
             return (
                 <div>
-                    <h4>created products by name</h4>
+                    <h4>Admin Dashboard</h4>
                     <div className="search">
                         <div>
                             <input

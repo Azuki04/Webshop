@@ -57,7 +57,7 @@ class Home extends React.Component {
     } else {
       return (
         <div>
-          <h4>welcome</h4>
+          <h4>Welcome to shop.ch</h4>
           <div className="search">
             <div>
               <input

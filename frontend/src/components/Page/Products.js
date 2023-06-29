@@ -6,6 +6,9 @@ import Auth from "../services/Auth";
 import authHeader from "../services/Auth-header";
 import axios from "axios";
 
+
+// get the current user
+const currentUser = Auth.getCurrentUser();
 class Products extends React.Component {
   constructor(props) {
     super(props);
@@ -36,8 +39,6 @@ class Products extends React.Component {
       headers:
           authHeader()
     };
-    // get the current user
-    let currentUser = Auth.getCurrentUser();
 
     axios.get(process.env.REACT_APP_API_URL +"/products/user/" + currentUser.id, config)
         .then(response => response.data)
@@ -57,8 +58,6 @@ class Products extends React.Component {
       headers:
           authHeader()
     };
-    // get the current user
-    let currentUser = Auth.getCurrentUser();
     
     axios.get(process.env.REACT_APP_API_URL+"/products/user/" + currentUser.id +"?title=" + title, config)
         .then(response => response.data)
@@ -77,7 +76,7 @@ class Products extends React.Component {
     } else {
       return (
         <div>
-          <h4>created products by name</h4>
+          <h4>Created products by {currentUser.username} </h4>
           <div className="search">
             <div>
               <input
