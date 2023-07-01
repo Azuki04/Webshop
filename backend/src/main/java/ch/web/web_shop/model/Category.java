@@ -26,6 +26,11 @@ public class Category {
 		// Default constructor required by JPA
 	}
 
+	public Category(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public Category(String name) {
 		this.name = name;
 	}
