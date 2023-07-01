@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 
@@ -10,6 +10,8 @@ jest.mock("../components/Page/NotFound", () => () => <div>Mocked_NotFound</div>)
 jest.mock("../components/GlobalNavigation", () => () => <div>Mocked_GlobalNavigation</div>);
 jest.mock("../components/GlobalFooter", () => () => <div>Mocked_GlobalFooter</div>);
 jest.mock("../components/Page/AddProduct", () => () => <div>Mocked_AddProduct</div>);
+
+
 
 
 describe("Routing tests for App.js", () => {
@@ -90,5 +92,40 @@ describe("Routing tests for App.js", () => {
         expect(screen.getByText("Mocked_AddProduct"))
       });
 
-    
+    //Dieser Test überprüft, ob die Login-Seite die "login" -Komponente rendert.
+    test("Login page should render login component", () => {
+        // Arrange
+
+        // Act
+        render(
+            <MemoryRouter initialEntries={["/login"]}>
+                <App/>
+            </MemoryRouter>
+        );
+
+        // Assert
+        const loginElements = screen.queryAllByText("Login");
+        console.log(loginElements); // Print the array to the console
+        expect(loginElements.length).toBe(2);
+    });
+
+    //Dieser Test überprüft, ob die Admin-Dashboard-Seite das "adminDashboard" -Komponente rendert.
+    test("AdminDashboard page should render adminDashboard component", () => {
+        // Arrange
+
+        // Act
+        render(
+            <MemoryRouter initialEntries={["/adminDashboard"]}>
+                <App/>
+            </MemoryRouter>
+        );
+
+        // Assert
+        const adminDashboardElements = screen.queryAllByText("Admin Dashboard");
+        console.log(adminDashboardElements); // Print the array to the console
+        expect(adminDashboardElements.length).toBe(0);
+
+    });
+
+
 });

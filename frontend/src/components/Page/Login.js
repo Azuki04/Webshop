@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Auth from "../services/Auth";
-
+import "../css/Login.css"
 import { withRouter } from "../../common/with-router";
 
 const required = value => {
@@ -100,7 +100,7 @@ class Login extends Component {
                         }}
                     >
                         <div className="form-group">
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="username" className="lable">Username</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -112,7 +112,7 @@ class Login extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="password">Password</label>
+                            <label htmlFor="password" className="lable" >Password</label>
                             <input
                                 type="password"
                                 className="form-control"
