@@ -14,6 +14,7 @@ import Login from "./Page/Login";
 import Register from "./Page/Register";
 import Profile from "./Page/Profile";
 import AdminDashboard from "./Page/AdminDashboard";
+import Contact from "./Page/Contact";
 
 class Section extends React.Component {
   render() {
@@ -33,6 +34,7 @@ class Section extends React.Component {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/contact" element={<Contact />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

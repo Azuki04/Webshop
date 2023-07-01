@@ -6,6 +6,8 @@ import Auth from "../services/Auth";
 import "../css/CreateProduct.css";
 
 import { Button } from "../Button";
+import AuthService from "../services/Auth";
+import {Navigate} from "react-router-dom";
 
 
 class AddProduct extends React.Component {
@@ -42,6 +44,9 @@ class AddProduct extends React.Component {
 
       published: false,
       submitted: false,
+
+      redirect: null,
+      userReady: false,
     };
   }
 
@@ -76,6 +81,12 @@ class AddProduct extends React.Component {
    * Fetches the categories from the API and sets them in the state
    */
   componentDidMount() {
+    // get the current user from local storage
+    const currentUser = AuthService.getCurrentUser();
+    // if there is no current user redirect to login page
+    if (!currentUser) this.setState({ redirect: "/login" });
+    this.setState({ currentUser: currentUser, userReady: true })
+
     fetch(process.env.REACT_APP_API_URL +"/category")
       .then((response) => response.json())
       .then((data) => this.setState({ categories: data }));
@@ -249,6 +260,10 @@ class AddProduct extends React.Component {
   }
 
   render() {
+    // if the user is not logged in redirect to login page
+    if (this.state.redirect) {
+      return <Navigate to={this.state.redirect} />
+    }
     return (
       <div className="submit-form">
         {this.state.submitted ? (

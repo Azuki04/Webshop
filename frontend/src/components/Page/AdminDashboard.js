@@ -1,9 +1,10 @@
 import React from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import { Button } from "../Button";
 import "../css/Products.css";
 import authHeader from "../services/Auth-header";
+import Auth from "../services/Auth";
 
 
 class AdminDashboard extends React.Component {
@@ -19,6 +20,8 @@ class AdminDashboard extends React.Component {
             currentProduct: null,
             currentIndex: -1,
             searchTitle: "",
+            redirect: null,
+            userReady: false,
         };
     }
 
@@ -32,6 +35,12 @@ class AdminDashboard extends React.Component {
 
     // fetch get all products endpoint only for admin
     componentDidMount() {
+        // get the current user from local storage
+        const currentUser = Auth.getCurrentUser();
+        // if there is no current user redirect to login page
+        if (!currentUser) this.setState({ redirect: "/login" });
+        this.setState({ currentUser: currentUser, userReady: true })
+
         // fetch the jwt token from local storage
         const config = {
             headers:
@@ -77,6 +86,9 @@ class AdminDashboard extends React.Component {
 
 
     render() {
+        if (this.state.redirect) {
+            return <Navigate to={this.state.redirect} />
+        }
         const { searchTitle, products } = this.state;
         if (this.state.products == null || this.state.products.length === 0) {
             return (
