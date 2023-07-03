@@ -55,10 +55,12 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    public AuthController(AuthenticationManager authenticationManager, PasswordEncoder encoder, JwtUtils jwtUtils) {
+    public AuthController(AuthenticationManager authenticationManager, PasswordEncoder encoder, JwtUtils jwtUtils, UserRepository userRepository, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
 
