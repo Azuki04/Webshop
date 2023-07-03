@@ -35,7 +35,28 @@ import ch.web.web_shop.security.jwt.JwtUtils;
 import ch.web.web_shop.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 
-
+/**
+ *  * @Author Sy Viet
+ *  * @version 1.0
+ *
+ * AuthController is used to:
+ * - authenticate user
+ * - register user
+ * - check if username is already taken
+ * - check if email is already in use
+ * - create new user's account
+ * - set user's roles
+ * - save user's account
+ * - authenticate user
+ * - generate JWT token
+ * - build response containing username, email, roles, and JWT
+ * - authenticate user
+ * - get JWT token from Authorization header (by removing Bearer prefix)
+ * - if the request has JWT token, validate it, parse username from it
+ * - get UserDetails to create an Authentication object
+ * - set the current UserDetails in SecurityContext using setAuthentication(authentication) method
+ * - return true if the token is valid, otherwise return false
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -63,7 +84,7 @@ public class AuthController {
         this.roleRepository = roleRepository;
     }
 
-
+    //  authenticate user
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -84,7 +105,7 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles));
     }
-
+    // register user
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {

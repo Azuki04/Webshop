@@ -14,6 +14,17 @@ import ch.web.web_shop.dto.ProductDTO;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.ProductService;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * ProductController is used to:
+ * - get all products
+ * - delete all products
+ * - get product by id
+ * - update product by id
+ * - delete product by id
+ * - create product
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/products")

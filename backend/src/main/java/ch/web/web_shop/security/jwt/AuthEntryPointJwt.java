@@ -11,6 +11,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+/**
+ * AuthEntryPointJwt is used to:
+ * - return a 401 unauthorized error to clients that try to access a protected resource without proper authentication
+ * - implements AuthenticationEntryPoint interface
+*/
+
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);

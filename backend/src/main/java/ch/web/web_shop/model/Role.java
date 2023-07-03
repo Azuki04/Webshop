@@ -2,6 +2,12 @@ package ch.web.web_shop.model;
 
 import jakarta.persistence.*;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * Role is used to:
+ * - define the roles of the users
+ */
 @Entity
 @Table(name = "role")
 public class Role {

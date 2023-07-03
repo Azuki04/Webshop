@@ -14,6 +14,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * UserConfig is used to:
+ * - create the users
+ * - save the users in the database
+ */
 @Configuration
 public class UserConfig {
 

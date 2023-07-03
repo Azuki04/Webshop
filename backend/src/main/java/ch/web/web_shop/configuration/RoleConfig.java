@@ -10,6 +10,13 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * RoleConfig is used to:
+ * - create the roles
+ * - save the roles in the database
+ */
 @Configuration
 public class RoleConfig {
 

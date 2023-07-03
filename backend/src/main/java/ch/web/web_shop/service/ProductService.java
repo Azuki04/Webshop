@@ -14,6 +14,22 @@ import ch.web.web_shop.model.Product;
 import ch.web.web_shop.repository.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Product service class.
+ * Handles the business logic for product operations.
+ * Uses ProductRepository for data persistence.
+ * This class can be used to perform additional business logic if needed.
+ * It provides a layer of abstraction between the controller and the repository.
+ * @version 1.0
+ * @Author: Sy Viet
+ * @see Product
+ * @see ProductRepository
+ * @see ProductDTO
+ * @see UserRepository
+ * @see User
+ * @see ProductLoadException
+ * @see ProductNotFoundException
+ */
 @Service
 @Transactional
 public class ProductService {

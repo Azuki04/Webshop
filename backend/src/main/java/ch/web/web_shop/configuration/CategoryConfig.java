@@ -7,11 +7,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+/**
+ * v1.0
+ * @Author Faustina
+ * CategoryConfig is used to:
+ * - create the categories
+ * - save the categories in the database
+ */
 @Configuration
 public class CategoryConfig {
     @Bean
    CommandLineRunner categoryCommandLineRunner(CategoryRepository repository) {
         return args -> {
+            //create categories in database
             repository.saveAll(List.of(
                     new Category(1, "Clothing"),
                     new Category(2, "Tv & Audio"),

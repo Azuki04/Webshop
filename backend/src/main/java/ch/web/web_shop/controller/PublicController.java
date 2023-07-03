@@ -6,6 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * v1.0
+ * Test Controller for testing purposes
+ * @Author Sy Viet
+ * PublicController is used to:
+ * - get test page
+ * - get user page
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")

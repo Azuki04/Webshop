@@ -8,6 +8,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * ProductDTO is used to:
+ * - store the data of the products
+ */
 public class ProductDTO {
 
 

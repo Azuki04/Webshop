@@ -1,5 +1,6 @@
 package ch.web.web_shop.payload.response;
 
+// MessageResponse is used to map the JSON response body to a Java object.
 public class MessageResponse {
     private String message;
 
