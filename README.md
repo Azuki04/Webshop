@@ -1,7 +1,7 @@
 
 # m223-Mulituser Webshop
 
-von Sy Viet und Ivan
+### von Sy Viet und Ivan
 ## Instalation
 
 1. Stellen Sie sicher, dass Sie eine MySQL-Datenbank "webapp" erstellt haben.
