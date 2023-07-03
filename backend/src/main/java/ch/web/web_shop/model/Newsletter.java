@@ -14,6 +14,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * Newsletter is used to:
+ * - store the email addresses of the users who want to receive the newsletter
+ */
 @Entity
 @Table(name = "newsletter")
 @Data

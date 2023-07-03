@@ -6,6 +6,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * Product is the model for the products table in the database.
+ * It is used to map the JSON response body to a Java object.
+ */
 @Entity
 @Table(name = "products")
 public class Product {

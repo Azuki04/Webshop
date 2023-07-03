@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * NewsletterController is used to:
+ * - create newsletter
+ */
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/newsletter")

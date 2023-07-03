@@ -1,0 +1,24 @@
+.contact-container {
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcome-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.info-container {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    width: 80%;
+}
+
+.heading {
+    font-weight: bold;
+    margin-bottom: 5px;
+}

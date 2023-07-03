@@ -5,6 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * User is used to:
+ * - store the users of the webshop
+ */
 @Entity
 @Table(name="User")
 public class User {
@@ -23,20 +29,20 @@ public class User {
     public User(){
         // Default constructor required by JPA
     }
-
+    // Constructor for testing
     public User(int id, String name, String email, String password) {
         this.id = id;
         this.username = name;
         this.email = email;
         this.password = password;
     }
-
+    // normal Constructor
     public User(String name, String email, String password) {
         this.username = name;
         this.email = email;
         this.password = password;
     }
-
+    // roles
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

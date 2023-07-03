@@ -1,11 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import { Button } from "../Button";
 import "../css/Products.css";
 import Auth from "../services/Auth";
 import authHeader from "../services/Auth-header";
 import axios from "axios";
 
+
+// get the current user
+const currentUser = Auth.getCurrentUser();
 class Products extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +21,8 @@ class Products extends React.Component {
       currentProduct: null,
       currentIndex: -1,
       searchTitle: "",
+      redirect: null,
+      userReady: false,
     };
   }
 
@@ -31,13 +36,15 @@ class Products extends React.Component {
 
   // fetch get all products endpoint for login user
   componentDidMount() {
+    // if there is no current user redirect to login page
+    if (!currentUser) this.setState({ redirect: "/login" });
+    this.setState({ currentUser: currentUser, userReady: true })
+
     // fetch the jwt token from local storage
     const config = {
       headers:
           authHeader()
     };
-    // get the current user
-    let currentUser = Auth.getCurrentUser();
 
     axios.get(process.env.REACT_APP_API_URL +"/products/user/" + currentUser.id, config)
         .then(response => response.data)
@@ -57,8 +64,6 @@ class Products extends React.Component {
       headers:
           authHeader()
     };
-    // get the current user
-    let currentUser = Auth.getCurrentUser();
     
     axios.get(process.env.REACT_APP_API_URL+"/products/user/" + currentUser.id +"?title=" + title, config)
         .then(response => response.data)
@@ -67,6 +72,9 @@ class Products extends React.Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Navigate to={this.state.redirect} />
+    }
     const { searchTitle, products } = this.state;
     if (this.state.products == null || this.state.products.length === 0) {
       return (
@@ -77,7 +85,7 @@ class Products extends React.Component {
     } else {
       return (
         <div>
-          <h4>created products by name</h4>
+          <h4>Created products by {currentUser.username} </h4>
           <div className="search">
             <div>
               <input

@@ -18,6 +18,16 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/** AuthTokenFilter is used to:
+ * - get JWT token from Authorization header (by removing Bearer prefix)
+ * - if the request has JWT token, validate it, parse username from it
+ * - from username, get UserDetails to create an Authentication object
+ * - set the current UserDetails in SecurityContext using setAuthentication(authentication) method
+ * - continue filter execution chain by calling FilterChain.doFilter(request, response)
+ * - doFilterInternal() method is called for every HTTP request
+ * - if the request is authenticated, Spring Security will set the authentication inside SecurityContext and allow the request to be successfully completed
+ * - OncePerRequestFilter ensures that this filter is only executed once per request
+ */
 
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
@@ -28,6 +38,20 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
+    /** doFilterInternal() method:
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     * - get JWT token from Authorization header (by removing Bearer prefix)
+     * - if the request has JWT token, validate it, parse username from it
+     * - from username, get UserDetails to create an Authentication object
+     * - set the current UserDetails in SecurityContext using setAuthentication(authentication) method
+     * - continue filter execution chain by calling FilterChain.doFilter(request, response)
+     * - doFilterInternal() method is called for every HTTP request
+     * - if the request is authenticated, Spring Security will set the authentication inside SecurityContext and allow the request to be successfully completed
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -50,6 +74,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /** parseJwt() method:
+     * @param request
+     * @return
+     * - get JWT token from Authorization header (by removing Bearer prefix)
+     * - if the request has JWT token, validate it, parse username from it
+     * - from username, get UserDetails to create an Authentication object
+     * - set the current UserDetails in SecurityContext using setAuthentication(authentication) method.
+     * - return the JWT
+     */
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 

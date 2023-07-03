@@ -12,8 +12,26 @@ import org.springframework.stereotype.Service;
 
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.repository.ProductRepository;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Product service class.
+ * Handles the business logic for product operations.
+ * Uses ProductRepository for data persistence.
+ * This class can be used to perform additional business logic if needed.
+ * It provides a layer of abstraction between the controller and the repository.
+ * @version 1.0
+ * @Author: Sy Viet
+ * @see Product
+ * @see ProductRepository
+ * @see ProductDTO
+ * @see UserRepository
+ * @see User
+ * @see ProductLoadException
+ * @see ProductNotFoundException
+ */
 @Service
+@Transactional
 public class ProductService {
 
     @Autowired
@@ -21,7 +39,7 @@ public class ProductService {
     @Autowired
     private UserRepository userRepository;
 
-
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts(String title) {
         try {
             if (title == null) {
@@ -35,6 +53,7 @@ public class ProductService {
     }
 
     // Get all products for a user
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts(long userId, String title) {
         try {
             // Retrieve the user based on the user ID
@@ -52,6 +71,7 @@ public class ProductService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Product getProductById(long id) {
         Optional<Product> productData = productRepository.findById(id);
 
@@ -63,6 +83,7 @@ public class ProductService {
     }
 
     //get product by user and by product id
+    @Transactional(readOnly = true)
     public Product getProductById(long userId, long productId) {
         try {
             // Retrieve the user based on the user ID
@@ -90,6 +111,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public Product createProduct(ProductDTO productDTO) {
         try {
             Product product = convertToEntity(productDTO);
@@ -99,6 +121,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public Product updateProduct(long id, ProductDTO productDTO) {
         Optional<Product> productData = productRepository.findById(id);
 
@@ -112,6 +135,7 @@ public class ProductService {
         }
     }
     //update product by user and by product id
+    @Transactional
     public Product updateProduct(long userId, long productId, ProductDTO productDTO) {
         try {
             // Retrieve the user based on the user ID
@@ -142,6 +166,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public void deleteProduct(long id) {
         try {
             productRepository.deleteById(id);
@@ -152,6 +177,8 @@ public class ProductService {
 
     //delete product by user and by product id
     //override function
+
+    @Transactional
     public void deleteProduct(long userId, long productId) {
         try {
             // Retrieve the user based on the user ID
@@ -179,7 +206,7 @@ public class ProductService {
         }
     }
 
-
+    @Transactional
     public void deleteAllProducts() {
         try {
             productRepository.deleteAll();
@@ -188,6 +215,7 @@ public class ProductService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Product> getPublishedProducts(String title) {
         try {
             if (title == null) {
@@ -202,6 +230,7 @@ public class ProductService {
     }
 
     //get published products by product id
+    @Transactional(readOnly = true)
     public Product getPublishedProductById(long productId) {
         try {
             return productRepository.findByPublishedAndId(true, productId);
@@ -216,6 +245,7 @@ public class ProductService {
         updateProductFromDTO(product, productDTO);
         return product;
     }
+
 
     private void updateProductFromDTO(Product product, ProductDTO productDTO) {
         product.setTitle(productDTO.getTitle());

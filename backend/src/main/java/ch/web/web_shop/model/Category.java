@@ -9,6 +9,12 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * Category is used to:
+ * - store the categories of the products
+ */
 @Entity
 @Table(name = "category")
 public class Category {
@@ -24,6 +30,11 @@ public class Category {
 
 	public Category() {
 		// Default constructor required by JPA
+	}
+
+	public Category(long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
 	public Category(String name) {

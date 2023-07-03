@@ -3,6 +3,7 @@ package ch.web.web_shop.payload.response;
 
 import java.util.List;
 
+// JwtResponse is used to map the JSON response body to a Java object.
 public class JwtResponse{
 
     private String token;

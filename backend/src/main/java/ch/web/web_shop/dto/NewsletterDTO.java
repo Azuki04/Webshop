@@ -5,6 +5,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * v1.0
+ * @Author Sy Viet
+ * NewsletterDTO is used to:
+ * - store the email addresses of the users who want to receive the newsletter
+ */
 public class NewsletterDTO {
 
     @NotEmpty(message = "Email is mandatory")

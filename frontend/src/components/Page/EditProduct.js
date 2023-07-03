@@ -4,6 +4,8 @@ import { withRouter } from "../../common/with-router";
 import authHeader from "../services/Auth-header";
 import { Button } from "../Button";
 import Auth from "../services/Auth";
+import AuthService from "../services/Auth";
+import {Navigate} from "react-router-dom";
 
 class EditProduct extends React.Component {
   constructor(props) {
@@ -23,6 +25,9 @@ class EditProduct extends React.Component {
     this.deleteProduct = this.deleteProduct.bind(this);
 
     this.state = {
+      redirect: null,
+      userReady: false,
+
       currentProduct: {
         id: null,
         title: "",
@@ -40,7 +45,12 @@ class EditProduct extends React.Component {
   }
 
   componentDidMount() {
-    const currentUser = Auth.getCurrentUser();
+    // get the current user from local storage
+    const currentUser = AuthService.getCurrentUser();
+    // if there is no current user redirect to login page
+    if (!currentUser) this.setState({ redirect: "/login" });
+    this.setState({ currentUser: currentUser, userReady: true })
+
     if (currentUser.roles.includes("ROLE_ADMIN")) {
       this.getProduct(this.props.router.params.id);
     } else {
@@ -293,6 +303,9 @@ class EditProduct extends React.Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Navigate to={this.state.redirect} />
+    }
     const { currentProduct } = this.state;
     if (
         this.state.currentProduct == null ||

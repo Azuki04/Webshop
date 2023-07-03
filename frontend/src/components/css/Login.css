@@ -1,66 +1,66 @@
-.login-form,
-.register-form {
-    width: 300px;
-    margin: 0 auto;
+.card-container {
+    background-color: #f9f9f9;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+    margin: 20px auto;
+    width: 50%;
 
-.login-form h2,
-.register-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.login-form form,
-.register-form form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-.login-form .row,
-.register-form .row {
-    margin-bottom: 10px;
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
 }
 
-.login-form label,
-.register-form label {
-    font-weight: bold;
+.label {
+    margin-bottom: 5px;
 }
 
-.login-form input[type="email"],
-.login-form input[type="password"],
-.register-form input[type="text"],
-.register-form input[type="email"],
-.register-form input[type="password"],
-.register-form input[type="checkbox"] {
+.form-control {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-.login-form button,
-.register-form button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #4caf50;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+
+
+.profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
 }
 
-.login-form button:hover,
-.register-form button:hover {
-    background-color: #45a049;
+
+.alert {
+    margin-top: 10px;
 }
 
-.login-form p,
-.register-form p {
-    margin-top: 10px;
-    text-align: center;
-    color: red;
+
+.btn-primary {
+    background-color: rgb(133, 49, 49);
+    border-color:  rgb(133, 49, 49);
 }
+
+.btn-primary:hover {
+    background-color: rgb(133, 49, 49);
+    border-color: rgb(133, 49, 49);
+}
+
+.btn-primary:disabled {
+    opacity: 0.65;
+}
+
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+}
+
+

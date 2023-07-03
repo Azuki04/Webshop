@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.web.web_shop.repository.NewsletterRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class NewsletterService {
 
     private final NewsletterRepository newsletterRepository;
@@ -17,6 +19,7 @@ public class NewsletterService {
         this.newsletterRepository = newsletterRepository;
     }
 
+    @Transactional
     public Newsletter createNewsletter(NewsletterDTO newsletterDTO) {
         Newsletter newsletter = new Newsletter(newsletterDTO.getEmail());
         return newsletterRepository.save(newsletter);

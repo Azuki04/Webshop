@@ -3,6 +3,8 @@ package ch.web.web_shop.payload.request;
 import java.util.Set;
 
 import jakarta.validation.constraints.*;
+
+// SignupRequest is used to map the JSON request body to a Java object.
 public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)

@@ -45,7 +45,7 @@ import ch.web.web_shop.service.CategoryService;
  * This approach is recommended for better testability and maintainability.
  *
  * Update the code accordingly based on your preference.
- *
+ * @Author Sy Viet
  * @version 1.0
  * @see Category
  */
