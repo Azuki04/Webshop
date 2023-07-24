@@ -18,11 +18,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @NotBlank
     private String username;
     @NotBlank
     private String email;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_product",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> purchasehistory = new HashSet<>();
+
     @NotBlank
     private String password;
 
@@ -82,5 +87,11 @@ public class User {
         this.roles = roles;
     }
 
+    public Set<Product> getPurchasehistory() {
+        return purchasehistory;
+    }
 
+    public void setPurchasehistory(Set<Product> purchasehistory) {
+        this.purchasehistory = purchasehistory;
+    }
 }
