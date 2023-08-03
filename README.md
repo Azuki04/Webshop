@@ -1,5 +1,5 @@
 
-# m223-Mulituser Webshop
+# Webshop
 
 ### von Sy Viet und Ivan
 ## Instalation
