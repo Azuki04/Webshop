@@ -1,4 +1,15 @@
-FROM ubuntu:latest
+FROM node:latest
 LABEL authors="syvietdao"
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /frontend
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+
+CMD ["npm", "start"]

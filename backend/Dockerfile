@@ -1,4 +1,10 @@
-FROM ubuntu:latest
+FROM maven:latest
 LABEL authors="syvietdao"
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /back_end
+
+COPY . .
+
+RUN mvn clean install
+
+CMD ["mvn", "spring-boot:run"]
