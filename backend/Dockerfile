@@ -1,7 +1,7 @@
 FROM maven:latest
 LABEL authors="syvietdao"
 
-WORKDIR /back_end
+WORKDIR /backend
 
 COPY . .
 

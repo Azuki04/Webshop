@@ -37,9 +37,9 @@ services:
     stdin_open: true
     tty: true
   frontend:
-    image: #TODO:image in gitlab
+    image: registry.gitlab.com/teivys04/webshop/frontend
     ports:
-      -  $NODE_PORT
+      -  $NODE_LOCAL_PORT
     stdin_open: true
     tty: true
 volumes:
