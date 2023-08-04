@@ -1,4 +1,4 @@
-version: "1.1"
+version: "1.2"
 
 services:
   mysqldb:
@@ -39,7 +39,7 @@ services:
   frontend:
     image: registry.gitlab.com/teivys04/webshop/frontend
     ports:
-      -  $NODE_LOCAL_PORT
+      -  $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     stdin_open: true
     tty: true
 volumes:
