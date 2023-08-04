@@ -13,7 +13,6 @@ services:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - db:/var/lib/mysql
-      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
   backend:
     depends_on:
       - mysqldb
@@ -40,7 +39,7 @@ services:
   frontend:
     image: #TODO:image in gitlab
     ports:
-      - '3000'
+      -  $NODE_PORT
     stdin_open: true
     tty: true
 volumes:
