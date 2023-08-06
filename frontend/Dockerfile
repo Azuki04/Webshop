@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:16.17.0
 LABEL authors="syvietdao"
 
 WORKDIR /frontend

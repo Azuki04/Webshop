@@ -3,12 +3,10 @@ version: "3.9"
 services:
   mysqldb:
     container_name: mysqldb-container
-    image: mysql:8.0
+    image: mysql:5.7
     restart: unless-stopped
     env_file: ./.env
     environment:
-      - MYSQL_USER=$MYSQLDB_USER
-      - MYSQL_PASSWORD=$MYSQLDB_PASSWORD
       - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
       - MYSQL_DATABASE=$MYSQLDB_DATABASE
     ports:
@@ -26,25 +24,18 @@ services:
     ports:
       - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?useSSL=false",
-        "spring.datasource.username" : "$MYSQLDB_USER",
-        "spring.datasource.password" : "$MYSQLDB_PASSWORD",
-        "spring.jpa.properties.hifobernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update",
-        "spring.jpa.hibernate-ddl" : "true",
-        "spring.datasource.initialization-mode" : "always",
-        "webshop.app.jwtCookieName":"$SPRING_JWT_NAME",
-        "webshop.app.jwtSecret":"$SPRING_JWT_KEY",
-        "webshop.app.jwtExpirationMs":"$SPRING_JWT_TIME"
-      }'
+      - MYSQL_HOST=$MYSQL_HOST
+      - MYSQL_PORT=$MYSQL_DOCKER_PORT
+      - MYSQL_USER=$MYSQLDB_USER
+      - MYSQL_PASSWORD=$MYSQLDB_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
     volumes:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
   frontend:
     container_name: frontend-container
-    image: registry.gitlab.com/teivys04/webshop/frontend
+    image: registry.gitlab.com/teivys04/webshop/frontend2
     ports:
       - ${REACT_LOCAL_PORT}:${REACT_DOCKER_PORT}
     stdin_open: true
