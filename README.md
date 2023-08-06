@@ -1,7 +1,7 @@
 
 # Webshop
 
-### von Sy Viet und Ivan
+### von Sy Viet 
 ## Instalation
 
 1. Stellen Sie sicher, dass Sie eine MySQL-Datenbank "webapp" erstellt haben.
@@ -20,6 +20,20 @@ npm start
 ```
 7. Öffnen Sie anschließend Ihren Webbrowser und navigieren Sie zur folgenden URL: [http://localhost:3000](http://localhost:3000)
 
+## Instalation mit Docker
+
+voraussetzung: Docker muss installiert sein.
+
+1. Öffnen Sie das Projektverzeichnis in Ihrer Entwicklungsumgebung.
+2. Führen Sie folgenden Befehl aus, um das Projekt zu starten:
+```sh
+docker-compose up
+```
+3. Öffnen Sie anschließend Ihren Webbrowser und navigieren Sie zur folgenden URL: [http://localhost:3000](http://localhost:3000)
+4. Wenn Sie das Projekt beenden möchten, führen Sie folgenden Befehl aus:
+```sh
+docker-compose down
+```
 
 ## Benutzer
 Benutzer wurde im configuration package  schon erstellt. Sie können sich mit folgenden Benutzer anmelden:
