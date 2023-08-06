@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  mysqldb:
+    container_name: mysqldb-container
+    image: mysql:5.7
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+    volumes:
+      - db:/var/lib/mysql
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+  backend:
+    container_name: backend-container
+    image: registry.gitlab.com/teivys04/webshop/backend
+    depends_on:
+      - mysqldb
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
+    environment:
+      - MYSQL_HOST=$MYSQL_HOST
+      - MYSQL_PORT=$MYSQL_DOCKER_PORT
+      - MYSQL_USER=$MYSQLDB_USER
+      - MYSQL_PASSWORD=$MYSQLDB_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  frontend:
+    container_name: frontend-container
+    image: registry.gitlab.com/teivys04/webshop/frontend2
+    ports:
+      - ${REACT_LOCAL_PORT}:${REACT_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+volumes:
+  db:
+networks:
+  default:
