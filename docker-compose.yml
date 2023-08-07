@@ -7,8 +7,8 @@ services:
     restart: unless-stopped
     env_file: ./.env
     environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+      - MYSQL_DATABASE=webapp
+      - MYSQL_ROOT_PASSWORD=root
     ports:
       - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     volumes:
@@ -24,11 +24,11 @@ services:
     ports:
       - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
     environment:
-      - MYSQL_HOST=$MYSQL_HOST
-      - MYSQL_PORT=$MYSQL_DOCKER_PORT
-      - MYSQL_USER=$MYSQLDB_USER
-      - MYSQL_PASSWORD=$MYSQLDB_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_HOST=mysqldb
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=webapp
     volumes:
       - .m2:/root/.m2
     stdin_open: true
