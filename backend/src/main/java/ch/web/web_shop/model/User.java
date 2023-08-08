@@ -17,20 +17,27 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private int id;
     @NotBlank
     private String username;
+    @Column(unique = true, nullable = false, name = "email")
     @NotBlank
     private String email;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_product",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> purchasehistory = new HashSet<>();
-
     @NotBlank
+    @Column(name="password",nullable = false)
     private String password;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name="shopingcart_id")
+    private Set<ShoppingCarts> cartItems = new HashSet<>();
 
+
+    // roles
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
     public User(){
         // Default constructor required by JPA
     }
@@ -47,12 +54,6 @@ public class User {
         this.email = email;
         this.password = password;
     }
-    // roles
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
 
     public int getId() {
         return id;
@@ -87,11 +88,4 @@ public class User {
         this.roles = roles;
     }
 
-    public Set<Product> getPurchasehistory() {
-        return purchasehistory;
-    }
-
-    public void setPurchasehistory(Set<Product> purchasehistory) {
-        this.purchasehistory = purchasehistory;
-    }
 }

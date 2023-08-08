@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * v1.0
  * @Author Sy Viet
@@ -55,6 +58,11 @@ public class Product {
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "shopingcart_id")
+	private Set<ShoppingCarts> cartItems = new HashSet<>();
+
 
 
 	public Product() {
