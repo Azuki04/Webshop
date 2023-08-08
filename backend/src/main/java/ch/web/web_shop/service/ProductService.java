@@ -39,6 +39,10 @@ public class ProductService {
     @Autowired
     private UserRepository userRepository;
 
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
     @Transactional(readOnly = true)
     public List<Product> getAllProducts(String title) {
         try {
