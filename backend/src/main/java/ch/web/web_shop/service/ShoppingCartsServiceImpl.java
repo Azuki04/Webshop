@@ -15,14 +15,14 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CartServiceImpl implements CartService {
+public class ShoppingCartsServiceImpl implements ShoppingCartsService {
 
     private ProductRepository productRepository;
 
     private Map<Product, Integer> products = new HashMap<>();
 
     @Autowired
-    public CartServiceImpl(ProductRepository productRepository) {
+    public ShoppingCartsServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 

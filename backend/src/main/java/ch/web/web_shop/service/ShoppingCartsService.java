@@ -6,7 +6,7 @@ import ch.web.web_shop.model.Product;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public interface CartService {
+public interface ShoppingCartsService {
 
     void addProduct(Product product);
 

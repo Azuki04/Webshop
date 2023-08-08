@@ -1,7 +1,7 @@
 package ch.web.web_shop.controller;
 
 import ch.web.web_shop.exception.NotEnoughProductsInStockException;
-import ch.web.web_shop.service.CartServiceImpl;
+import ch.web.web_shop.service.ShoppingCartsServiceImpl;
 import ch.web.web_shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class CartController {
+public class ShoppingCartsController {
 
-    private CartServiceImpl cartService;
+    private ShoppingCartsServiceImpl cartService;
 
     private ProductService productService;
 
     @Autowired
-    public CartController(CartServiceImpl cartService, ProductService productService) {
+    public ShoppingCartsController(ShoppingCartsServiceImpl cartService, ProductService productService) {
         this.cartService = cartService;
         this.productService = productService;
     }
