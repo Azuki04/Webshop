@@ -19,7 +19,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/add")
+    @PostMapping("/add/{productId}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public void addToCart(@PathVariable("productId") long productId, @RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
         cartService.addToCart(addToCartDto, productId, request);

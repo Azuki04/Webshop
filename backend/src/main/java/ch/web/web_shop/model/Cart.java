@@ -33,6 +33,10 @@ public class Cart {
     private int quantity;
 
     public Cart(Optional<Product> product, Integer quantity, Optional<User> user) {
+        this.product = product.get();
+        this.quantity = quantity;
+        this.user = user.get();
+        this.createdDate = new Date();
     }
 
     public Cart(Product product, int quantity, User user){
@@ -40,6 +44,10 @@ public class Cart {
         this.product = product;
         this.quantity = quantity;
         this.createdDate = new Date();
+    }
+
+    public Cart() {
+
     }
 
     public Integer getId() {
