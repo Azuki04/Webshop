@@ -22,6 +22,9 @@ public class RoleConfig {
 
     @Bean
     public CommandLineRunner roleCommandLineRunner(RoleRepository repository) {
+        if(repository.count() > 0) {
+            return null;
+        }
         return args -> {
             // Erstelle die gewünschten Rollen
             Role adminRole = new Role(ERole.ROLE_ADMIN);

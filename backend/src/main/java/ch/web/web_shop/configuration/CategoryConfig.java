@@ -18,6 +18,9 @@ import java.util.List;
 public class CategoryConfig {
     @Bean
    CommandLineRunner categoryCommandLineRunner(CategoryRepository repository) {
+        if(repository.count() > 0) {
+            return null;
+        }
         return args -> {
             //create categories in database
             repository.saveAll(List.of(
