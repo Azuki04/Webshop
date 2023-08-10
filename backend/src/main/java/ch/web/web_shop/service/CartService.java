@@ -39,12 +39,15 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
+    private String getUsernameFromToken(HttpServletRequest token) {
+        String jwt = parseJwt(token);
+        return jwtUtils.getUserNameFromJwtToken(jwt);
+    }
+
 
     public void addToCart(AddToCartDto addToCartDto, long productId, HttpServletRequest token) {
-        String jwt = parseJwt(token);
-        String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
         // Retrieve the product based on the product ID
         Optional<Product> product = productRepository.findById(productId);
 
@@ -54,9 +57,8 @@ public class CartService {
 
 
     public CartDto listCartItems(HttpServletRequest token) {
-        String jwt = parseJwt(token);
-        String username = jwtUtils.getUserNameFromJwtToken(jwt);
-        Optional<User> user = userRepository.findByUsername(username);
+
+        Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
 
         List<Cart> cartList = cartRepository.findAllByUserOrderByCreatedDateDesc(user);
         List<CartItemDto> cartItems = new ArrayList<>();
