@@ -26,6 +26,9 @@ public class UserConfig {
 
     @Bean
     public CommandLineRunner userCommandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        if(userRepository.count() > 0) {
+            return null;
+        }
         return args -> {
             // Erstelle einen Benutzer
             User user = new User("student", "student@wiss-edu.ch", passwordEncoder.encode("password"));

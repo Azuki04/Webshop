@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import ch.web.web_shop.dto.ProductDTO;
+import ch.web.web_shop.dto.product.ProductDTO;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.ProductService;
 

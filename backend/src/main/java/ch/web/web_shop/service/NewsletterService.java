@@ -1,6 +1,6 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.NewsletterDTO;
+import ch.web.web_shop.dto.newsletter.NewsletterDTO;
 import ch.web.web_shop.model.Newsletter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
