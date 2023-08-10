@@ -13,7 +13,7 @@ public interface CartServiceInterface {
 
     public void updateCartItem(AddToCartDto cartDto);
 
-    public void deleteCartItem(int id);
+    public void deleteCartItem(Integer ItemId, HttpServletRequest token);
 
     public void deleteUserCartItems(HttpServletRequest token);
 }

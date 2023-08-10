@@ -75,7 +75,7 @@ public class CartService implements CartServiceInterface {
     }
 
 
-    public static CartItemDto getDtoFromCart(Cart cart) {
+    private static CartItemDto getDtoFromCart(Cart cart) {
         return new CartItemDto(cart);
     }
 
@@ -87,10 +87,17 @@ public class CartService implements CartServiceInterface {
         cartRepository.save(cart);
     }
     @Override
-    public void deleteCartItem(int id) throws CartItemNotExistException {
-        if (!cartRepository.existsById(id))
-            throw new CartItemNotExistException("Cart id is invalid : " + id);
-        cartRepository.deleteById(id);
+    public void deleteCartItem(Integer ItemId, HttpServletRequest token) throws CartItemNotExistException {
+        Cart cart = cartRepository.findById(ItemId).orElseThrow(() -> new CartItemNotExistException("Cart item not found"));
+        long userIdFromCart = cart.getUser().getId();
+        long userIdFromToken = userRepository.findByUsername(getUsernameFromToken(token)).get().getId();
+
+        if (userIdFromCart == userIdFromToken) {
+            cartRepository.deleteById(ItemId);
+        }else{
+            throw new CartItemNotExistException("Cart coudn't be deleted");
+        }
+
 
     }
 

@@ -38,8 +38,8 @@ public class CartController {
 
     @DeleteMapping("/delete/{cartItemId}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public void deleteCartItem(@PathVariable("cartItemId") int itemID) {
-        cartService.deleteCartItem(itemID);
+    public void deleteCartItem(@PathVariable("cartItemId") Integer itemID, HttpServletRequest request) {
+        cartService.deleteCartItem(itemID, request);
     }
 
     @DeleteMapping("/deleteAll")
