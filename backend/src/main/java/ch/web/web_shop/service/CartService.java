@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CartService {
+public class CartService implements CartServiceInterface {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
@@ -44,7 +44,7 @@ public class CartService {
         return jwtUtils.getUserNameFromJwtToken(jwt);
     }
 
-
+    @Override
     public void addToCart(AddToCartDto addToCartDto, long productId, HttpServletRequest token) {
 
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
@@ -55,7 +55,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-
+    @Override
     public CartDto listCartItems(HttpServletRequest token) {
 
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
@@ -79,26 +79,26 @@ public class CartService {
         return new CartItemDto(cart);
     }
 
-
+    @Override
     public void updateCartItem(AddToCartDto cartDto){
         Cart cart = cartRepository.getOne(cartDto.getId());
         cart.setQuantity(cartDto.getQuantity());
         cart.setCreatedDate(new Date());
         cartRepository.save(cart);
     }
-
+    @Override
     public void deleteCartItem(int id) throws CartItemNotExistException {
         if (!cartRepository.existsById(id))
             throw new CartItemNotExistException("Cart id is invalid : " + id);
         cartRepository.deleteById(id);
 
     }
-
+    @Override
     public void deleteCartItems(int userId) {
         cartRepository.deleteAll();
     }
 
-
+    @Override
     public void deleteUserCartItems(User user) {
         cartRepository.deleteByUser(user);
     }
