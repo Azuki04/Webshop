@@ -93,13 +93,10 @@ public class CartService implements CartServiceInterface {
         cartRepository.deleteById(id);
 
     }
-    @Override
-    public void deleteCartItems(int userId) {
-        cartRepository.deleteAll();
-    }
 
     @Override
-    public void deleteUserCartItems(User user) {
+    public void deleteUserCartItems(HttpServletRequest token) {
+        Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
         cartRepository.deleteByUser(user);
     }
 

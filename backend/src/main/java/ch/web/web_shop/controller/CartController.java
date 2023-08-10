@@ -42,5 +42,11 @@ public class CartController {
         cartService.deleteCartItem(itemID);
     }
 
+    @DeleteMapping("/deleteAll")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public void deleteCartItems(HttpServletRequest request) {
+        cartService.deleteUserCartItems(request);
+    }
+
 
 }

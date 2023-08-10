@@ -15,6 +15,5 @@ public interface CartServiceInterface {
 
     public void deleteCartItem(int id);
 
-    public void deleteCartItems(int userId);
-    public void deleteUserCartItems(User user);
+    public void deleteUserCartItems(HttpServletRequest token);
 }
