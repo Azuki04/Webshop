@@ -24,7 +24,7 @@ public class CartController {
     public void addToCart(@PathVariable("productId") long productId, @RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
         cartService.addToCart(addToCartDto, productId, request);
     }
-    @GetMapping("/")
+    @GetMapping("")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<CartDto> getCartItems(HttpServletRequest request) {
         CartDto cartDto = cartService.listCartItems(request);
