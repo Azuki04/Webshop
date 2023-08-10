@@ -3,7 +3,7 @@ package ch.web.web_shop.service;
 import java.util.List;
 import java.util.Optional;
 
-import ch.web.web_shop.dto.ProductDTO;
+import ch.web.web_shop.dto.product.ProductDTO;
 import ch.web.web_shop.exception.*;
 import ch.web.web_shop.model.User;
 import ch.web.web_shop.repository.UserRepository;

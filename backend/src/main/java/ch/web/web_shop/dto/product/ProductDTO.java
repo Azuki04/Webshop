@@ -1,4 +1,4 @@
-package ch.web.web_shop.dto;
+package ch.web.web_shop.dto.product;
 
 import ch.web.web_shop.model.Category;
 

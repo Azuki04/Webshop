@@ -1,6 +1,6 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.ProductDTO;
+import ch.web.web_shop.dto.product.ProductDTO;
 import ch.web.web_shop.exception.*;
 import ch.web.web_shop.model.*;
 import ch.web.web_shop.repository.ProductRepository;

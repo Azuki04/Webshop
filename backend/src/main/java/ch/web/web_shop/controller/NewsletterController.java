@@ -1,10 +1,9 @@
 package ch.web.web_shop.controller;
 
-import ch.web.web_shop.dto.NewsletterDTO;
+import ch.web.web_shop.dto.newsletter.NewsletterDTO;
 import ch.web.web_shop.model.Newsletter;
 import ch.web.web_shop.service.NewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;

@@ -1,6 +1,6 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.NewsletterDTO;
+import ch.web.web_shop.dto.newsletter.NewsletterDTO;
 import ch.web.web_shop.model.Newsletter;
 import ch.web.web_shop.repository.NewsletterRepository;
 import org.junit.jupiter.api.BeforeEach;
