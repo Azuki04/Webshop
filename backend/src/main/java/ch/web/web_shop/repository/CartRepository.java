@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    List<Cart> findAllByUserOrderByCreatedDateDesc(Optional<User> user);
+    List<Cart> findCartByUser(Optional<User> user);
 
     List<Cart> deleteByUser(Optional<User> user);
 

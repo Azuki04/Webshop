@@ -62,7 +62,7 @@ public class CartService implements CartServiceInterface {
 
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
 
-        List<Cart> cartList = cartRepository.findAllByUserOrderByCreatedDateDesc(user);
+        List<Cart> cartList = cartRepository.findCartByUser(user);
         List<CartItemDto> cartItems = new ArrayList<>();
 
         for (Cart cart:cartList){
