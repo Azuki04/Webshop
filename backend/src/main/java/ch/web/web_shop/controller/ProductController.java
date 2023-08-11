@@ -34,7 +34,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(title);
 
@@ -46,28 +46,28 @@ public class ProductController {
     }
 
     @DeleteMapping("/admin")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteAllProducts() {
         productService.deleteAllProducts();
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/admin/{id}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
         Product product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("admin/{id}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDTO productDTO) {
         Product updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("admin/{id}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
@@ -75,6 +75,7 @@ public class ProductController {
 
     // get all products by user id
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<List<Product>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(userId, title);
 
@@ -86,7 +87,7 @@ public class ProductController {
 
     // get product by user id and product id
     @GetMapping("/user/{userId}/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Product> getProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
         Product product = productService.getProductById(userId, id);
         return ResponseEntity.ok(product);
@@ -94,7 +95,7 @@ public class ProductController {
 
     // delete product by user id and product id
     @DeleteMapping("/user/{userId}/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<HttpStatus> deleteProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
         productService.deleteProduct(userId, id);
         return ResponseEntity.noContent().build();
@@ -102,15 +103,15 @@ public class ProductController {
 
     // put product by user id and product id
     @PutMapping("/user/{userId}/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Product> updateProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id, @Valid @RequestBody ProductDTO productDTO) {
         Product updatedProduct = productService.updateProduct(userId, id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 
 
-    @PostMapping("")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PostMapping("/user")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         Product createdProduct = productService.createProduct(productDTO);
         return ResponseEntity.ok(createdProduct);
