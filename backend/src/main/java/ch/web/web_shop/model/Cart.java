@@ -39,13 +39,6 @@ public class Cart {
         this.createdDate = new Date();
     }
 
-    public Cart(Product product, int quantity, User user){
-        this.user = user;
-        this.product = product;
-        this.quantity = quantity;
-        this.createdDate = new Date();
-    }
-
     public Cart() {
 
     }

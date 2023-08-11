@@ -7,13 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface CartServiceInterface {
 
-    public void addToCart(AddToCartDto addToCartDto, long productId, HttpServletRequest token);
+    void addToCart(AddToCartDto addToCartDto, long productId, HttpServletRequest token);
 
-    public CartDto listCartItems(HttpServletRequest token);
+    CartDto listCartItems(HttpServletRequest token);
 
-    public void updateCartItem(AddToCartDto cartDto);
+    void updateCartItem(AddToCartDto cartDto);
 
-    public void deleteCartItem(Integer ItemId, HttpServletRequest token);
+    void deleteCartItem(Integer ItemId, HttpServletRequest token);
 
-    public void deleteUserCartItems(HttpServletRequest token);
+    void deleteUserCartItems(HttpServletRequest token);
 }
