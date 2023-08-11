@@ -10,6 +10,7 @@ import ch.web.web_shop.model.User;
 import ch.web.web_shop.repository.CartRepository;
 import ch.web.web_shop.repository.ProductRepository;
 import ch.web.web_shop.repository.UserRepository;
+import ch.web.web_shop.security.jwt.AuthTokenFilter;
 import ch.web.web_shop.security.jwt.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +34,15 @@ public class CartService implements CartServiceInterface {
     private ProductRepository productRepository;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private AuthTokenFilter authTokenFilter;
 
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
 
     private String getUsernameFromToken(HttpServletRequest token) {
-        String jwt = parseJwt(token);
+        String jwt = authTokenFilter.parseJwt(token);
         return jwtUtils.getUserNameFromJwtToken(jwt);
     }
 
@@ -74,7 +76,6 @@ public class CartService implements CartServiceInterface {
         return new CartDto(cartItems,totalCost);
     }
 
-
     private static CartItemDto getDtoFromCart(Cart cart) {
         return new CartItemDto(cart);
     }
@@ -86,6 +87,7 @@ public class CartService implements CartServiceInterface {
         cart.setCreatedDate(new Date());
         cartRepository.save(cart);
     }
+
     @Override
     public void deleteCartItem(Integer ItemId, HttpServletRequest token) throws CartItemNotExistException {
         Cart cart = cartRepository.findById(ItemId).orElseThrow(() -> new CartItemNotExistException("Cart item not found"));
@@ -97,25 +99,11 @@ public class CartService implements CartServiceInterface {
         }else{
             throw new CartItemNotExistException("Cart coudn't be deleted");
         }
-
-
     }
 
     @Override
-    public void deleteUserCartItems(HttpServletRequest token) {
+    public void deleteAllCartItemsFromUser(HttpServletRequest token) {
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
         cartRepository.deleteByUser(user);
     }
-
-
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7, headerAuth.length());
-        }
-
-        return null;
-    }
-
 }

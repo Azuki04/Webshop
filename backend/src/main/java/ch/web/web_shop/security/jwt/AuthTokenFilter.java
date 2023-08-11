@@ -83,7 +83,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
      * - set the current UserDetails in SecurityContext using setAuthentication(authentication) method.
      * - return the JWT
      */
-    private String parseJwt(HttpServletRequest request) {
+    public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {

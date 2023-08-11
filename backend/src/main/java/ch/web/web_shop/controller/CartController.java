@@ -45,8 +45,7 @@ public class CartController {
     @DeleteMapping("/deleteAll")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public void deleteCartItems(HttpServletRequest request) {
-        cartService.deleteUserCartItems(request);
+        cartService.deleteAllCartItemsFromUser(request);
     }
-
 
 }
