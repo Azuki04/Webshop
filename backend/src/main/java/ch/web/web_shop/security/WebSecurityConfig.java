@@ -30,7 +30,7 @@ public class WebSecurityConfig {
     // endpoints that are accessible with authentication
     private final static String[] SECURELIST = { "/products/admin/**"};
     // roles that are allowed to access the secure endpoints
-    private final static String[] ROLES = { "MODERATOR", "ADMIN"};
+    private final static String[] ROLES = { "SELLER", "ADMIN"};
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {

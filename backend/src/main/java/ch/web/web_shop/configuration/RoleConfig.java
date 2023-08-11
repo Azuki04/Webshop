@@ -28,11 +28,11 @@ public class RoleConfig {
         return args -> {
             // Erstelle die gewünschten Rollen
             Role adminRole = new Role(ERole.ROLE_ADMIN);
-            Role userRole = new Role(ERole.ROLE_USER);
-            Role moderatorRole = new Role(ERole.ROLE_MODERATOR);
+            Role customerRole = new Role(ERole.ROLE_CUSTOMER);
+            Role sellerRole = new Role(ERole.ROLE_SELLER);
 
             // Speichere die Rollen in der Datenbank
-            repository.saveAll(List.of(adminRole, userRole, moderatorRole));
+            repository.saveAll(List.of(adminRole, customerRole, sellerRole));
         };
     }
 }

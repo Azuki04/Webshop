@@ -106,7 +106,7 @@ public class AuthControllerTest {
         signupRequest.setRole(strRoles);
 
         // Mock role repository
-        when(roleRepository.findByName(ERole.ROLE_USER)).thenReturn(Optional.of(new Role(ERole.ROLE_USER)));
+        when(roleRepository.findByName(ERole.ROLE_CUSTOMER)).thenReturn(Optional.of(new Role(ERole.ROLE_CUSTOMER)));
 
         // Perform the registration
         ResponseEntity<?> responseEntity = authController.registerUser(signupRequest);

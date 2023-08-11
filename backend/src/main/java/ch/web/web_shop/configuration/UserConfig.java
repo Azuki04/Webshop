@@ -34,7 +34,7 @@ public class UserConfig {
             User user = new User("student", "student@wiss-edu.ch", passwordEncoder.encode("password"));
 
             // Erstelle eine Rolle für den Benutzer
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+            Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
                     .orElseThrow(() -> new RuntimeException("Rolle ROLE_USER nicht gefunden."));
 
             // Weise die Rolle dem Benutzer zu
