@@ -89,7 +89,7 @@ public class CartService implements CartServiceInterface {
     }
 
     @Override
-    public void deleteCartItem(Integer ItemId, HttpServletRequest token) throws CartItemNotExistException {
+    public void deleteCartItem(long ItemId, HttpServletRequest token) throws CartItemNotExistException {
         Cart cart = cartRepository.findById(ItemId).orElseThrow(() -> new CartItemNotExistException("Cart item not found"));
         long userIdFromCart = cart.getUser().getId();
         long userIdFromToken = userRepository.findByUsername(getUsernameFromToken(token)).get().getId();

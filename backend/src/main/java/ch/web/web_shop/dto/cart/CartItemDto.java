@@ -5,7 +5,7 @@ import ch.web.web_shop.model.Product;
 import jakarta.validation.constraints.NotNull;
 
 public class CartItemDto {
-    private Integer id;
+    private long id;
     @NotNull
     private Integer quantity;
     @NotNull
@@ -29,11 +29,11 @@ public class CartItemDto {
                 '}';
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
