@@ -26,11 +26,16 @@ public class WebSecurityConfig {
     private AuthenticationEntryPoint unauthorizedHandler;
 
     // endpoints that are accessible without authentication
-    private final static String[] WHITELIST = { "/api/auth/**", "/category","/cart","/cart/**","/products/published/**","/newsletter" };
+    private final static String[] WHITELIST = { "/api/auth/**","/category","/products/published/**","/newsletter" };
     // endpoints that are accessible with authentication
-    private final static String[] SECURELIST = { "/products/admin/**"};
+    private final static String[] SECURELIST_ADMIN = { "/products/admin/**",};
+    private final static String[] SECURELIST_CUSTOMER = { "/cart/**",};
+    private final static String[] SECURELIST_SELLER = { "/products/user/**",};
     // roles that are allowed to access the secure endpoints
-    private final static String[] ROLES = { "SELLER", "ADMIN"};
+    private final static String[] ROLES_ADMIN = {"ADMIN"};
+    private final static String[] ROLES_CUSTOMER = {"CUSTOMER"};
+    private final static String[] ROLES_SELLER = {"SELLER"};
+
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -62,7 +67,9 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests((authz) ->
                         authz.requestMatchers(WHITELIST).permitAll()
-                                .requestMatchers(SECURELIST).hasAnyRole(ROLES)
+                                .requestMatchers(SECURELIST_ADMIN).hasAnyRole(ROLES_ADMIN)
+                                .requestMatchers(SECURELIST_CUSTOMER).hasAnyRole(ROLES_CUSTOMER)
+                                .requestMatchers(SECURELIST_SELLER).hasAnyRole(ROLES_SELLER)
                                 .anyRequest().authenticated()
                 );
         http.authenticationProvider(authenticationProvider());
