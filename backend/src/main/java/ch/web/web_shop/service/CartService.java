@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,19 +62,30 @@ public class CartService implements CartServiceInterface {
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
 
         List<Cart> cartList = cartRepository.findCartByUser(user);
+
+        List<CartItemDto> cartItems = getCartItems(cartList);
+
+        double totalCost = getTotalCost(cartItems);
+
+        return new CartDto(cartItems,totalCost);
+    }
+
+    private static double getTotalCost(List<CartItemDto> cartItems) {
+        double totalCost = 0;
+        for (CartItemDto cartItemDto :cartItems){
+            totalCost += (cartItemDto.getProduct().getPrice()* cartItemDto.getQuantity());
+        }
+        return totalCost;
+    }
+    private static List<CartItemDto> getCartItems(List<Cart> cartList) {
         List<CartItemDto> cartItems = new ArrayList<>();
 
         for (Cart cart:cartList){
             CartItemDto cartItemDto = getDtoFromCart(cart);
             cartItems.add(cartItemDto);
         }
-        double totalCost = 0;
-        for (CartItemDto cartItemDto :cartItems){
-            totalCost += (cartItemDto.getProduct().getPrice()* cartItemDto.getQuantity());
-        }
-        return new CartDto(cartItems,totalCost);
+        return cartItems;
     }
-
     private static CartItemDto getDtoFromCart(Cart cart) {
         return new CartItemDto(cart);
     }
