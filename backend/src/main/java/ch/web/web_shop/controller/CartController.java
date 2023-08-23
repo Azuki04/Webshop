@@ -2,7 +2,7 @@ package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.cart.AddToCartDto;
 import ch.web.web_shop.dto.cart.CartDto;
-import ch.web.web_shop.service.CartService;
+import ch.web.web_shop.service.CartServiceInterface;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     @Autowired
-    private CartService cartService;
+    private CartServiceInterface cartService;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('CUSTOMER')")
