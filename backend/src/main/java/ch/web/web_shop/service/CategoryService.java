@@ -1,11 +1,13 @@
 package ch.web.web_shop.service;
 
+import ch.web.web_shop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.web.web_shop.model.Category;
 import ch.web.web_shop.repository.CategoryRepository;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * Category service class.
@@ -21,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class CategoryService {
+public class CategoryService  {
 
     private final CategoryRepository categoryRepository;
 
@@ -35,8 +37,11 @@ public class CategoryService {
      *
      * @return An iterable collection of categories.
      */
+
     @Transactional(readOnly = true)
     public Iterable<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
+
+
 }
