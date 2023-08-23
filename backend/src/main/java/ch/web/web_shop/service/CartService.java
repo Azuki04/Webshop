@@ -46,11 +46,12 @@ public class CartService implements CartServiceInterface {
     }
 
     @Override
-    public void addToCart(AddToCartDto addToCartDto, long productId, HttpServletRequest token) {
+    public void addToCart(AddToCartDto addToCartDto, HttpServletRequest token) {
+
 
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
-        // Retrieve the product based on the product ID
-        Optional<Product> product = productRepository.findById(productId);
+
+        Optional<Product> product = productRepository.findById(addToCartDto.getProductId());
 
         Cart cart = new Cart(product, addToCartDto.getQuantity(), user);
         cartRepository.save(cart);
@@ -70,7 +71,7 @@ public class CartService implements CartServiceInterface {
         return new CartDto(cartItems,totalCost);
     }
 
-    private static double getTotalCost(List<CartItemDto> cartItems) {
+    public static double getTotalCost(List<CartItemDto> cartItems) {
         double totalCost = 0;
         for (CartItemDto cartItemDto :cartItems){
             totalCost += (cartItemDto.getProduct().getPrice()* cartItemDto.getQuantity());

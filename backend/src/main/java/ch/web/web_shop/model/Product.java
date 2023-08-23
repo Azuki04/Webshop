@@ -61,6 +61,11 @@ public class Product {
 		// Default constructor required by JPA
 	}
 
+	public Product(int price) {
+		// Default constructor required by JPA
+		this.price = price;
+	}
+
 	public Product(String title, String description, String content, int price, int stock,
 				   Category category, User user) {
 		this.title = title;

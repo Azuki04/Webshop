@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface CartServiceInterface {
 
-    void addToCart(AddToCartDto addToCartDto, long productId, HttpServletRequest token);
+    void addToCart(AddToCartDto addToCartDto, HttpServletRequest token);
 
     CartDto listCartItems(HttpServletRequest token);
 

@@ -30,7 +30,7 @@ public class WebSecurityConfig {
     // endpoints that are accessible with authentication
     private final static String[] SECURELIST_ADMIN = { "/products/admin/**",};
     private final static String[] SECURELIST_CUSTOMER = { "/cart/**",};
-    private final static String[] SECURELIST_SELLER = { "/products/user/**",};
+    private final static String[] SECURELIST_SELLER = { "/products/seller/**"};
     // roles that are allowed to access the secure endpoints
     private final static String[] ROLES_ADMIN = {"ADMIN"};
     private final static String[] ROLES_CUSTOMER = {"CUSTOMER"};

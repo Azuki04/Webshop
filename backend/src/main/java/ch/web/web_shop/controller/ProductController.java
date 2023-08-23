@@ -74,7 +74,7 @@ public class ProductController {
     }
 
     // get all products by user id
-    @GetMapping("/user/{userId}")
+    @GetMapping("/seller/{userId}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<List<Product>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(userId, title);
@@ -86,7 +86,7 @@ public class ProductController {
     }
 
     // get product by user id and product id
-    @GetMapping("/user/{userId}/{id}")
+    @GetMapping("/seller/{userId}/{id}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Product> getProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
         Product product = productService.getProductById(userId, id);
@@ -94,7 +94,7 @@ public class ProductController {
     }
 
     // delete product by user id and product id
-    @DeleteMapping("/user/{userId}/{id}")
+    @DeleteMapping("/seller/{userId}/{id}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<HttpStatus> deleteProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
         productService.deleteProduct(userId, id);
@@ -102,7 +102,7 @@ public class ProductController {
     }
 
     // put product by user id and product id
-    @PutMapping("/user/{userId}/{id}")
+    @PutMapping("/seller/{userId}/{id}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Product> updateProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id, @Valid @RequestBody ProductDTO productDTO) {
         Product updatedProduct = productService.updateProduct(userId, id, productDTO);
@@ -110,7 +110,7 @@ public class ProductController {
     }
 
 
-    @PostMapping("/user")
+    @PostMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         Product createdProduct = productService.createProduct(productDTO);
