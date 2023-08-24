@@ -2,15 +2,11 @@ package ch.web.web_shop.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -35,17 +31,13 @@ public class Category {
     @NotNull
     private String name;
 
-
+    //@JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "parentCategory")
     private Category parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory")
-    private List<Category> subCategories = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "category")
-    private List<Product> products = new ArrayList<>();
+    //@OneToMany(mappedBy = "parentCategory")
+    //private List<Category> subCategories = new ArrayList<>();
 
     public Category(String name) {
         this.name = name;
@@ -68,6 +60,5 @@ public class Category {
     public String toString() {
         return "Category [id=" + id + ", name=" + name + "]";
     }
-
 
 }

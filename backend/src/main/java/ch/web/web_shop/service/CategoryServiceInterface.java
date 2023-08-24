@@ -1,5 +1,6 @@
 package ch.web.web_shop.service;
 
+import ch.web.web_shop.dto.category.CategoryTreeDto;
 import ch.web.web_shop.model.Category;
 import ch.web.web_shop.model.Product;
 
@@ -14,5 +15,7 @@ public interface CategoryServiceInterface {
     Category getCategoryById(long categoryId);
 
     Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId);
+
+    List<CategoryTreeDto> getAllCategoryTree();
 
 }

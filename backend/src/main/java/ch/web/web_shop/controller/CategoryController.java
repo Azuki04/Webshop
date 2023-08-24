@@ -1,5 +1,6 @@
 package ch.web.web_shop.controller;
 
+import ch.web.web_shop.dto.category.CategoryTreeDto;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.CategoryServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import ch.web.web_shop.model.Category;
 import ch.web.web_shop.service.CategoryService;
+
+import java.util.List;
 
 /**
  * Category controller class.
@@ -68,7 +71,20 @@ public class CategoryController {
             Iterable<Category> categories = categoryService.getAllCategories();
             return ResponseEntity.ok(categories);
         } catch (Exception ex) {
-            // Handle other generic exceptions
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    @GetMapping("/categoryTree")
+    public ResponseEntity<List<CategoryTreeDto>> getCategoryTree() {
+
+        try {
+            return ResponseEntity.ok(categoryService.getAllCategoryTree());
+
+        } catch (Exception ex) {
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -92,7 +108,6 @@ public class CategoryController {
             Iterable<Product> products = categoryService.getAllProductsByCategory(categoryId);
             return ResponseEntity.ok(products);
         } catch (Exception ex) {
-            // Handle other generic exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

@@ -22,6 +22,7 @@ public class CategoryConfig {
             Category shoes = new Category("Shoes", clothing);
             Category tShirt = new Category("T-Shirt", clothing);
             Category pants = new Category("Pants", clothing);
+            Category shorts = new Category("shorts", pants);
 
             Category tvAudio = new Category("Tv & Audio");
 
@@ -49,7 +50,7 @@ public class CategoryConfig {
                     toy, lego, ball, gameBoy,
                     tools, computerGaming, householdKitchen, beautyHealth,
                     sport, tennis, football,
-                    office, paper
+                    office, paper, shorts
             ));
         };
     }
