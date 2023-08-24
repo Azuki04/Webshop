@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,9 +35,9 @@ import ch.web.web_shop.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 
 /**
- *  * @Author Sy Viet
- *  * @version 1.0
- *
+ * * @Author Sy Viet
+ * * @version 1.0
+ * <p>
  * AuthController is used to:
  * - authenticate user
  * - register user
@@ -105,6 +104,7 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles));
     }
+
     // register user
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

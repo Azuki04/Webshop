@@ -21,18 +21,20 @@ public class CartController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public void addToCart( @RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
+    public void addToCart(@RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
         cartService.addToCart(addToCartDto, request);
     }
+
     @GetMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CartDto> getCartItems(HttpServletRequest request) {
         CartDto cartDto = cartService.listCartItems(request);
         return new ResponseEntity<CartDto>(cartDto, HttpStatus.OK);
     }
+
     @PutMapping("/update/{cartItemId}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public void updateCartItem(@RequestBody @Valid AddToCartDto cartDto){
+    public void updateCartItem(@RequestBody @Valid AddToCartDto cartDto) {
         cartService.updateCartItem(cartDto);
     }
 

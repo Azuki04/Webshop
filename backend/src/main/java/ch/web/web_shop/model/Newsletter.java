@@ -16,6 +16,7 @@ import lombok.ToString;
 
 /**
  * v1.0
+ *
  * @Author Sy Viet
  * Newsletter is used to:
  * - store the email addresses of the users who want to receive the newsletter
@@ -27,17 +28,17 @@ import lombok.ToString;
 @ToString
 public class Newsletter {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	@Column(name = "email")
-	@NotEmpty(message = "Email is mandatory")
-	@NotNull(message = "Email cannot be null")
-	@Email(message = "Invalid email format")
-	private String email;
+    @Column(name = "email")
+    @NotEmpty(message = "Email is mandatory")
+    @NotNull(message = "Email cannot be null")
+    @Email(message = "Invalid email format")
+    private String email;
 
-	public Newsletter(String email) {
-		this.email = email;
-	}
+    public Newsletter(String email) {
+        this.email = email;
+    }
 }

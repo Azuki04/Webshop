@@ -16,6 +16,7 @@ import ch.web.web_shop.service.ProductService;
 
 /**
  * v1.0
+ *
  * @Author Sy Viet
  * ProductController is used to:
  * - get all products
@@ -118,9 +119,9 @@ public class ProductController {
     }
 
     /*
-    *open Rest API
-    *
-    */
+     *open Rest API
+     *
+     */
 
     //Get all published product Rest API
     @GetMapping("/published")
