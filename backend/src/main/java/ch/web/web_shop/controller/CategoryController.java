@@ -1,12 +1,11 @@
 package ch.web.web_shop.controller;
 
+import ch.web.web_shop.model.Product;
+import ch.web.web_shop.service.CategoryServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ch.web.web_shop.model.Category;
 import ch.web.web_shop.service.CategoryService;
@@ -53,7 +52,7 @@ import ch.web.web_shop.service.CategoryService;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-	private final CategoryService categoryService;
+	private final CategoryServiceInterface categoryService;
 
 	@Autowired
 	public CategoryController(CategoryService categoryService) {
@@ -71,6 +70,30 @@ public class CategoryController {
 		try {
 			Iterable<Category> categories = categoryService.getAllCategories();
 			return ResponseEntity.ok(categories);
+		} catch (Exception ex) {
+			// Handle other generic exceptions
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	@GetMapping("/subcategories/{id}")
+	public ResponseEntity<Iterable<Category>> getAllSubCategoriesByParentCategory(@PathVariable("id") long categoryId) {
+		try {
+			Iterable<Category> categories = categoryService.getAllSubCategoriesByParentCategory(categoryId);
+			return ResponseEntity.ok(categories);
+		} catch (Exception ex) {
+			System.out.println("no parent category");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+		}
+	}
+
+
+	@GetMapping("/products/{id}")
+	public ResponseEntity<Iterable<Product>> getAllProductsByCategory(@PathVariable("id") long categoryId) {
+		try {
+			Iterable<Product> products = categoryService.getAllProductsByCategory(categoryId);
+			return ResponseEntity.ok(products);
 		} catch (Exception ex) {
 			// Handle other generic exceptions
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

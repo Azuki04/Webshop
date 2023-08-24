@@ -9,8 +9,10 @@ public interface CategoryServiceInterface {
 
     Iterable<Category> getAllCategories();
 
-    List<Product> getAllProductsByCategory(long categoryId);
+    Iterable<Product> getAllProductsByCategory(long categoryId);
 
     Category getCategoryById(long categoryId);
+
+    Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId);
 
 }

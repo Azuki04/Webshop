@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * v1.0
+ *
  * @Author Sy Viet
  * Category is used to:
  * - store the categories of the products
@@ -26,42 +27,47 @@ import java.util.List;
 @Table(name = "category")
 public class Category {
 
-	@Getter
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @Getter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	@NotNull
-	private String name;
-
-
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "parentCategory")
-	private Category parentCategory;
-
-	@OneToMany(mappedBy = "parentCategory")
-	private List<Category> subCategories = new ArrayList<>();
+    @NotNull
+    private String name;
 
 
-	public Category(String name) {
-		this.name = name;
-	}
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "parentCategory")
+    private Category parentCategory;
 
-	public Category(String name, Category parentCategory) {
-		this.name = name;
-		this.parentCategory = parentCategory;
-	}
+    @OneToMany(mappedBy = "parentCategory")
+    private List<Category> subCategories = new ArrayList<>();
 
-	public void setId(long id) {
-		this.id = id;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @OneToMany(mappedBy = "category")
+    private List<Product> products = new ArrayList<>();
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
-	}
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(String name, Category parentCategory) {
+        this.name = name;
+        this.parentCategory = parentCategory;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Category [id=" + id + ", name=" + name + "]";
+    }
+
+
 }

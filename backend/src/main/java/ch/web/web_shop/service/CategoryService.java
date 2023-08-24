@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class CategoryService  {
+public class CategoryService implements CategoryServiceInterface {
 
     private final CategoryRepository categoryRepository;
 
@@ -38,9 +38,27 @@ public class CategoryService  {
      * @return An iterable collection of categories.
      */
 
+    @Override
     @Transactional(readOnly = true)
     public Iterable<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public Category getCategoryById(long categoryId) {
+        return categoryRepository.findById(categoryId).get();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<Product> getAllProductsByCategory(long categoryId) {
+        return categoryRepository.findById(categoryId).get().getProducts();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId) {
+        return categoryRepository.findById(categoryId).get().getSubCategories();
     }
 
 
