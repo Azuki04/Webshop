@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Uses ProductRepository for data persistence.
  * This class can be used to perform additional business logic if needed.
  * It provides a layer of abstraction between the controller and the repository.
- *
  * @version 1.0
  * @Author: Sy Viet
  * @see Product
@@ -135,7 +134,6 @@ public class ProductService {
             throw new ProductNotFoundException(String.valueOf(id));
         }
     }
-
     //update product by user and by product id
     @Transactional
     public Product updateProduct(long userId, long productId, ProductDTO productDTO) {
