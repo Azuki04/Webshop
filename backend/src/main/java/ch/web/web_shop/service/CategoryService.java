@@ -63,6 +63,31 @@ public class CategoryService implements CategoryServiceInterface {
 
         return buildCategoryTree((List<Category>) categories);
     }
+    public List<CategoryTreeDto> buildCategoryTree2(List<Category> categories) {
+        List<CategoryTreeDto> categoryDtoList = new ArrayList<>();
+        Map<Long, CategoryTreeDto> categoryDtoMap = new HashMap<>();
+
+        for (Category category : categories) {
+            if (category.getParentCategory() == null) {
+                CategoryTreeDto categoryTreeDto = new CategoryTreeDto(category.getId(), category.getName());
+                categoryDtoList.add(categoryTreeDto);
+                categoryDtoMap.put(category.getId(), categoryTreeDto);
+            }
+        }
+
+        for (Category category : categories) {
+            if (category.getParentCategory() != null) {
+                CategoryTreeDto parentDto = categoryDtoMap.get(category.getParentCategory().getId());
+                if (parentDto != null) {
+                    CategoryTreeDto childDto = new CategoryTreeDto(category.getId(), category.getName());
+                    parentDto.addChildCategory(childDto);
+                    categoryDtoMap.put(category.getId(), childDto);
+                }
+            }
+        }
+
+        return categoryDtoList;
+    }
 
     private List<CategoryTreeDto> buildCategoryTree(List<Category> categories) {
         List<CategoryTreeDto> parentCategoryDtoList = new ArrayList<>();
