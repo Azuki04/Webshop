@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * v1.0
  * Test Controller for testing purposes
+ *
  * @Author Sy Viet
  * PublicController is used to:
  * - get test page

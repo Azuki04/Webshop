@@ -7,38 +7,51 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
-/**
- * v1.0
- * @Author Faustina
- * CategoryConfig is used to:
- * - create the categories
- * - save the categories in the database
- */
+
 @Configuration
 public class CategoryConfig {
     @Bean
-   CommandLineRunner categoryCommandLineRunner(CategoryRepository repository) {
-        if(repository.count() > 0) {
+    CommandLineRunner categoryCommandLineRunner(CategoryRepository repository) {
+        if (repository.count() > 0) {
             return null;
         }
+
         return args -> {
-            //create categories in database
+            // Create and save categories in the database
+            Category clothing = new Category("Clothing");
+            Category shoes = new Category("Shoes", clothing);
+            Category tShirt = new Category("T-Shirt", clothing);
+            Category pants = new Category("Pants", clothing);
+            Category shorts = new Category("shorts", pants);
+
+            Category tvAudio = new Category("Tv & Audio");
+
+            Category toy = new Category("Toy");
+            Category lego = new Category("Lego", toy);
+            Category ball = new Category("Ball", toy);
+            Category gameBoy = new Category("Game-boy", toy);
+
+            Category tools = new Category("Tools");
+            Category computerGaming = new Category("Computer & Gaming");
+            Category householdKitchen = new Category("Household & Kitchen");
+            Category beautyHealth = new Category("Beauty & Health");
+
+            Category sport = new Category("Sport");
+            Category tennis = new Category("Tennis", sport);
+            Category football = new Category("Football", sport);
+
+            Category office = new Category("Office");
+            Category paper = new Category("Paper", office);
+
+            // Save the categories
             repository.saveAll(List.of(
-                    new Category(1, "Clothing"),
-                    new Category(2, "Tv & Audio"),
-                    new Category(3, "Toy"),
-                    new Category(4, "Tools"),
-                    new Category(5, "Shoes"),
-                    new Category(6, "Computer & Gaming"),
-                    new Category(7, "Household & Kitchen"),
-                    new Category(8, "Beauty & Health"),
-                    new Category(9, "Sport"),
-                    new Category(10, "Office")
+                    clothing, shoes, tShirt, pants,
+                    tvAudio,
+                    toy, lego, ball, gameBoy,
+                    tools, computerGaming, householdKitchen, beautyHealth,
+                    sport, tennis, football,
+                    office, paper, shorts
             ));
         };
     }
-
-
-
-
 }

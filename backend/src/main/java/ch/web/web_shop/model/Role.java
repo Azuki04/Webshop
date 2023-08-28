@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 /**
  * v1.0
+ *
  * @Author Sy Viet
  * Role is used to:
  * - define the roles of the users
