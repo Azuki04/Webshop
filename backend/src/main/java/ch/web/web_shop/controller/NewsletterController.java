@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 /**
  * v1.0
+ *
  * @Author Sy Viet
  * NewsletterController is used to:
  * - create newsletter
@@ -20,15 +21,15 @@ import jakarta.validation.Valid;
 @RequestMapping("/newsletter")
 public class NewsletterController {
 
-	private final NewsletterService newsletterService;
+    private final NewsletterService newsletterService;
 
-	@Autowired
-	public NewsletterController(NewsletterService newsletterService) {
-		this.newsletterService = newsletterService;
-	}
+    @Autowired
+    public NewsletterController(NewsletterService newsletterService) {
+        this.newsletterService = newsletterService;
+    }
 
-	@PostMapping("")
-	public Newsletter createNewsletter(@Valid @RequestBody NewsletterDTO newsletterDTO) {
-		return newsletterService.createNewsletter(newsletterDTO);
-	}
+    @PostMapping("")
+    public Newsletter createNewsletter(@Valid @RequestBody NewsletterDTO newsletterDTO) {
+        return newsletterService.createNewsletter(newsletterDTO);
+    }
 }

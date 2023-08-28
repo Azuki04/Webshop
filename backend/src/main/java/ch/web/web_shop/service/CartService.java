@@ -68,31 +68,33 @@ public class CartService implements CartServiceInterface {
 
         double totalCost = getTotalCost(cartItems);
 
-        return new CartDto(cartItems,totalCost);
+        return new CartDto(cartItems, totalCost);
     }
 
     public static double getTotalCost(List<CartItemDto> cartItems) {
         double totalCost = 0;
-        for (CartItemDto cartItemDto :cartItems){
-            totalCost += (cartItemDto.getProduct().getPrice()* cartItemDto.getQuantity());
+        for (CartItemDto cartItemDto : cartItems) {
+            totalCost += (cartItemDto.getProduct().getPrice() * cartItemDto.getQuantity());
         }
         return totalCost;
     }
+
     private static List<CartItemDto> getCartItems(List<Cart> cartList) {
         List<CartItemDto> cartItems = new ArrayList<>();
 
-        for (Cart cart:cartList){
+        for (Cart cart : cartList) {
             CartItemDto cartItemDto = getDtoFromCart(cart);
             cartItems.add(cartItemDto);
         }
         return cartItems;
     }
+
     private static CartItemDto getDtoFromCart(Cart cart) {
         return new CartItemDto(cart);
     }
 
     @Override
-    public void updateCartItem(AddToCartDto cartDto){
+    public void updateCartItem(AddToCartDto cartDto) {
         Cart cart = cartRepository.getOne(cartDto.getId());
         cart.setQuantity(cartDto.getQuantity());
         cart.setCreatedDate(new Date());
@@ -107,7 +109,7 @@ public class CartService implements CartServiceInterface {
 
         if (userIdFromCart == userIdFromToken) {
             cartRepository.deleteById(ItemId);
-        }else{
+        } else {
             throw new CartItemNotExistException("Cart coudn't be deleted");
         }
     }
