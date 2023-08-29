@@ -2,7 +2,7 @@ package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.cart.AddToCartDto;
 import ch.web.web_shop.dto.cart.CartDto;
-import ch.web.web_shop.service.CartService;
+import ch.web.web_shop.service.CartServiceInterface;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +17,24 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     @Autowired
-    private CartService cartService;
+    private CartServiceInterface cartService;
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public void addToCart( @RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
+    public void addToCart(@RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
         cartService.addToCart(addToCartDto, request);
     }
+
     @GetMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CartDto> getCartItems(HttpServletRequest request) {
         CartDto cartDto = cartService.listCartItems(request);
         return new ResponseEntity<CartDto>(cartDto, HttpStatus.OK);
     }
+
     @PutMapping("/update/{cartItemId}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public void updateCartItem(@RequestBody @Valid AddToCartDto cartDto){
+    public void updateCartItem(@RequestBody @Valid AddToCartDto cartDto) {
         cartService.updateCartItem(cartDto);
     }
 

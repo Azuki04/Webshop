@@ -28,7 +28,7 @@ public class CategoryServiceTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        categoryService = new CategoryService(categoryRepository);
+        categoryService = new CategoryService(categoryRepository,null);
     }
 
     @Test
