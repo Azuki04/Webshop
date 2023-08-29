@@ -2,6 +2,11 @@ package ch.web.web_shop.controller;
 
 import java.util.List;
 
+import ch.web.web_shop.dto.image.UploadFileResponse;
+import ch.web.web_shop.dto.product.ProductResponsDto;
+import ch.web.web_shop.repository.FileRepository;
+import ch.web.web_shop.service.FileStorageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import ch.web.web_shop.dto.product.ProductDTO;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.ProductService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * v1.0
@@ -34,16 +40,20 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<ProductResponsDto>> getAllProducts(@RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(title);
 
+        List<ProductResponsDto> productResponsDtosList = productService.convertToDto(products);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productResponsDtosList);
     }
 
     @DeleteMapping("/admin")
@@ -113,8 +123,19 @@ public class ProductController {
 
     @PostMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Product> createProduct(@RequestParam("data") String data, @RequestParam("file") MultipartFile[]  files) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProductDTO productDTO = null;
+        try {
+            productDTO = objectMapper.readValue(data, ProductDTO.class);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
         Product createdProduct = productService.createProduct(productDTO);
+
+        fileStorageService.storeFile(files, createdProduct);
+
         return ResponseEntity.ok(createdProduct);
     }
 

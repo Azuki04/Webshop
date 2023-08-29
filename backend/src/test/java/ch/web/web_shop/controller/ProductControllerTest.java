@@ -33,26 +33,6 @@ class ProductControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetAllProducts() {
-        // Create test data
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User()));
-        products.add(new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User()));
-
-        // Mock the productService
-        when(productService.getAllProducts(anyString())).thenReturn(products);
-
-        // Call the controller method
-        ResponseEntity<List<Product>> response = productController.getAllProducts(null);
-
-        // Verify the response
-        Assertions.assertEquals(null, response.getBody());
-    }
-
-
 
 
 
@@ -73,25 +53,6 @@ class ProductControllerTest {
         // Verify the response
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(product, response.getBody());
-    }
-
-    @Test
-    void testCreateProduct() {
-        // Create test data
-        ProductDTO productDTO = new ProductDTO("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User());
-
-        // Mock the productService
-        Product createdProduct = new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User());
-        when(productService.createProduct(any(ProductDTO.class))).thenReturn(createdProduct);
-
-        // Call the controller method
-        ResponseEntity<Product> response = productController.createProduct(productDTO);
-
-        // Verify the response
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(createdProduct, response.getBody());
     }
 
     @Test

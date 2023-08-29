@@ -1,11 +1,15 @@
 package ch.web.web_shop.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import ch.web.web_shop.dto.product.ProductDTO;
+import ch.web.web_shop.dto.product.ProductResponsDto;
 import ch.web.web_shop.exception.*;
+import ch.web.web_shop.model.File;
 import ch.web.web_shop.model.User;
+import ch.web.web_shop.repository.FileRepository;
 import ch.web.web_shop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.repository.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * Product service class.
@@ -38,6 +43,8 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private FileRepository fileRepository;
 
     @Transactional(readOnly = true)
     public List<Product> getAllProducts(String title) {
@@ -258,4 +265,34 @@ public class ProductService {
         product.setUser(productDTO.getUser());
     }
 
+    public List<ProductResponsDto> convertToDto(List<Product> products) {
+        List<ProductResponsDto> productResponsDtoList = new ArrayList<>();
+
+        for (Product product :products) {
+            List<File> files = fileRepository.findByProduct(product);
+            List<String> imagePaths = new ArrayList<>();
+
+            for (File file : files) {
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("api/file/downloadFile/")
+                        .path(file.getName())
+                        .toUriString();
+
+                imagePaths.add(fileDownloadUri);
+            }
+
+            productResponsDtoList.add(new ProductResponsDto(
+                product.getId(),
+                product.getTitle(),
+                product.getDescription(),
+                product.getContent(),
+                product.getPrice(),
+                product.getStock(),
+                product.isPublished(),
+                product.getCategory(),
+                product.getUser(),
+                imagePaths));
+        }
+        return productResponsDtoList;
+    }
 }
