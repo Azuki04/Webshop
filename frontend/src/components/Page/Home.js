@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import "../css/Products.css";
+import axios from "axios";
+import authHeader from "../services/Auth-header";
 
 class Home extends React.Component {
   constructor(props) {
@@ -45,6 +47,27 @@ class Home extends React.Component {
         .then((data) => this.setState({ products: data }));
     }
   }
+
+  addProductToCart(productId) {
+    const config = {
+      headers: authHeader()
+    };
+
+    const payload = {
+      productId: productId,
+      quantity: 1 // Anzahl kann nach Bedarf geändert werden
+    };
+
+    axios.post(process.env.REACT_APP_API_URL + "/cart/add", payload, config)
+        .then(() => {
+          this.fetchCartData(); // Daten aktualisieren
+         window.location.reload();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
 
   render() {
     const { searchTitle, products } = this.state;
@@ -91,7 +114,7 @@ class Home extends React.Component {
                   </Link>
                   <span>CHF {product.price}.00</span>
                   <p>{product.description}</p>
-                  <button>Add to cart</button>
+                  <button onClick={() => this.addProductToCart(product.id)}>Add to cart</button>
                 </div>
               </div>
             ))}

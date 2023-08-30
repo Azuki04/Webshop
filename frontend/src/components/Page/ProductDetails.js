@@ -10,6 +10,9 @@ class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
     this.getProduct = this.getProduct.bind(this);
+    this.handleQuantityDecrease = this.handleQuantityDecrease.bind(this);
+    this.handleQuantityIncrease = this.handleQuantityIncrease.bind(this);
+    this.addProductToCart = this.addProductToCart.bind(this);
 
     this.state = {
       currentProduct: {
@@ -17,10 +20,26 @@ class ProductDetails extends React.Component {
         title: "",
         description: "",
         published: false,
+        price: 0,
+        stock: 0,
       },
+      quantity: 1, // Set a default quantity
       message: "",
     };
   }
+
+  handleQuantityDecrease() {
+    if (this.state.quantity > 1) {
+      this.setState({ quantity: this.state.quantity - 1 });
+    }
+  }
+
+  handleQuantityIncrease() {
+    if (this.state.quantity < this.state.currentProduct.stock) {
+      this.setState({ quantity: this.state.quantity + 1 });
+    }
+  }
+
 
   componentDidMount() {
     if (currentUser.roles.includes("ROLE_ADMIN")) {
@@ -80,26 +99,61 @@ class ProductDetails extends React.Component {
   }
 
 
+  addProductToCart(productId) {
+    const config = {
+      headers: authHeader()
+    };
+
+    const payload = {
+      productId: productId,
+      quantity: this.state.quantity // Anzahl kann nach Bedarf geändert werden
+    };
+
+    axios.post(process.env.REACT_APP_API_URL + "/cart/add", payload, config)
+        .then(() => {
+          this.fetchCartData(); // Daten aktualisieren
+          window.location.reload();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
+
   render() {
-    const { currentProduct } = this.state;
+    const { currentProduct, quantity } = this.state;
     return (
-      <div className="details">
-        <img src="\img\blob.jpg" alt="Product_Picture" />
-        <div className="box">
-          <div className="row">
-            <h2>{currentProduct.title}</h2>
-            <span>CHF {currentProduct.price}.00</span>
-          </div>
-          <p>{currentProduct.description}</p>
-          <p>{currentProduct.content}</p>
-          <div className="row">
-            <Link to="/cart" className="cart">
+        <div className="details">
+          <img src="\img\blob.jpg" alt="Product_Picture" />
+          <div className="box">
+            <div className="row">
+              <h2>{currentProduct.title}</h2>
+              <span>CHF {currentProduct.price}.00</span>
+            </div>
+            <p>{currentProduct.description}</p>
+            <p>{currentProduct.content}</p>
+            <div className="row">
+              <div className="amount">
+                <button className="count" onClick={this.handleQuantityDecrease}>
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button className="count" onClick={this.handleQuantityIncrease}>
+                  +
+                </button>
+                <span>{currentProduct.stock} in stock</span>
+              </div>
+            </div>
+            <Link
+                to="/cart"
+                className="cart"
+                style={{ marginTop: "40px" }}
+                onClick={() => this.addProductToCart(currentProduct.id)}
+            >
               Add to cart
             </Link>
-            <span>{currentProduct.stock} in stock</span>
           </div>
         </div>
-      </div>
     );
   }
 }

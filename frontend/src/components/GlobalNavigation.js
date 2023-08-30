@@ -6,6 +6,8 @@ import User from "./svg/user.svg";
 import { Link } from "react-router-dom";
 import "./css/GlobalNavigation.css";
 import Auth from "./services/Auth";
+import authHeader from "./services/Auth-header";
+import axios from "axios";
 
 class GlobalNavigation extends React.Component {
   constructor(props) {
@@ -15,6 +17,8 @@ class GlobalNavigation extends React.Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
+      cartItems: [], // Hier werden die Warenkorbpositionen gespeichert
+      totalCost: 0, // Hier wird die Gesamtkosten gespeichert
     };
   }
 
@@ -35,7 +39,37 @@ class GlobalNavigation extends React.Component {
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
+
+
+    const config = {
+      headers: authHeader()
+    };
+
+    // API-Aufruf, um Warenkorbdaten abzurufen
+    axios.get(process.env.REACT_APP_API_URL + "/cart", config)
+        .then(response => response.data)
+        .then(data => {
+          // Die Warenkorbpositionen und Gesamtkosten aus den API-Daten extrahieren
+          const cartItems = data.cartItems || [];
+          const totalCost = data.totalCost || 0;
+
+          // Zustand aktualisieren
+          this.setState({ cartItems, totalCost });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+
   }
+
+  getTotalProductCount() {
+    //  return this.state.cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+    return this.state.cartItems.length;
+  }
+
+
+
 
   logOut() {
     Auth.logout();
@@ -112,7 +146,7 @@ class GlobalNavigation extends React.Component {
           )}
 
           <div className="nav-cart">
-            <span>0</span>
+            <span>{this.getTotalProductCount()}</span>
             <Link to="/cart">
               <img src={CartIcon} alt="" width="20" />
             </Link>
