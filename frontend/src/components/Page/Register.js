@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Auth from "../services/Auth";
+import AuthService from "../services/Auth";
 
 const required = value => {
     if (!value) {
@@ -33,6 +34,7 @@ const vpassword = value => {
     }
 };
 
+
 export default class Register extends Component {
     constructor(props) {
         super(props);
@@ -40,13 +42,16 @@ export default class Register extends Component {
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeRoleHandler = this.onChangeRoleHandler.bind(this);
 
         this.state = {
             username: "",
             email: "",
             password: "",
             successful: false,
-            message: ""
+            message: "",
+            roles: ["seller", "customer"],
+            selectedRoles: []
         };
     }
 
@@ -68,6 +73,11 @@ export default class Register extends Component {
         });
     }
 
+    onChangeRoleHandler = (event) => {
+        this.setState({ role: event.target.value });
+    };
+
+
     handleRegister(e) {
         e.preventDefault();
 
@@ -82,7 +92,8 @@ export default class Register extends Component {
             Auth.register(
                 this.state.username,
                 this.state.email,
-                this.state.password
+                this.state.password,
+                this.state.selectedRoles
             ).then(
                 response => {
                     this.setState({
@@ -106,6 +117,24 @@ export default class Register extends Component {
             );
         }
     }
+
+
+    onChangeRolesHandler = (event) => {
+        const role = event.target.value;
+        const isChecked = event.target.checked;
+
+        if (isChecked) {
+            this.setState((prevState) => ({
+                selectedRoles: [...prevState.selectedRoles, role]
+            }));
+        } else {
+            this.setState((prevState) => ({
+                selectedRoles: prevState.selectedRoles.filter((selectedRole) => selectedRole !== role)
+            }));
+        }
+    }
+
+
 
     render() {
         return (
@@ -160,6 +189,31 @@ export default class Register extends Component {
                                         validations={[required, vpassword]}
                                     />
                                 </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="role" style={{ marginBottom: '10px' }}>Roles</label>
+                                    <div style={{ display: 'flex' }}>
+                                        {this.state.roles.map((role) => (
+                                            <div key={role} className="form-check" style={{ marginRight: '16px' }}>
+                                                <input
+                                                    type="checkbox"
+                                                    id={role}
+                                                    name="roles"
+                                                    value={role}
+                                                    checked={this.state.selectedRoles.includes(role)}
+                                                    onChange={this.onChangeRolesHandler}
+                                                    className="form-check-input"
+                                                    style={{ marginRight: '5px' }}
+                                                />
+                                                <label htmlFor={role} className="form-check-label">
+                                                    {role}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+
 
                                 <div className="form-group">
                                     <button className="btn btn-primary btn-block">Sign Up</button>

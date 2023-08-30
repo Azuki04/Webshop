@@ -6,11 +6,12 @@ const API_URL = "http://localhost:8080/api/auth/";
  * The service uses Axios for HTTP requests
  * and Local Storage for user information & JWT.
  */
-const register = (username, email, password) => {
+const register = (username, email, password, role) => {
     return axios.post(API_URL + "signup", {
         username,
         email,
         password,
+        role
     });
 };
 
