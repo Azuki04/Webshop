@@ -46,7 +46,7 @@ class Products extends React.Component {
           authHeader()
     };
 
-    axios.get(process.env.REACT_APP_API_URL +"/products/user/" + currentUser.id, config)
+    axios.get(process.env.REACT_APP_API_URL +"/products/seller/" + currentUser.id, config)
         .then(response => response.data)
         .then(data => this.setState({products: data}))
         .catch(err => {console.log(err)})
@@ -110,7 +110,7 @@ class Products extends React.Component {
             {products.map((product) => (
               <div className="card" key={product.id}>
                 <Link to={`/products/detail/${product.id}`}>
-                  <img src=".\img\blob.jpg" alt="Product_Picture" />
+                  <img src={product.imagePaths[0]} alt="picture" />
                 </Link>
                 <div className="content">
                   <Link to={`/products/detail/${product.id}`}>
