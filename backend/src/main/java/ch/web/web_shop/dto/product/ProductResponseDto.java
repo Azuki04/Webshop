@@ -13,7 +13,7 @@ import java.util.List;
  * ProductDTO is used to:
  * - store the data of the products
  */
-public class ProductResponsDto {
+public class ProductResponseDto {
 
     private long id;
 
@@ -41,7 +41,7 @@ public class ProductResponsDto {
     private final List<String> imagePaths;
 
 
-    public ProductResponsDto(long id, String title, String description, String content, int price, int stock, boolean published, Category category, User user, List<String> imagePaths) {
+    public ProductResponseDto(long id, String title, String description, String content, int price, int stock, boolean published, Category category, User user, List<String> imagePaths) {
         // Default constructor
         this.id = id;
         this.title = title;

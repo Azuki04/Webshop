@@ -2,9 +2,7 @@ package ch.web.web_shop.controller;
 
 import java.util.List;
 
-import ch.web.web_shop.dto.image.UploadFileResponse;
-import ch.web.web_shop.dto.product.ProductResponsDto;
-import ch.web.web_shop.repository.FileRepository;
+import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.service.FileStorageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
@@ -45,15 +43,15 @@ public class ProductController {
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<ProductResponsDto>> getAllProducts(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts(@RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(title);
 
-        List<ProductResponsDto> productResponsDtosList = productService.convertToDto(products);
+        List<ProductResponseDto> productResponseDtosList = productService.convertToDto(products);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(productResponsDtosList);
+        return ResponseEntity.ok(productResponseDtosList);
     }
 
     @DeleteMapping("/admin")
@@ -87,21 +85,22 @@ public class ProductController {
     // get all products by user id
     @GetMapping("/seller/{userId}")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<List<Product>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
+    public ResponseEntity<List<ProductResponseDto>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(userId, title);
-
+        List<ProductResponseDto> productResponseDtosList = productService.convertToDto(products);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productResponseDtosList);
     }
 
     // get product by user id and product id
     @GetMapping("/seller/{userId}/{id}")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<Product> getProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
+    public ResponseEntity<ProductResponseDto> getProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
         Product product = productService.getProductById(userId, id);
-        return ResponseEntity.ok(product);
+        ProductResponseDto productResponseDto = productService.convertToDto(product);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     // delete product by user id and product id
@@ -139,28 +138,24 @@ public class ProductController {
         return ResponseEntity.ok(createdProduct);
     }
 
-    /*
-     *open Rest API
-     *
-     */
-
     //Get all published product Rest API
     @GetMapping("/published")
-    public ResponseEntity<List<Product>> findByPublished(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<ProductResponseDto>> findByPublished(@RequestParam(required = false) String title) {
         List<Product> publishedProducts = productService.getPublishedProducts(title);
-
+        List<ProductResponseDto> productResponseDtosList = productService.convertToDto(publishedProducts);
         if (publishedProducts.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(publishedProducts);
+        return ResponseEntity.ok(productResponseDtosList);
     }
 
     //Get published product by id Rest API
     @GetMapping("/published/{id}")
-    public ResponseEntity<Product> getPublishedProductById(@PathVariable("id") long id) {
+    public ResponseEntity<ProductResponseDto> getPublishedProductById(@PathVariable("id") long id) {
         Product publishedProduct = productService.getPublishedProductById(id);
-        return ResponseEntity.ok(publishedProduct);
+        ProductResponseDto productResponseDto = productService.convertToDto(publishedProduct);
+        return ResponseEntity.ok(productResponseDto);
     }
 
 

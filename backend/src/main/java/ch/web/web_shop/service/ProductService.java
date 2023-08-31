@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ch.web.web_shop.dto.product.ProductDTO;
-import ch.web.web_shop.dto.product.ProductResponsDto;
+import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.exception.*;
 import ch.web.web_shop.model.File;
 import ch.web.web_shop.model.User;
@@ -25,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  * Uses ProductRepository for data persistence.
  * This class can be used to perform additional business logic if needed.
  * It provides a layer of abstraction between the controller and the repository.
+ *
  * @version 1.0
  * @Author: Sy Viet
  * @see Product
@@ -141,6 +142,7 @@ public class ProductService {
             throw new ProductNotFoundException(String.valueOf(id));
         }
     }
+
     //update product by user and by product id
     @Transactional
     public Product updateProduct(long userId, long productId, ProductDTO productDTO) {
@@ -265,23 +267,30 @@ public class ProductService {
         product.setUser(productDTO.getUser());
     }
 
-    public List<ProductResponsDto> convertToDto(List<Product> products) {
-        List<ProductResponsDto> productResponsDtoList = new ArrayList<>();
+    public List<ProductResponseDto> convertToDto(List<Product> products) {
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
-        for (Product product :products) {
-            List<File> files = fileRepository.findByProduct(product);
-            List<String> imagePaths = new ArrayList<>();
+        for (Product product : products) {
 
-            for (File file : files) {
-                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("api/file/downloadFile/")
-                        .path(file.getName())
-                        .toUriString();
+            productResponseDtoList.add(new ProductResponseDto(
+                    product.getId(),
+                    product.getTitle(),
+                    product.getDescription(),
+                    product.getContent(),
+                    product.getPrice(),
+                    product.getStock(),
+                    product.isPublished(),
+                    product.getCategory(),
+                    product.getUser(),
+                    getFileFromProduct(product)));
+        }
+        return productResponseDtoList;
+    }
 
-                imagePaths.add(fileDownloadUri);
-            }
+    public ProductResponseDto convertToDto(Product product) {
 
-            productResponsDtoList.add(new ProductResponsDto(
+
+        return new ProductResponseDto(
                 product.getId(),
                 product.getTitle(),
                 product.getDescription(),
@@ -291,8 +300,22 @@ public class ProductService {
                 product.isPublished(),
                 product.getCategory(),
                 product.getUser(),
-                imagePaths));
-        }
-        return productResponsDtoList;
+                getFileFromProduct(product));
     }
+
+    private List<String> getFileFromProduct(Product product) {
+        List<File> files = fileRepository.findByProduct(product);
+        List<String> imagePaths = new ArrayList<>();
+
+        for (File file : files) {
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("api/file/downloadFile/")
+                    .path(file.getName())
+                    .toUriString();
+
+            imagePaths.add(fileDownloadUri);
+        }
+        return imagePaths;
+    }
+
 }
