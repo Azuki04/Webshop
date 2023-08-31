@@ -11,7 +11,6 @@ class AdminDashboard extends React.Component {
     constructor(props) {
         super(props);
         this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-
         this.removeAllProducts = this.removeAllProducts.bind(this);
         this.searchTitle = this.searchTitle.bind(this);
 
@@ -124,7 +123,7 @@ class AdminDashboard extends React.Component {
                         {products.map((product) => (
                             <div className="card" key={product.id}>
                                 <Link to={`/products/detail/${product.id}`}>
-                                    <img src=".\img\blob.jpg" alt="Product_Picture" />
+                                    <img src={product.imagePaths[0]} alt="picture" />
                                 </Link>
                                 <div className="content">
                                     <Link to={`/products/detail/${product.id}`}>
