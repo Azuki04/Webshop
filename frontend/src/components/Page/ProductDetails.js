@@ -22,6 +22,7 @@ class ProductDetails extends React.Component {
         published: false,
         price: 0,
         stock: 0,
+        imagePaths: [],
       },
       quantity: 1, // Set a default quantity
       message: "",
@@ -51,7 +52,7 @@ class ProductDetails extends React.Component {
     }
   }
 
-  //get productsDetails from the current productlsList
+  //get productsDetails from the current productList
     getProduct(id) {
       const config = {
         headers: authHeader(),
@@ -124,7 +125,19 @@ class ProductDetails extends React.Component {
     const { currentProduct, quantity } = this.state;
     return (
         <div className="details">
-          <img src="\img\blob.jpg" alt="Product_Picture" />
+          <div className="image-container">
+            <img src={currentProduct.imagePaths[0]} alt="picture" className="main-image" />
+            <div className="thumbnail-container">
+              {currentProduct.imagePaths.map((imagePath, index) => (
+                  <img
+                      src={imagePath}
+                      alt={`thumbnail ${index}`}
+                      className="thumbnail"
+                      key={index}
+                  />
+              ))}
+            </div>
+          </div>
           <div className="box">
             <div className="row">
               <h2>{currentProduct.title}</h2>

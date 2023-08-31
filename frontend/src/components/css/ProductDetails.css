@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     margin: 50px 0;
 }
-.details img{
+.main-image{
     max-width: 500px;
     min-width: 290px;
     height: 300px;
@@ -47,4 +47,38 @@
     text-decoration: none;
     padding: 10px 25px;
     display: inline-block;
+}
+
+
+.image-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.thumbnail-container {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin: 25px 0 10px 25px;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.thumbnail.hovered {
+    transform: scale(2.0);
+    border: 2px solid rgb(133, 49, 49);
+}
+
+.thumbnail:last-child {
+    margin-right: 0;
+}
+
+.thumbnail:hover {
+    border: 2px solid rgb(133, 49, 49); /* Example: add a border when hovering */
 }
