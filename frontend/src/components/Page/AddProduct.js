@@ -11,21 +11,9 @@ import {Navigate} from "react-router-dom";
 
 
 class AddProduct extends React.Component {
+
   constructor(props) {
     super(props);
-    this.changeTitleHandler = this.changeTitleHandler.bind(this);
-    this.changeDescriptionHandler = this.changeDescriptionHandler.bind(this);
-    this.changeContentHandler = this.changeContentHandler.bind(this);
-    this.changePriceHandler = this.changePriceHandler.bind(this);
-    this.changeStockHandler = this.changeStockHandler.bind(this);
-    this.changeSrcHandler = this.changeSrcHandler.bind(this);
-    this.changeCategoryHandler = this.changeCategoryHandler.bind(this);
-
-    this.validateForm = this.validateForm.bind(this);
-    this.cancel = this.cancel.bind(this);
-    this.newProduct = this.newProduct.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
     this.state = {
       id: null,
       title: "",
@@ -33,49 +21,72 @@ class AddProduct extends React.Component {
       content: "",
       price: "",
       stock: "",
-      src: "",
+      files: [],
       categories: [],
-
       titleError: "",
       priceError: "",
       stockError: "",
       descriptionError: "",
       categoryError: "",
-
       published: false,
       submitted: false,
-
       redirect: null,
       userReady: false,
     };
+
+    // Bind methods
+    this.changeTitleHandler = this.changeTitleHandler.bind(this);
+    this.changeDescriptionHandler = this.changeDescriptionHandler.bind(this);
+    this.changeContentHandler = this.changeContentHandler.bind(this);
+    this.changePriceHandler = this.changePriceHandler.bind(this);
+    this.changeStockHandler = this.changeStockHandler.bind(this);
+    this.changeSrcHandler = this.changeSrcHandler.bind(this);
+    this.changeCategoryHandler = this.changeCategoryHandler.bind(this);
+    this.validateForm = this.validateForm.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.newProduct = this.newProduct.bind(this);
   }
 
-  changeTitleHandler = (event) => {
+  changeTitleHandler(event) {
     this.setState({ title: event.target.value });
-  };
+  }
 
-  changeDescriptionHandler = (event) => {
+  changeDescriptionHandler(event) {
     this.setState({ description: event.target.value });
-  };
+  }
 
-  changeContentHandler = (event) => {
+  changeContentHandler(event) {
     this.setState({ content: event.target.value });
-  };
+  }
 
-  changePriceHandler = (event) => {
+  changePriceHandler(event) {
     this.setState({ price: event.target.value });
-  };
-  changeStockHandler = (event) => {
+  }
+
+  changeStockHandler(event) {
     this.setState({ stock: event.target.value });
-  };
+  }
 
-  changeSrcHandler = (event) => {
-    this.setState({ src: event.target.value });
-  };
+  changeSrcHandler(event) {
+    const files = event.target.files;
+    const filesArray = [];
 
-  changeCategoryHandler = (event) => {
+    for (let i = 0; i < files.length; i++) {
+      filesArray.push({
+        file: files[i],
+        url: URL.createObjectURL(files[i]),
+      });
+    }
+
+    this.setState({ files: filesArray });
+  }
+
+
+
+  changeCategoryHandler(event) {
     this.setState({ category: event.target.value });
-  };
+  }
 
   /**
    * Fetches the categories from the API and sets them in the state
@@ -96,59 +107,64 @@ class AddProduct extends React.Component {
   /**
    * Handles the form submission and sends a POST request to create a new product
    */
-  handleSubmit(event) {
+  handleSubmit = async (event) => {
     event.preventDefault();
-    const userId= Auth.getCurrentUser().id;
-    let product = {
+
+    const userId = Auth.getCurrentUser().id;
+
+    const product = {
       title: this.state.title,
       description: this.state.description,
       content: this.state.content,
-      price: this.state.price,
-      stock: this.state.stock,
-      src: this.state.src,
+      price: parseInt(this.state.price), // Convert to number
+      stock: parseInt(this.state.stock), // Convert to number
       category: {
         id: this.state.category,
       },
       user: {
         id: userId,
-      }
-    };
-
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // fetch the jwt token from local storage
-        ...authHeader(),
       },
-      body: JSON.stringify(product),
     };
 
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(product));
 
-    const isValid = this.validateForm();
-    if (isValid) {
-      axios.post(process.env.REACT_APP_API_URL +"/products", product, requestOptions).then((response) => {
-        this.setState({
-          id: response.data.id,
-          title: response.data.title,
-          description: response.data.description,
-          content: response.data.content,
-          price: response.data.price,
-          stock: response.data.stock,
-          src: response.data.src,
-          category: response.data.category,
-          user: response.data.user,
-          published: response.data.published,
-          submitted: true,
-        });
-      }).catch((err) => {
-        console.log(err);
-        alert("You are not logged in!");
-        this.props.router.navigate("/login");
-      });
+    for (let i = 0; i < this.state.files.length; i++) {
+      formData.append("file", this.state.files[i].file); // Append the image file
     }
 
-  }
+    try {
+      const isValid = this.validateForm();
+      if (isValid) {
+      const response = await axios.post(
+          process.env.REACT_APP_API_URL + "/products/seller",
+          formData,
+          {
+            headers: {
+              ...authHeader(),
+              "Content-Type": "multipart/form-data", // Set the proper content type
+            },
+          }
+      );
+
+      if (response.status === 200) {
+        // Handle successful response
+        this.setState({
+          // Update state with response data
+          submitted: true
+        });
+      } else {
+        // Handle error response
+        console.log("Response error:", response);
+      }
+      }
+    } catch (error) {
+      console.log(error);
+      alert("An error occurred while submitting the form.");
+      // Handle other errors, like authentication, redirection, etc.
+    }
+  };
+
 
   /**
    * Resets the state to empty values when the "Cancel" button is clicked
@@ -170,6 +186,7 @@ class AddProduct extends React.Component {
       stock: "",
       src: "",
       category: "",
+      files: [],
 
       published: false,
       submitted: false,
@@ -277,13 +294,25 @@ class AddProduct extends React.Component {
           <div className="create_product">
             <div className="upload">
               <input
-                type="file"
-                name="file"
-                id="file_up"
-                value={this.state.src}
-                onChange={this.changeSrcHandler}
+                  type="file"
+                  name="files"
+                  id="file_up"
+                  multiple
+                  onChange={this.changeSrcHandler}
               />
             </div>
+            <div className="preview">
+              {this.state.files.map((file, index) => (
+                  <img
+                      key={index}
+                      src={file.url}
+                      alt={`Preview ${index}`}
+                      style={{ maxWidth: "100px", maxHeight: "100px", margin: "10px" }}
+                  />
+              ))}
+            </div>
+
+
             <form onSubmit={this.handleSubmit}>
               <div className="row">
                 <label htmlFor="title">Title*</label>
