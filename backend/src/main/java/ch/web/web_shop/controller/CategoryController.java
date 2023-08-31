@@ -1,8 +1,10 @@
 package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.category.CategoryTreeDto;
+import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.CategoryServiceInterface;
+import ch.web.web_shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,11 +55,15 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
     private final CategoryServiceInterface categoryService;
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
+
+
 
     /**
      * Retrieves all categories.
@@ -103,10 +109,14 @@ public class CategoryController {
 
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Iterable<Product>> getAllProductsByCategory(@PathVariable("id") long categoryId) {
+    public ResponseEntity<List<ProductResponseDto>> getAllProductsByCategory(@PathVariable("id") long categoryId) {
         try {
             Iterable<Product> products = categoryService.getAllProductsByCategory(categoryId);
-            return ResponseEntity.ok(products);
+            if (products == null) {
+                return ResponseEntity.noContent().build();
+            }
+            List<ProductResponseDto> productResponseDtosList = productService.convertToDto((List<Product>) products);
+            return ResponseEntity.ok(productResponseDtosList);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

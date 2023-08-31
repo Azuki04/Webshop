@@ -4,7 +4,6 @@ import ch.web.web_shop.dto.category.CategoryTreeDto;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import ch.web.web_shop.model.Category;
@@ -34,14 +33,14 @@ import java.util.Map;
 public class CategoryService implements CategoryServiceInterface {
 
     private final CategoryRepository categoryRepository;
-    private final ProductRepository productResponsitory;
+    private final ProductRepository productRepository;
 
 
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
-        this.productResponsitory = productRepository;
+        this.productRepository = productRepository;
 
     }
 
@@ -123,8 +122,13 @@ public class CategoryService implements CategoryServiceInterface {
     @Override
     @Transactional(readOnly = true)
     public Iterable<Product> getAllProductsByCategory(long categoryId) {
-        Iterable<Product> products = productResponsitory.findByCategoryId(categoryId);
-        return products;
+        List<Product> publishedProducts = new ArrayList<>();
+        for (Product product : productRepository.findByCategoryId(categoryId)) {
+            if (product.isPublished()) {
+                publishedProducts.add(product);
+            }
+        }
+        return publishedProducts;
     }
 
   @Override
@@ -132,9 +136,7 @@ public class CategoryService implements CategoryServiceInterface {
  public Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId) {
       Category parentCategory = categoryRepository.findById(categoryId).get();
 
-        Iterable<Category> subCategories = categoryRepository.getSubcategoriesByParentCategoryId(parentCategory.getId());
-
-    return subCategories;
+      return categoryRepository.getSubcategoriesByParentCategoryId(parentCategory.getId());
  }
 
 

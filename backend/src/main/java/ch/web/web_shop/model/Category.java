@@ -1,12 +1,15 @@
 package ch.web.web_shop.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,13 +34,13 @@ public class Category {
     @NotNull
     private String name;
 
-    //@JsonBackReference
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "parentCategory")
     private Category parentCategory;
 
-    //@OneToMany(mappedBy = "parentCategory")
-    //private List<Category> subCategories = new ArrayList<>();
+    @OneToMany(mappedBy = "parentCategory")
+    private List<Category> subCategories = new ArrayList<>();
 
     public Category(String name) {
         this.name = name;
