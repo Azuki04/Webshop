@@ -150,7 +150,7 @@ class EditProduct extends React.Component {
       headers: authHeader(),
     };
     axios
-        .get(`${process.env.REACT_APP_API_URL}/products/user/${currentUser.id}/${id}`,config)
+        .get(`${process.env.REACT_APP_API_URL}/products/seller/${currentUser.id}/${id}`,config)
         .then((response) => {
           this.setState({ currentProduct: response.data });
         })
@@ -202,7 +202,7 @@ class EditProduct extends React.Component {
     } else {
       axios
           .put(
-              `${process.env.REACT_APP_API_URL}/products/user/${currentUser.id}/${currentProduct.id}`,
+              `${process.env.REACT_APP_API_URL}/products/seller/${currentUser.id}/${currentProduct.id}`,
               updatedProduct,
               config
           )
@@ -252,7 +252,7 @@ class EditProduct extends React.Component {
     } else {
       axios
           .put(
-              `${process.env.REACT_APP_API_URL}/products/user/${currentUser.id}/${currentProduct.id}`,
+              `${process.env.REACT_APP_API_URL}/products/seller/${currentUser.id}/${currentProduct.id}`,
               currentProduct,
               config
           )
@@ -289,7 +289,7 @@ class EditProduct extends React.Component {
           });
     } else {
       axios
-          .delete(`${process.env.REACT_APP_API_URL}/products/user/${currentUser.id}/${currentProduct.id}`,config)
+          .delete(`${process.env.REACT_APP_API_URL}/products/seller/${currentUser.id}/${currentProduct.id}`,config)
           .then((response) => response.data)
           .then((data) => {
             this.setState({ products: data });
