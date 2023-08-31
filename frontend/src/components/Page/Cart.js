@@ -7,6 +7,7 @@ import AuthService from "../services/Auth";
 import axios from "axios";
 import authHeader from "../services/Auth-header";
 import GlobalNavigation from "../GlobalNavigation";
+import Auth from "../services/Auth";
 
 class Cart extends React.Component {
 
@@ -16,6 +17,7 @@ class Cart extends React.Component {
         this.state = {
             cartItems: [], // Hier werden die Warenkorbpositionen gespeichert
             totalCost: 0, // Hier wird die Gesamtkosten gespeichert
+            currentUser: Auth.getCurrentUser(),
         };
     }
 
@@ -101,10 +103,23 @@ class Cart extends React.Component {
 
 
     render() {
-    const {cartItems, totalCost} = this.state;
+    const {cartItems, totalCost, currentUser} = this.state;
+    if(cartItems.length === 0 && currentUser == null){
+        return (
+            <div>
+                <h2 style={{ margin: "100px", textAlign: "center" }}>No products</h2>
+                <div style={{ margin: "40px", textAlign: "center" }}>Please log in to add the product to your shopping cart</div>
+                <div className="login">
+                    <Link to="/payment">Login</Link>
+                    <Link to="/payment">Sign Up</Link>
+                </div>
+            </div>
+
+        );
+    }
     if (cartItems.length === 0) {
       return (
-        <h2 style={{ margin: "100px", textAlign: "center" }}>No products</h2>
+              <h2 style={{ margin: "100px", textAlign: "center" }}>No products</h2>
       );
     } else {
       return (
