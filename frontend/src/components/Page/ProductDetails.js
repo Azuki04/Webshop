@@ -43,13 +43,17 @@ class ProductDetails extends React.Component {
 
 
   componentDidMount() {
-    if (currentUser.roles.includes("ROLE_ADMIN")) {
-      this.getProduct(this.props.router.params.id);
-
-    } else {
+    if(currentUser == null || currentUser.roles.includes("ROLE_CUSTOMER")){
       this.getPublishedProduct(this.props.router.params.id);
-      this.getUserProduct(this.props.router.params.id);
+    }else{
+      if (currentUser.roles.includes("ROLE_ADMIN")) {
+        this.getProduct(this.props.router.params.id);
+      }else{
+        this.getUserProduct(this.props.router.params.id);
+      }
     }
+
+
   }
 
   //get productsDetails from the current productList
@@ -74,7 +78,7 @@ class ProductDetails extends React.Component {
       headers: authHeader(),
     };
     axios
-        .get(`${process.env.REACT_APP_API_URL}/products/user/${currentUser.id}/${id}`,config)
+        .get(`${process.env.REACT_APP_API_URL}/products/seller/${currentUser.id}/${id}`,config)
         .then((response) => {
           this.setState({ currentProduct: response.data });
         })
