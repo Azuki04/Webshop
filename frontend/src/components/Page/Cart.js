@@ -18,10 +18,18 @@ class Cart extends React.Component {
             cartItems: [], // Hier werden die Warenkorbpositionen gespeichert
             totalCost: 0, // Hier wird die Gesamtkosten gespeichert
             currentUser: Auth.getCurrentUser(),
+            hasNotCustomerRole: false
         };
     }
 
     componentDidMount() {
+        // Prüfen, ob der aktuelle Benutzer die Rolle "ROLE_CUSTOMER" hat
+        if (this.state.currentUser === null) {
+            this.setState({ hasNotCustomerRole: true });
+        } else if (this.state.currentUser.roles.includes("ROLE_ADMIN") ||this.state.currentUser.roles.includes("ROLE_SELLER")) {
+            this.setState({ hasNotCustomerRole: true });
+        }
+
         // JWT-Token aus dem lokalen Speicher abrufen
         const config = {
             headers: authHeader()
@@ -103,15 +111,15 @@ class Cart extends React.Component {
 
 
     render() {
-    const {cartItems, totalCost, currentUser} = this.state;
-    if(cartItems.length === 0 && currentUser == null){
+    const {cartItems, totalCost, hasNotCustomerRole} = this.state;
+    if(hasNotCustomerRole){
         return (
             <div>
                 <h2 style={{ margin: "100px", textAlign: "center" }}>No products</h2>
-                <div style={{ margin: "40px", textAlign: "center" }}>Please log in to add the product to your shopping cart</div>
+                <div style={{ margin: "40px", textAlign: "center" }}>Please log in as a customer to add the product to your shopping cart</div>
                 <div className="login">
-                    <Link to="/payment">Login</Link>
-                    <Link to="/payment">Sign Up</Link>
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Sign Up</Link>
                 </div>
             </div>
 
