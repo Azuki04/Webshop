@@ -14,7 +14,7 @@ class GlobalNavigation extends React.Component {
     super(props);
     this.logOut = this.logOut.bind(this);
     this.state = {
-      showModeratorBoard: false,
+      showSellerBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
       cartItems: [], // Hier werden die Warenkorbpositionen gespeichert
@@ -35,7 +35,7 @@ class GlobalNavigation extends React.Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showSellerBoard: user.roles.includes("ROLE_SELLER"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
@@ -74,7 +74,7 @@ class GlobalNavigation extends React.Component {
   logOut() {
     Auth.logout();
     this.setState({
-      showModeratorBoard: false,
+      showSellerBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     });
@@ -82,7 +82,7 @@ class GlobalNavigation extends React.Component {
 
   render() {
     const { toggle } = this.state;
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showSellerBoard, showAdminBoard } = this.state;
     return (
       <header>
         <div className="menu" onClick={this.menuToggle}>
@@ -98,12 +98,12 @@ class GlobalNavigation extends React.Component {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {(currentUser) && (
+            {(showSellerBoard) && (
                 <li>
                   <Link to="/products">My ads</Link>
                 </li>
             )}
-            {(showModeratorBoard || showAdminBoard) && (
+            {(showAdminBoard) && (
                 <li>
                   <Link to="/admin">Dashboard</Link>
                 </li>
@@ -114,12 +114,12 @@ class GlobalNavigation extends React.Component {
             <li>
               <Link to="/about">About</Link>
             </li>
-            {(currentUser || showModeratorBoard || showAdminBoard) && (
+            {(showSellerBoard) && (
                 <li>
                   <Link to="/add">Create</Link>
                 </li>
             )}
-            {(currentUser || showModeratorBoard || showAdminBoard) && (
+            {(currentUser || showSellerBoard || showAdminBoard) && (
                 <li>
                   <li><Link to="/login" onClick={this.logOut}> LogOut </Link></li>
                 </li>

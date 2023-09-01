@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import NotFound from "./Page/NotFound";
 import AddProduct from "./Page/AddProduct";
 import EditProduct from "./Page/EditProduct";
-import Products from "./Page/Products";
+import SalesMonitoring from "./Page/SalesMonitoring";
 import ProductDetails from "./Page/ProductDetails";
 import AboutUs from "./Page/AboutUs";
 import Cart from "./Page/Cart";
@@ -23,7 +23,7 @@ class Section extends React.Component {
         <Routes>
           <Route path="/" >
             <Route path="" index element={<Home/>} />
-            <Route path="products" element={<Products />} />
+            <Route path="products" element={<SalesMonitoring />} />
             <Route path="editProduct/:id" element={<EditProduct />} />
             <Route path="products/detail/:id" element={<ProductDetails />} />
             <Route path="cart" element={<Cart />} />

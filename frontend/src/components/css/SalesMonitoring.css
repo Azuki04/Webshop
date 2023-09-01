@@ -90,3 +90,24 @@ padding: 50px;
     border: 1px solid rgb(133, 98, 98);
   
 }
+
+.sales-monitor {
+    background-color: rgba(202, 180, 180, 0.329);
+    padding: 20px 80px 30px 80px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.sales-monitor h2 {
+    font-size: 24px;
+}
+
+.data {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 18px;
+}

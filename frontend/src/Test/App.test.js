@@ -4,7 +4,7 @@ import App from '../App';
 
 /* Mocked Components */
 jest.mock("../components/Page/Home", () => () => <div>Mocked_Home</div>);
-jest.mock("../components/Page/Products", () => () => <div>Mocked_Products</div>);
+jest.mock("../components/Page/SalesMonitoring", () => () => <div>Mocked_Products</div>);
 jest.mock("../components/Page/AboutUs", () => () => <div>Mocked_AboutUs</div>);
 jest.mock("../components/Page/NotFound", () => () => <div>Mocked_NotFound</div>);
 jest.mock("../components/GlobalNavigation", () => () => <div>Mocked_GlobalNavigation</div>);
@@ -32,7 +32,7 @@ describe("Routing tests for App.js", () => {
       expect(screen.getByText("Mocked_GlobalFooter"))
     });
 
-    test("Products route should render products component", () => {
+    test("SalesMonitoring route should render products component", () => {
       // Arrange
 
       // Act
