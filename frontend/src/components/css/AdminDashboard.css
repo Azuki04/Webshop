@@ -1,0 +1,73 @@
+
+h4 {
+    margin: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+    background-color:rgba(202, 180, 180, 0.329);
+    padding: 50px;
+
+}
+.product-table-container {
+    max-height: 400px; /* Ändern Sie die maximale Höhe nach Bedarf */
+    overflow-y: auto;
+    position: relative;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px 10px; /* Abstand zwischen den Zeilen */
+    table-layout: fixed;
+}
+
+.product-table thead {
+    position: sticky;
+    top: 0;
+    background-color: rgba(202, 180, 180, 0.329);
+    z-index: 1;
+}
+
+.product-table th, .product-table td {
+    border: none; /* Entfernt die Zellenränder */
+    padding: 10px;
+    text-align: center;
+}
+
+.product-table th {
+    font-weight: bold;
+}
+
+.product-table td {
+    background-color: #f0f0f0;
+}
+
+.product-table img {
+    max-width: 100px;
+    height: auto;
+}
+
+
+.product-table button {
+    border: none;
+    outline: none;
+    background: #333;
+    color: white;
+    width: 100%;
+    height: 40px;
+    display: block;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 15px 0;
+    padding: 5px 10px;
+}
+
+.product-table button:hover {
+    background-color: rgb(126, 123, 123);
+}
+
+

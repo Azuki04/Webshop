@@ -2,7 +2,7 @@ import React from "react";
 import axios from 'axios';
 import {Link, Navigate} from "react-router-dom";
 import { Button } from "../Button";
-import "../css/Products.css";
+import "../css/AdminDashboard.css";
 import authHeader from "../services/Auth-header";
 import Auth from "../services/Auth";
 
@@ -119,25 +119,46 @@ class AdminDashboard extends React.Component {
                         </div>
                     </div>
 
-                    <div id="product">
-                        {products.map((product) => (
-                            <div className="card" key={product.id}>
-                                <Link to={`/products/detail/${product.id}`}>
-                                    <img src={product.imagePaths[0]} alt="picture" />
-                                </Link>
-                                <div className="content">
-                                    <Link to={`/products/detail/${product.id}`}>
-                                        <h3>{product.title}</h3>
-                                    </Link>
-                                    <span>CHF {product.price}.00</span>
-                                    <p>{product.description}</p>
-                                    <Link to={`/editProduct/${product.id}`}>
-                                        <button>Edit</button>
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="product-table-container">
+                        <table className="product-table">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {products.map((product) => (
+                                <tr key={product.id}>
+                                    <td>
+                                        <Link to={`/products/detail/${product.id}`}>
+                                            <img src={product.imagePaths[0]} alt="picture" />
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/products/detail/${product.id}`}>
+                                            <h3>{product.title}</h3>
+                                        </Link>
+                                    </td>
+                                    <td>CHF {product.price}.00</td>
+                                    <td>{product.description}</td>
+                                    <td>
+                                        <Link to={`/editProduct/${product.id}`}>
+                                            <button>Edit</button>
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
                     </div>
+
+
+
+
                     <div style={{ margin: "35px" }}>
                         <Button buttonStyle="btn--delete" onClick={this.removeAllProducts}>
                             Remove All
