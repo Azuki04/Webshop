@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
-import "../css/Products.css";
+import "../css/SalesMonitoring.css";
 import axios from "axios";
 import authHeader from "../services/Auth-header";
 
@@ -20,6 +20,7 @@ class Home extends Component {
     this.searchCategory = this.searchCategory.bind(this);
     this.addProductToCart = this.addProductToCart.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.renderCategories = this.renderCategories.bind(this);
   }
 
   componentDidMount() {
@@ -94,6 +95,19 @@ class Home extends Component {
     this.setState({ selectedCategory: selectedCategoryId });
   }
 
+  //recursion function to render categories
+  renderCategories = (categories) => {
+    return categories.map((category) => (
+        <React.Fragment key={category.id}>
+          <option className="optionGroup" value={category.id}>
+            {category.name}
+          </option>
+          {category.subCategory.length > 0 &&
+              this.renderCategories(category.subCategory)}
+        </React.Fragment>
+    ));
+  };
+
   render() {
     const { searchTitle, products, categoryTree, selectedCategory } = this.state;
 
@@ -127,22 +141,7 @@ class Home extends Component {
                       onChange={this.handleCategoryChange}
                   >
                     <option value="All">All</option>
-                    {categoryTree.map(category => (
-                        <React.Fragment key={category.id}>
-                          <option className="optionGroup" value={category.id}>
-                            {category.name}
-                          </option>
-                          {category.subCategory.map(subCategory => (
-                              <option
-                                  key={subCategory.id}
-                                  className="optionChild"
-                                  value={subCategory.id}
-                              >
-                                {subCategory.name}
-                              </option>
-                          ))}
-                        </React.Fragment>
-                    ))}
+                    {this.renderCategories(categoryTree)}
                   </select>
                 </div>
               </div>

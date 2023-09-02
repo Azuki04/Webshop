@@ -10,10 +10,7 @@ import ch.web.web_shop.model.Category;
 import ch.web.web_shop.repository.CategoryRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -34,7 +31,6 @@ public class CategoryService implements CategoryServiceInterface {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-
 
 
     @Autowired
@@ -62,7 +58,8 @@ public class CategoryService implements CategoryServiceInterface {
 
         return buildCategoryTree((List<Category>) categories);
     }
-    public List<CategoryTreeDto> buildCategoryTree2(List<Category> categories) {
+
+    public List<CategoryTreeDto> buildCategoryTreeMapper(List<Category> categories) {
         List<CategoryTreeDto> categoryDtoList = new ArrayList<>();
         Map<Long, CategoryTreeDto> categoryDtoMap = new HashMap<>();
 
@@ -92,7 +89,7 @@ public class CategoryService implements CategoryServiceInterface {
         List<CategoryTreeDto> parentCategoryDtoList = new ArrayList<>();
         // get all root categories
         for (Category category : categories) {
-            if (category.getParentCategory() == null ) {
+            if (category.getParentCategory() == null) {
                 CategoryTreeDto categoryTreeDto = new CategoryTreeDto(category.getId(), category.getName());
                 parentCategoryDtoList.add(categoryTreeDto);
             }
@@ -104,13 +101,13 @@ public class CategoryService implements CategoryServiceInterface {
     }
 
     private void createSubcategoryDto(CategoryTreeDto parentCategoryTreeDto) {
-            List<Category> subCategories = categoryRepository.getSubcategoriesByParentCategoryId(parentCategoryTreeDto.getId());
-            for (Category subCategory : subCategories) {
-                CategoryTreeDto subCategoryTreeDto = new CategoryTreeDto(subCategory.getId(), subCategory.getName());
-                // recursive call
-                createSubcategoryDto(subCategoryTreeDto);
-                parentCategoryTreeDto.addChildCategory(subCategoryTreeDto);
-            }
+        List<Category> subCategories = categoryRepository.getSubcategoriesByParentCategoryId(parentCategoryTreeDto.getId());
+        for (Category subCategory : subCategories) {
+            CategoryTreeDto subCategoryTreeDto = new CategoryTreeDto(subCategory.getId(), subCategory.getName());
+            // recursive call
+            createSubcategoryDto(subCategoryTreeDto);
+            parentCategoryTreeDto.addChildCategory(subCategoryTreeDto);
+        }
     }
 
 
@@ -122,22 +119,34 @@ public class CategoryService implements CategoryServiceInterface {
     @Override
     @Transactional(readOnly = true)
     public Iterable<Product> getAllProductsByCategory(long categoryId) {
-        List<Product> publishedProducts = new ArrayList<>();
-        for (Product product : productRepository.findByCategoryId(categoryId)) {
-            if (product.isPublished()) {
-                publishedProducts.add(product);
-            }
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category == null) {
+            return Collections.emptyList();
         }
+
+        List<Product> publishedProducts = new ArrayList<>();
+        collectPublishedProductsRecursive(category, publishedProducts);
+
         return publishedProducts;
     }
 
-  @Override
- @Transactional(readOnly = true)
- public Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId) {
-      Category parentCategory = categoryRepository.findById(categoryId).get();
+    private void collectPublishedProductsRecursive(Category category, List<Product> products) {
 
-      return categoryRepository.getSubcategoriesByParentCategoryId(parentCategory.getId());
- }
+        products.addAll(productRepository.findByCategoryIdAndPublished(category.getId(), true));
+
+        List<Category> subcategories = categoryRepository.getSubcategoriesByParentCategoryId(category.getId());
+        for (Category subCategory : subcategories) {
+            collectPublishedProductsRecursive(subCategory, products);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId) {
+        Category parentCategory = categoryRepository.findById(categoryId).get();
+
+        return categoryRepository.getSubcategoriesByParentCategoryId(parentCategory.getId());
+    }
 
 
 }
