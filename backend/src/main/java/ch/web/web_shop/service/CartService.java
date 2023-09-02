@@ -47,14 +47,19 @@ public class CartService implements CartServiceInterface {
 
     @Override
     public void addToCart(AddToCartDto addToCartDto, HttpServletRequest token) {
-
-
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
-
         Optional<Product> product = productRepository.findById(addToCartDto.getProductId());
+        Cart cartProduct = cartRepository.findCartByUserAndProduct(user, product);
 
-        Cart cart = new Cart(product, addToCartDto.getQuantity(), user);
-        cartRepository.save(cart);
+        if (cartProduct == null) {
+            Cart cart = new Cart(product, addToCartDto.getQuantity(), user);
+            cartRepository.save(cart);
+        } else {
+            int updatedQuantity = addToCartDto.getQuantity() + cartProduct.getQuantity();
+            cartProduct.setQuantity(updatedQuantity);
+            cartProduct.setCreatedDate(new Date());
+            cartRepository.save(cartProduct);
+        }
     }
 
     @Override
@@ -98,7 +103,11 @@ public class CartService implements CartServiceInterface {
         Cart cart = cartRepository.getOne(cartDto.getId());
         cart.setQuantity(cartDto.getQuantity());
         cart.setCreatedDate(new Date());
-        cartRepository.save(cart);
+        if(cart.getQuantity() == 0){
+            cartRepository.deleteById(cart.getId());
+        }else {
+            cartRepository.save(cart);
+        }
     }
 
     @Override
