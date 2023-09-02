@@ -56,6 +56,9 @@ public class CartService implements CartServiceInterface {
             cartRepository.save(cart);
         } else {
             int updatedQuantity = addToCartDto.getQuantity() + cartProduct.getQuantity();
+            if(cartProduct.getProduct().getStock() < updatedQuantity){
+                updatedQuantity = cartProduct.getProduct().getStock();
+            }
             cartProduct.setQuantity(updatedQuantity);
             cartProduct.setCreatedDate(new Date());
             cartRepository.save(cartProduct);
@@ -100,6 +103,7 @@ public class CartService implements CartServiceInterface {
 
     @Override
     public void updateCartItem(AddToCartDto cartDto) {
+        //TODO: check if quantity is not higher than stock
         Cart cart = cartRepository.getOne(cartDto.getId());
         cart.setQuantity(cartDto.getQuantity());
         cart.setCreatedDate(new Date());
