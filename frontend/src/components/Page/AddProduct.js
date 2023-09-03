@@ -312,7 +312,7 @@ class AddProduct extends React.Component {
             </div>
             <div className="preview">
               {this.state.files.map((file, index) => (
-                  <div key={index} className="image-container">
+                  <div key={index} className="image-container-preview">
                     <img
                         src={file.url}
                         alt={`Preview ${index}`}
