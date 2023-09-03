@@ -40,35 +40,36 @@ class GlobalNavigation extends React.Component {
       });
     }
 
-
-    const config = {
-      headers: authHeader()
-    };
-
-    // API-Aufruf, um Warenkorbdaten abzurufen
-    axios.get(process.env.REACT_APP_API_URL + "/cart", config)
-        .then(response => response.data)
-        .then(data => {
-          // Die Warenkorbpositionen und Gesamtkosten aus den API-Daten extrahieren
-          const cartItems = data.cartItems || [];
-          const totalCost = data.totalCost || 0;
-
-          // Zustand aktualisieren
-          this.setState({ cartItems, totalCost });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
+    this.updateCartLength();
 
   }
+
+updateCartLength() {
+  const config = {
+    headers: authHeader()
+  };
+
+  // API-Aufruf, um Warenkorbdaten abzurufen
+  axios.get(process.env.REACT_APP_API_URL + "/cart", config)
+      .then(response => response.data)
+      .then(data => {
+        // Die Warenkorbpositionen und Gesamtkosten aus den API-Daten extrahieren
+        const cartItems = data.cartItems || [];
+        const totalCost = data.totalCost || 0;
+
+        // Zustand aktualisieren
+        this.setState({ cartItems, totalCost });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+}
 
   getTotalProductCount() {
     //  return this.state.cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
     return this.state.cartItems.length;
   }
-
-
 
 
   logOut() {

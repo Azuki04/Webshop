@@ -70,17 +70,18 @@ class AddProduct extends React.Component {
 
   changeSrcHandler(event) {
     const files = event.target.files;
-    const filesArray = [];
+    const newFilesArray = [...this.state.files]; // Kopiere das vorhandene Array
 
     for (let i = 0; i < files.length; i++) {
-      filesArray.push({
+      newFilesArray.push({
         file: files[i],
         url: URL.createObjectURL(files[i]),
       });
     }
 
-    this.setState({ files: filesArray });
+    this.setState({ files: newFilesArray });
   }
+
 
 
 
@@ -102,6 +103,13 @@ class AddProduct extends React.Component {
       .then((response) => response.json())
       .then((data) => this.setState({ categories: data }));
   }
+
+  removeFile(indexToRemove) {
+    const newFilesArray = [...this.state.files];
+    newFilesArray.splice(indexToRemove, 1); // Entferne die Datei mit dem angegebenen Index
+    this.setState({ files: newFilesArray });
+  }
+
 
 
   /**
@@ -292,6 +300,7 @@ class AddProduct extends React.Component {
           </div>
         ) : (
           <div className="create_product">
+            <div className="image-box">
             <div className="upload">
               <input
                   type="file"
@@ -303,13 +312,17 @@ class AddProduct extends React.Component {
             </div>
             <div className="preview">
               {this.state.files.map((file, index) => (
-                  <img
-                      key={index}
-                      src={file.url}
-                      alt={`Preview ${index}`}
-                      style={{ maxWidth: "100px", maxHeight: "100px", margin: "10px" }}
-                  />
+                  <div key={index} className="image-container">
+                    <img
+                        src={file.url}
+                        alt={`Preview ${index}`}
+                        style={{ maxWidth: "100px", maxHeight: "100px", margin: "10px" }}
+                    />
+                    <button className="image-container-button" onClick={() => this.removeFile(index)}>X</button>
+                  </div>
               ))}
+
+            </div>
             </div>
 
 

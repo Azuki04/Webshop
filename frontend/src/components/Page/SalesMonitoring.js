@@ -97,21 +97,21 @@ class SalesMonitoring extends React.Component {
                         <div className="data">
                             <div>
                                 <strong>Total Products:</strong>
-                                <span id="totalProducts">{products.length}</span>
+                                <span id="totalProducts"> {products.length}</span>
                             </div>
                             <div>
                                 <strong>Sold Products:</strong>
-                                <span id="soldProducts">50</span>
+                                <span id="soldProducts"> 50</span>
                             </div>
                         </div>
                         <div className="data">
                             <div>
                                 <strong>Total Earnings:</strong>
-                                <span id="totalEarnings">5000 CHF</span>
+                                <span id="totalEarnings"> 5000 CHF</span>
                             </div>
                             <div>
                                 <strong>Open Sales:</strong>
-                                <span id="openSales">10</span>
+                                <span id="openSales"> 10</span>
                             </div>
                         </div>
                     </div>

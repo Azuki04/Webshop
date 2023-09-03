@@ -4,6 +4,7 @@ import { Button } from "../Button";
 import "../css/SalesMonitoring.css";
 import axios from "axios";
 import authHeader from "../services/Auth-header";
+import GlobalNavigation from "../GlobalNavigation";
 
 class Home extends Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class Home extends Component {
         .then((data) => this.setState({ categoryTree: data }));
   }
 
+
+
   onChangeSearchTitle(e) {
     this.setState({
       searchTitle: e.target.value,
@@ -74,6 +77,8 @@ class Home extends Component {
         .then(() => {
           this.fetchCartData(); // Update cart data
           window.location.reload();
+
+
         })
         .catch((err) => {
           console.log(err);

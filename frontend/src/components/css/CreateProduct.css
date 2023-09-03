@@ -69,4 +69,34 @@
    
 }
 
+.image-box {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+/* CSS für das Bildcontainer-Div */
+.image-container {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    /* Hier kannst du die Breite und Höhe des Containers festlegen */
+    width: 100px;
+    height: 100px;
+}
+
+/* Stil für den Entfernen-Button */
+.image-container-button {
+    position: absolute;
+    top: 4px;
+    right: -7px;
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 18px;
+    bold: true;
+    cursor: pointer;
+}
+
+
 
