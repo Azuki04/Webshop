@@ -44,8 +44,6 @@ public class ProductService implements IProductService {
     private ProductRepository productRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private FileRepository fileRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -66,14 +64,11 @@ public class ProductService implements IProductService {
     @Transactional(readOnly = true)
     public List<ProductModel> getAllProducts(long userId, String title) {
         try {
-            // Retrieve the user based on the user ID
             Optional<UserModel> user = userRepository.findById(userId);
 
             if (user.isPresent() && title == null) {
-                // Retrieve all products associated with the user
                 return productRepository.findByUser(user.get());
             } else {
-                // Retrieve all products associated with the user and containing the title
                 return productRepository.findByUserAndTitleContaining(user.get(), title);
             }
         } catch (Exception ex) {
@@ -93,35 +88,20 @@ public class ProductService implements IProductService {
         }
     }
 
-    //get product by user and by product id
     @Override
     @Transactional(readOnly = true)
     public ProductModel getProductById(long userId, long productId) {
-        try {
-            // Retrieve the user based on the user ID
-            Optional<UserModel> user = userRepository.findById(userId);
 
-            if (user.isPresent()) {
-                // Retrieve the product based on the product ID
-                Optional<ProductModel> product = productRepository.findById(productId);
+        ProductModel product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(String.valueOf(productId)));
 
-                if (product.isPresent()) {
-                    // Check if the product belongs to the user
-                    if (product.get().getUser().getId() == userId) {
-                        return product.get();
-                    } else {
-                        throw new ProductNotFoundException(String.valueOf(productId));
-                    }
-                } else {
-                    throw new ProductNotFoundException(String.valueOf(productId));
-                }
-            } else {
-                throw new ResourceNotFoundException("User not found");
-            }
-        } catch (Exception ex) {
-            throw new ProductLoadException("Failed to load product");
+        if (product.getUser().getId() != userId) {
+            throw new ProductNotFoundException(String.valueOf(productId));
         }
+
+        return product;
     }
+
 
     @Override
     @Transactional
@@ -149,39 +129,26 @@ public class ProductService implements IProductService {
         }
     }
 
-    //update product by user and by product id
 
     @Override
     @Transactional
     public ProductModel updateProduct(long userId, long productId, ProductDto productDTO) {
-        try {
-            // Retrieve the user based on the user ID
-            Optional<UserModel> user = userRepository.findById(userId);
+        ProductModel product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(String.valueOf(productId)));
 
-            if (user.isPresent()) {
-                // Retrieve the product based on the product ID
-                Optional<ProductModel> productData = productRepository.findById(productId);
+        ensureProductBelongsToUser(product, userId);
 
-                if (productData.isPresent()) {
-                    // Check if the product belongs to the user
-                    if (productData.get().getUser().getId() == userId) {
-                        ProductModel existingProduct = productData.get();
-                        updateProductFromDTO(existingProduct, productDTO);
+        updateProductFromDTO(product, productDTO);
 
-                        return productRepository.save(existingProduct);
-                    } else {
-                        throw new ProductNotFoundException(String.valueOf(productId));
-                    }
-                } else {
-                    throw new ProductNotFoundException(String.valueOf(productId));
-                }
-            } else {
-                throw new ResourceNotFoundException("User not found");
-            }
-        } catch (Exception ex) {
-            throw new ProductCouldNotBeSavedException(productDTO.getTitle());
+        return productRepository.save(product);
+    }
+
+    private void ensureProductBelongsToUser(ProductModel product, long userId) {
+        if (product.getUser().getId() != userId) {
+            throw new ProductNotFoundException(String.valueOf(product.getId()));
         }
     }
+
 
     @Override
     @Transactional
@@ -193,36 +160,16 @@ public class ProductService implements IProductService {
         }
     }
 
-    //delete product by user and by product id
-    //override function
 
     @Override
     @Transactional
     public void deleteProduct(long userId, long productId) {
-        try {
-            // Retrieve the user based on the user ID
-            Optional<UserModel> user = userRepository.findById(userId);
+        ProductModel product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(String.valueOf(productId)));
 
-            if (user.isPresent()) {
-                // Retrieve the product based on the product ID
-                Optional<ProductModel> product = productRepository.findById(productId);
+        ensureProductBelongsToUser(product, userId);
 
-                if (product.isPresent()) {
-                    // Check if the product belongs to the user
-                    if (product.get().getUser().getId() == userId) {
-                        productRepository.deleteById(productId);
-                    } else {
-                        throw new ProductNotFoundException(String.valueOf(productId));
-                    }
-                } else {
-                    throw new ProductNotFoundException(String.valueOf(productId));
-                }
-            } else {
-                throw new ResourceNotFoundException("User not found");
-            }
-        } catch (Exception e) {
-            throw new ProductNotFoundException(String.valueOf(productId));
-        }
+        productRepository.deleteById(productId);
     }
 
     @Override
@@ -249,9 +196,6 @@ public class ProductService implements IProductService {
 
         }
     }
-
-
-    //get published products by product id
 
     @Override
     @Transactional(readOnly = true)
@@ -282,57 +226,5 @@ public class ProductService implements IProductService {
         product.setUser(productDTO.getUser());
     }
 
-    @Override
-    public List<ProductResponseDto> convertToDto(List<ProductModel> products) {
-        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
-
-        for (ProductModel product : products) {
-
-            productResponseDtoList.add(new ProductResponseDto(
-                    product.getId(),
-                    product.getTitle(),
-                    product.getDescription(),
-                    product.getContent(),
-                    product.getPrice(),
-                    product.getStock(),
-                    product.isPublished(),
-                    product.getCategory(),
-                    product.getUser(),
-                    getFileFromProduct(product)));
-        }
-        return productResponseDtoList;
-    }
-
-    @Override
-    public ProductResponseDto convertToDto(ProductModel product) {
-
-
-        return new ProductResponseDto(
-                product.getId(),
-                product.getTitle(),
-                product.getDescription(),
-                product.getContent(),
-                product.getPrice(),
-                product.getStock(),
-                product.isPublished(),
-                product.getCategory(),
-                product.getUser(),
-                getFileFromProduct(product));
-    }
-
-    private List<String> getFileFromProduct(ProductModel product) {
-        List<FileModel> files = fileRepository.findByProduct(product);
-        List<String> imagePaths = new ArrayList<>();
-
-        for (FileModel file : files) {
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("api/file/downloadFile/")
-                    .path(file.getName())
-                    .toUriString();
-
-            imagePaths.add(fileDownloadUri);
-        }
-        return imagePaths;
-    }
 
 }

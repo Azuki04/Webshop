@@ -32,9 +32,5 @@ public interface IProductService {
 
     ProductModel getPublishedProductById(long productId);
 
-// no need to implement this method in the service
-    List<ProductResponseDto> convertToDto(List<ProductModel> products);
-
-    ProductResponseDto convertToDto(ProductModel product);
 
 }

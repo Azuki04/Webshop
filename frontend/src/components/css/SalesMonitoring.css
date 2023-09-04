@@ -31,7 +31,7 @@ padding: 50px;
 }
 .card img{
     max-width: 300px;
-    width: 100%;
+    width: 300px;
     height: 100%;
     max-height: 300px;
     display: block;
@@ -87,7 +87,7 @@ padding: 50px;
     border: none;
     font-size: 18px;
     margin-bottom: 16px;
-    border: 1px solid rgb(133, 98, 98);
+    border: 1px solid #333;
   
 }
 

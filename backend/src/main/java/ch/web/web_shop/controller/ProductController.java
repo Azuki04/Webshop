@@ -126,12 +126,12 @@ public class ProductController {
 
     @PostMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<ProductModel> createProduct(@RequestParam("data") String data, @RequestParam("file") MultipartFile[]  files) {
+    public ResponseEntity<ProductModel> createProduct(@RequestParam("data") String data, @RequestParam("file") MultipartFile[] files) {
         ObjectMapper objectMapper = new ObjectMapper();
         ProductDto productDTO = null;
         try {
             productDTO = objectMapper.readValue(data, ProductDto.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
 

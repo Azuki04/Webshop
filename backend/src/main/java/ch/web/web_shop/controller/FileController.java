@@ -33,7 +33,6 @@ public class FileController {
     private IFileStorageService fileStorageService;
 
 
-
     @PostMapping("/uploadFile")
     public UploadFileResponseDto uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFileOnly(file);
@@ -49,7 +48,6 @@ public class FileController {
     }
 
 
-
     @PostMapping("/uploadMultipleFiles")
     public List<UploadFileResponseDto> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
@@ -57,7 +55,6 @@ public class FileController {
                 .map(file -> uploadFile(file))
                 .collect(Collectors.toList());
     }
-
 
 
     @GetMapping("/downloadFile/{fileName:.+}")
@@ -74,7 +71,7 @@ public class FileController {
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 
@@ -83,8 +80,6 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
-
-
 
 
 }
