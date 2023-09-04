@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class NewsletterService {
+public class NewsletterService implements INewsletterService {
 
     private final NewsletterRepository newsletterRepository;
 
@@ -20,6 +20,7 @@ public class NewsletterService {
     }
 
     @Transactional
+    @Override
     public Newsletter createNewsletter(NewsletterDTO newsletterDTO) {
         Newsletter newsletter = new Newsletter(newsletterDTO.getEmail());
         return newsletterRepository.save(newsletter);

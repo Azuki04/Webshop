@@ -27,7 +27,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class CategoryService implements CategoryServiceInterface {
+public class CategoryService implements ICategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;

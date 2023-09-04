@@ -24,7 +24,8 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CartService implements CartServiceInterface {
+public class CartService implements ICartService {
+    
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired

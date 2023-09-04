@@ -1,7 +1,7 @@
 package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.image.UploadFileResponse;
-import ch.web.web_shop.service.FileStorageService;
+import ch.web.web_shop.service.IFileStorageService;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -30,7 +30,7 @@ public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private IFileStorageService fileStorageService;
 
 
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.service.FileStorageService;
+import ch.web.web_shop.service.IProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import ch.web.web_shop.dto.product.ProductDTO;
 import ch.web.web_shop.model.Product;
-import ch.web.web_shop.service.ProductService;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -36,7 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     @Autowired
     private FileStorageService fileStorageService;

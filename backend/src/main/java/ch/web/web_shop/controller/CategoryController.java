@@ -3,7 +3,7 @@ package ch.web.web_shop.controller;
 import ch.web.web_shop.dto.category.CategoryTreeDto;
 import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.model.Product;
-import ch.web.web_shop.service.CategoryServiceInterface;
+import ch.web.web_shop.service.ICategoryService;
 import ch.web.web_shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,7 +54,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    private final CategoryServiceInterface categoryService;
+    private final ICategoryService categoryService;
     @Autowired
     private ProductService productService;
 

@@ -38,7 +38,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  */
 @Service
 @Transactional
-public class ProductService {
+public class ProductService implements IProductService {
 
     @Autowired
     private ProductRepository productRepository;
@@ -47,6 +47,7 @@ public class ProductService {
     @Autowired
     private FileRepository fileRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public List<Product> getAllProducts(String title) {
         try {
@@ -61,6 +62,7 @@ public class ProductService {
     }
 
     // Get all products for a user
+    @Override
     @Transactional(readOnly = true)
     public List<Product> getAllProducts(long userId, String title) {
         try {
@@ -79,6 +81,7 @@ public class ProductService {
         }
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Product getProductById(long id) {
         Optional<Product> productData = productRepository.findById(id);
@@ -91,6 +94,7 @@ public class ProductService {
     }
 
     //get product by user and by product id
+    @Override
     @Transactional(readOnly = true)
     public Product getProductById(long userId, long productId) {
         try {
@@ -119,6 +123,7 @@ public class ProductService {
         }
     }
 
+    @Override
     @Transactional
     public Product createProduct(ProductDTO productDTO) {
         try {
@@ -129,6 +134,7 @@ public class ProductService {
         }
     }
 
+    @Override
     @Transactional
     public Product updateProduct(long id, ProductDTO productDTO) {
         Optional<Product> productData = productRepository.findById(id);
@@ -144,6 +150,8 @@ public class ProductService {
     }
 
     //update product by user and by product id
+
+    @Override
     @Transactional
     public Product updateProduct(long userId, long productId, ProductDTO productDTO) {
         try {
@@ -175,6 +183,7 @@ public class ProductService {
         }
     }
 
+    @Override
     @Transactional
     public void deleteProduct(long id) {
         try {
@@ -187,6 +196,7 @@ public class ProductService {
     //delete product by user and by product id
     //override function
 
+    @Override
     @Transactional
     public void deleteProduct(long userId, long productId) {
         try {
@@ -215,6 +225,7 @@ public class ProductService {
         }
     }
 
+    @Override
     @Transactional
     public void deleteAllProducts() {
         try {
@@ -224,6 +235,7 @@ public class ProductService {
         }
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Product> getPublishedProducts(String title) {
         try {
@@ -238,7 +250,10 @@ public class ProductService {
         }
     }
 
+
     //get published products by product id
+
+    @Override
     @Transactional(readOnly = true)
     public Product getPublishedProductById(long productId) {
         try {
@@ -267,6 +282,7 @@ public class ProductService {
         product.setUser(productDTO.getUser());
     }
 
+    @Override
     public List<ProductResponseDto> convertToDto(List<Product> products) {
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
@@ -287,6 +303,7 @@ public class ProductService {
         return productResponseDtoList;
     }
 
+    @Override
     public ProductResponseDto convertToDto(Product product) {
 
 

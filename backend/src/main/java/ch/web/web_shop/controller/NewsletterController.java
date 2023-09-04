@@ -2,6 +2,7 @@ package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.newsletter.NewsletterDTO;
 import ch.web.web_shop.model.Newsletter;
+import ch.web.web_shop.service.INewsletterService;
 import ch.web.web_shop.service.NewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/newsletter")
 public class NewsletterController {
 
-    private final NewsletterService newsletterService;
+    private final INewsletterService newsletterService;
 
     @Autowired
     public NewsletterController(NewsletterService newsletterService) {

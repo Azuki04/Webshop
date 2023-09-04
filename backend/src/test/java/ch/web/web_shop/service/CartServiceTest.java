@@ -1,24 +1,5 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.cart.CartItemDto;
-import ch.web.web_shop.model.Cart;
-import ch.web.web_shop.model.Category;
-import ch.web.web_shop.model.Product;
-import ch.web.web_shop.model.User;
-import ch.web.web_shop.repository.CartRepository;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import static ch.web.web_shop.service.CartService.getTotalCost;
 import static org.junit.Assert.assertEquals;
 

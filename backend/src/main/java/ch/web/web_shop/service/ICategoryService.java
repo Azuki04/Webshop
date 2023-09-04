@@ -6,7 +6,7 @@ import ch.web.web_shop.model.Product;
 
 import java.util.List;
 
-public interface CategoryServiceInterface {
+public interface ICategoryService {
 
     Iterable<Category> getAllCategories();
 

@@ -2,10 +2,9 @@ package ch.web.web_shop.service;
 
 import ch.web.web_shop.dto.cart.AddToCartDto;
 import ch.web.web_shop.dto.cart.CartDto;
-import ch.web.web_shop.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 
-public interface CartServiceInterface {
+public interface ICartService {
 
     void addToCart(AddToCartDto addToCartDto, HttpServletRequest token);
 

@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class FileStorageService {
+public class FileStorageService implements IFileStorageService {
 
     private final Path fileStorageLocation;
 
@@ -40,7 +40,7 @@ public class FileStorageService {
         }
     }
 
-
+    @Override
     public String storeFileOnly(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -60,7 +60,7 @@ public class FileStorageService {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
-
+    @Override
     public void storeFile(MultipartFile[] files, Product product) {
         for (MultipartFile file : files) {
 
@@ -96,6 +96,7 @@ public class FileStorageService {
        fileRepository.save(new File(fileName, contentType, size, alt, product));
     }
 
+    @Override
     public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
