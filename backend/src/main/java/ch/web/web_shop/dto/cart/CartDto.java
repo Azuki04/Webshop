@@ -11,7 +11,7 @@ public class CartDto {
         this.totalCost = totalCost;
     }
 
-    public List<CartItemDto> getcartItems() {
+    public List<CartItemDto> getCartItems() {
         return cartItems;
     }
 

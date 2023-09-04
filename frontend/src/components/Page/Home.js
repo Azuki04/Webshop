@@ -77,7 +77,7 @@ class Home extends Component {
     };
 
     axios
-        .post(process.env.REACT_APP_API_URL + "/cart/add", payload, config)
+        .post(process.env.REACT_APP_API_URL + "/cart", payload, config)
         .then((response) => {
 
           this.addExampleProductToCart(payload);

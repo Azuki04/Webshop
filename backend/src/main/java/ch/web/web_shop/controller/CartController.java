@@ -2,6 +2,8 @@ package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.cart.AddToCartDto;
 import ch.web.web_shop.dto.cart.CartDto;
+import ch.web.web_shop.model.Cart;
+import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.ICartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -19,10 +21,11 @@ public class CartController {
     @Autowired
     private ICartService cartService;
 
-    @PostMapping("/add")
+    @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public void addToCart(@RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
-        cartService.addToCart(addToCartDto, request);
+    public ResponseEntity<Cart> addToCart(@RequestBody AddToCartDto addToCartDto, HttpServletRequest request) {
+        Cart cart = cartService.addToCart(addToCartDto, request);
+        return ResponseEntity.ok(cart);
     }
 
     @GetMapping("")
@@ -32,13 +35,13 @@ public class CartController {
         return new ResponseEntity<CartDto>(cartDto, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{cartItemId}")
+    @PutMapping("/{cartItemId}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public void updateCartItem(@RequestBody @Valid AddToCartDto cartDto) {
         cartService.updateCartItem(cartDto);
     }
 
-    @DeleteMapping("/delete/{cartItemId}")
+    @DeleteMapping("/{cartItemId}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public void deleteCartItem(@PathVariable("cartItemId") long itemID, HttpServletRequest request) {
         cartService.deleteCartItem(itemID, request);

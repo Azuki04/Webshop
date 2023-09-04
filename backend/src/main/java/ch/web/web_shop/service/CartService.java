@@ -25,7 +25,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class CartService implements ICartService {
-    
+
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
@@ -47,7 +47,7 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void addToCart(AddToCartDto addToCartDto, HttpServletRequest token) {
+    public Cart addToCart(AddToCartDto addToCartDto, HttpServletRequest token) {
         Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
         Optional<Product> product = productRepository.findById(addToCartDto.getProductId());
         Cart cartProduct = cartRepository.findCartByUserAndProduct(user, product);
@@ -55,6 +55,7 @@ public class CartService implements ICartService {
         if (cartProduct == null) {
             Cart cart = new Cart(product, addToCartDto.getQuantity(), user);
             cartRepository.save(cart);
+            return cart;
         } else {
             int updatedQuantity = addToCartDto.getQuantity() + cartProduct.getQuantity();
             if(cartProduct.getProduct().getStock() < updatedQuantity){
@@ -63,6 +64,7 @@ public class CartService implements ICartService {
             cartProduct.setQuantity(updatedQuantity);
             cartProduct.setCreatedDate(new Date());
             cartRepository.save(cartProduct);
+            return cartProduct;
         }
     }
 

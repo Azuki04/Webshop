@@ -62,7 +62,7 @@ class Cart extends React.Component {
                 quantity: newQuantity
             };
 
-            axios.put(process.env.REACT_APP_API_URL + `/cart/update/${cartItemId}`, payload, {
+            axios.put(process.env.REACT_APP_API_URL + `/cart/${cartItemId}`, payload, {
                 headers: authHeader()
             })
                 .then(() => {
@@ -76,7 +76,7 @@ class Cart extends React.Component {
     }
 
     deleteCartItem(cartItemId) {
-        axios.delete(process.env.REACT_APP_API_URL + `/cart/delete/${cartItemId}`, {
+        axios.delete(process.env.REACT_APP_API_URL + `/cart/${cartItemId}`, {
             headers: authHeader()
         })
             .then(() => {
@@ -87,8 +87,6 @@ class Cart extends React.Component {
                 console.error("Error deleting cart item:", error);
             });
     }
-
-
 
 
 
@@ -110,23 +108,6 @@ class Cart extends React.Component {
                 console.log(err);
             });
     }
-
-    addExampleProductToCart(product) {
-        const { cartItems, setCartItems } = this.context;
-
-        // Überprüfe, ob das Produkt bereits im Warenkorb existiert
-        const existingCartItem = cartItems.find(item => item.productId === product.productId);
-
-        if (!existingCartItem) {
-            // Das Produkt ist nicht im Warenkorb, füge es hinzu
-            setCartItems([...cartItems, product]);
-        } else {
-            // Das Produkt ist bereits im Warenkorb, erhöhe die Anzahl um 1 (oder füge es erneut hinzu, wie du es möchtest)
-            existingCartItem.quantity += 1;
-            setCartItems([...cartItems]);
-        }
-    }
-
 
     deleteProductFromCart(productId) {
         const { setCartItems } = this.context;

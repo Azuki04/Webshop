@@ -117,7 +117,7 @@ class ProductDetails extends React.Component {
       quantity: this.state.quantity // Anzahl kann nach Bedarf geändert werden
     };
 
-    axios.post(process.env.REACT_APP_API_URL + "/cart/add", payload, config)
+    axios.post(process.env.REACT_APP_API_URL + "/cart", payload, config)
         .then(() => {
           // Daten aktualisieren
           this.addExampleProductToCart(payload);
