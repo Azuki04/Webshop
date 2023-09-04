@@ -8,9 +8,10 @@ import axios from "axios";
 import authHeader from "../services/Auth-header";
 import GlobalNavigation from "../GlobalNavigation";
 import Auth from "../services/Auth";
+import GlobalStorageContext from "../services/GlobalStorage";
 
 class Cart extends React.Component {
-
+    static contextType = GlobalStorageContext;
     constructor(props) {
         super(props);
 
@@ -66,7 +67,7 @@ class Cart extends React.Component {
             })
                 .then(() => {
                     this.fetchCartData();
-                    GlobalNavigation.this.getTotalProductCount();
+
                 })
                 .catch(error => {
                     console.error("Error updating cart item quantity:", error);
@@ -87,6 +88,10 @@ class Cart extends React.Component {
             });
     }
 
+
+
+
+
     fetchCartData() {
         const config = {
             headers: authHeader()
@@ -98,14 +103,36 @@ class Cart extends React.Component {
                 const cartItems = data.cartItems || [];
                 const totalCost = data.totalCost || 0;
                 this.setState({ cartItems, totalCost });
+
+                this.deleteProductFromCart(cartItems);
             })
             .catch(err => {
                 console.log(err);
             });
     }
 
-    getTotalPriceCount() {
-        return this.state.cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+    addExampleProductToCart(product) {
+        const { cartItems, setCartItems } = this.context;
+
+        // Überprüfe, ob das Produkt bereits im Warenkorb existiert
+        const existingCartItem = cartItems.find(item => item.productId === product.productId);
+
+        if (!existingCartItem) {
+            // Das Produkt ist nicht im Warenkorb, füge es hinzu
+            setCartItems([...cartItems, product]);
+        } else {
+            // Das Produkt ist bereits im Warenkorb, erhöhe die Anzahl um 1 (oder füge es erneut hinzu, wie du es möchtest)
+            existingCartItem.quantity += 1;
+            setCartItems([...cartItems]);
+        }
+    }
+
+
+    deleteProductFromCart(productId) {
+        const { setCartItems } = this.context;
+
+        // Aktualisiere das cartItems-Array im Kontext mit den verbleibenden Produkten
+        setCartItems(productId);
     }
 
 

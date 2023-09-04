@@ -4,9 +4,11 @@ import { Button } from "../Button";
 import "../css/SalesMonitoring.css";
 import axios from "axios";
 import authHeader from "../services/Auth-header";
-import GlobalNavigation from "../GlobalNavigation";
+import GlobalStorageContext from "../services/GlobalStorage";
 
 class Home extends Component {
+    static contextType = GlobalStorageContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +24,7 @@ class Home extends Component {
     this.addProductToCart = this.addProductToCart.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.renderCategories = this.renderCategories.bind(this);
+    this.addExampleProductToCart = this.addExampleProductToCart.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +66,7 @@ class Home extends Component {
   }
 
   addProductToCart(productId) {
+
     const config = {
       headers: authHeader(),
     };
@@ -74,16 +78,32 @@ class Home extends Component {
 
     axios
         .post(process.env.REACT_APP_API_URL + "/cart/add", payload, config)
-        .then(() => {
-          this.fetchCartData(); // Update cart data
-          window.location.reload();
+        .then((response) => {
 
-
+          this.addExampleProductToCart(payload);
         })
         .catch((err) => {
           console.log(err);
         });
   }
+
+  addExampleProductToCart(product) {
+    const { cartItems, setCartItems } = this.context;
+
+    // Überprüfe, ob das Produkt bereits im Warenkorb existiert
+    const existingCartItem = cartItems.find(item => item.productId === product.productId);
+
+    if (!existingCartItem) {
+      // Das Produkt ist nicht im Warenkorb, füge es hinzu
+      setCartItems([...cartItems, product]);
+    } else {
+      // Das Produkt ist bereits im Warenkorb, erhöhe die Anzahl um 1 (oder füge es erneut hinzu, wie du es möchtest)
+      existingCartItem.quantity += 1;
+      setCartItems([...cartItems]);
+    }
+  }
+
+
 
   handleCategoryChange(event) {
     const selectedCategoryId = event.target.value;

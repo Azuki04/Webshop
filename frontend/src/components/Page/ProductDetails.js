@@ -5,14 +5,17 @@ import { withRouter } from "../../common/with-router";
 import Auth from "../services/Auth";
 import authHeader from "../services/Auth-header";
 import axios from "axios";
+import GlobalStorageContext from "../services/GlobalStorage";
 const currentUser = Auth.getCurrentUser();
 class ProductDetails extends React.Component {
+  static contextType = GlobalStorageContext;
   constructor(props) {
     super(props);
     this.getProduct = this.getProduct.bind(this);
     this.handleQuantityDecrease = this.handleQuantityDecrease.bind(this);
     this.handleQuantityIncrease = this.handleQuantityIncrease.bind(this);
     this.addProductToCart = this.addProductToCart.bind(this);
+    this.addExampleProductToCart = this.addExampleProductToCart.bind(this);
 
     this.state = {
       currentProduct: {
@@ -116,12 +119,29 @@ class ProductDetails extends React.Component {
 
     axios.post(process.env.REACT_APP_API_URL + "/cart/add", payload, config)
         .then(() => {
-          this.fetchCartData(); // Daten aktualisieren
-          window.location.reload();
+          // Daten aktualisieren
+          this.addExampleProductToCart(payload);
         })
         .catch(err => {
           console.log(err);
         });
+  }
+
+
+  addExampleProductToCart(product) {
+    const { cartItems, setCartItems } = this.context;
+
+    // Überprüfe, ob das Produkt bereits im Warenkorb existiert
+    const existingCartItem = cartItems.find(item => item.productId === product.productId);
+
+    if (!existingCartItem) {
+      // Das Produkt ist nicht im Warenkorb, füge es hinzu
+      setCartItems([...cartItems, product]);
+    } else {
+      // Das Produkt ist bereits im Warenkorb, erhöhe die Anzahl um 1 (oder füge es erneut hinzu, wie du es möchtest)
+      existingCartItem.quantity += 1;
+      setCartItems([...cartItems]);
+    }
   }
 
 
