@@ -59,3 +59,11 @@ section .cart{
     padding: 10px 25px;
     margin:20px;
 }
+.cartImage{
+    width: 340px;
+    height: 300px;
+    display: block;
+    object-fit: cover;
+    border: 1px solid #242424;
+    margin: 25px;
+}

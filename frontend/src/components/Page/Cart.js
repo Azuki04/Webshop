@@ -142,7 +142,7 @@ class Cart extends React.Component {
         <div>
           {cartItems.map((cartItem) => (
             <div className="details cart" key={cartItem.product.id}>
-                <img src={cartItem.product.src} alt="" />
+                <img className="cartImage" src={cartItem.product.imagePaths[0]} alt="picture" />
               <div className="box">
                 <div className="row">
                   <h2>{cartItem.product.title}</h2>

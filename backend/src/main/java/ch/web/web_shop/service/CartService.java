@@ -3,6 +3,7 @@ package ch.web.web_shop.service;
 import ch.web.web_shop.dto.cart.AddToCartDto;
 import ch.web.web_shop.dto.cart.CartDto;
 import ch.web.web_shop.dto.cart.CartItemDto;
+import ch.web.web_shop.dto.product.IProductDtoMapper;
 import ch.web.web_shop.exception.CartItemNotExistException;
 import ch.web.web_shop.model.CartModel;
 import ch.web.web_shop.model.ProductModel;
@@ -26,21 +27,29 @@ import java.util.Optional;
 @Transactional
 public class CartService implements ICartService {
 
-    @Autowired
-    private JwtUtils jwtUtils;
-    @Autowired
-    private CartRepository cartRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AuthTokenFilter authTokenFilter;
 
-    public CartService(CartRepository cartRepository) {
+    private final JwtUtils jwtUtils;
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final AuthTokenFilter authTokenFilter;
+    private final IProductDtoMapper productDtoMapper;
+
+    @Autowired
+    public CartService(
+            JwtUtils jwtUtils,
+            CartRepository cartRepository,
+            ProductRepository productRepository,
+            UserRepository userRepository,
+            AuthTokenFilter authTokenFilter,
+            IProductDtoMapper productDtoMapper) {
+        this.jwtUtils = jwtUtils;
         this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
+        this.authTokenFilter = authTokenFilter;
+        this.productDtoMapper = productDtoMapper;
     }
-
     private String getUsernameFromToken(HttpServletRequest token) {
         String jwt = authTokenFilter.parseJwt(token);
         return jwtUtils.getUserNameFromJwtToken(jwt);
@@ -90,7 +99,7 @@ public class CartService implements ICartService {
         return totalCost;
     }
 
-    private static List<CartItemDto> getCartItems(List<CartModel> cartList) {
+    private List<CartItemDto> getCartItems(List<CartModel> cartList) {
         List<CartItemDto> cartItems = new ArrayList<>();
 
         for (CartModel cart : cartList) {
@@ -100,8 +109,8 @@ public class CartService implements ICartService {
         return cartItems;
     }
 
-    private static CartItemDto getDtoFromCart(CartModel cart) {
-        return new CartItemDto(cart);
+    private CartItemDto getDtoFromCart(CartModel cart) {
+        return new CartItemDto(cart, productDtoMapper);
     }
 
     @Override
