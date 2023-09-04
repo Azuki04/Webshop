@@ -10,7 +10,7 @@ public interface ICategoryService {
 
     Iterable<Category> getAllCategories();
 
-    Iterable<Product> getAllProductsByCategory(long categoryId);
+    Iterable<Product> getAllPublishProductsByCategory(long categoryId);
 
     Category getCategoryById(long categoryId);
 

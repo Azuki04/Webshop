@@ -1,17 +1,16 @@
 package ch.web.web_shop.controller;
 
 import ch.web.web_shop.dto.category.CategoryTreeDto;
+import ch.web.web_shop.dto.product.IProductDtoMapper;
 import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.service.ICategoryService;
-import ch.web.web_shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ch.web.web_shop.model.Category;
-import ch.web.web_shop.service.CategoryService;
 
 import java.util.List;
 
@@ -54,15 +53,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    private final ICategoryService categoryService;
-    @Autowired
-    private ProductService productService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+    private ICategoryService categoryService;
 
+    @Autowired
+    private IProductDtoMapper productDtoMapper;
 
 
     /**
@@ -71,6 +67,7 @@ public class CategoryController {
      * @return ResponseEntity with a list of categories if successful,
      * or an error response if an exception occurs.
      */
+    //TODO: change to List
     @GetMapping("")
     public ResponseEntity<Iterable<Category>> getAllCategories() {
         try {
@@ -111,11 +108,11 @@ public class CategoryController {
     @GetMapping("/products/{id}")
     public ResponseEntity<List<ProductResponseDto>> getAllProductsByCategory(@PathVariable("id") long categoryId) {
         try {
-            Iterable<Product> products = categoryService.getAllProductsByCategory(categoryId);
+            Iterable<Product> products = categoryService.getAllPublishProductsByCategory(categoryId);
             if (products == null) {
                 return ResponseEntity.noContent().build();
             }
-            List<ProductResponseDto> productResponseDtosList = productService.convertToDto((List<Product>) products);
+            List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto((List<Product>) products);
             return ResponseEntity.ok(productResponseDtosList);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

@@ -45,7 +45,6 @@ public class CategoryService implements ICategoryService {
      *
      * @return An iterable collection of categories.
      */
-
     @Override
     @Transactional(readOnly = true)
     public Iterable<Category> getAllCategories() {
@@ -58,8 +57,8 @@ public class CategoryService implements ICategoryService {
 
         return buildCategoryTree((List<Category>) categories);
     }
-
-    public List<CategoryTreeDto> buildCategoryTreeMapper(List<Category> categories) {
+/*
+    public List<CategoryTreeDto> buildCategoryTree2(List<Category> categories) {
         List<CategoryTreeDto> categoryDtoList = new ArrayList<>();
         Map<Long, CategoryTreeDto> categoryDtoMap = new HashMap<>();
 
@@ -84,20 +83,25 @@ public class CategoryService implements ICategoryService {
 
         return categoryDtoList;
     }
+    */
 
     private List<CategoryTreeDto> buildCategoryTree(List<Category> categories) {
         List<CategoryTreeDto> parentCategoryDtoList = new ArrayList<>();
         // get all root categories
+        getRootCategory(categories, parentCategoryDtoList);
+        for (CategoryTreeDto parentCategoryTreeDto : parentCategoryDtoList) {
+            createSubcategoryDto(parentCategoryTreeDto);
+        }
+        return parentCategoryDtoList;
+    }
+
+    private static void getRootCategory(List<Category> categories, List<CategoryTreeDto> parentCategoryDtoList) {
         for (Category category : categories) {
             if (category.getParentCategory() == null) {
                 CategoryTreeDto categoryTreeDto = new CategoryTreeDto(category.getId(), category.getName());
                 parentCategoryDtoList.add(categoryTreeDto);
             }
         }
-        for (CategoryTreeDto parentCategoryTreeDto : parentCategoryDtoList) {
-            createSubcategoryDto(parentCategoryTreeDto);
-        }
-        return parentCategoryDtoList;
     }
 
     private void createSubcategoryDto(CategoryTreeDto parentCategoryTreeDto) {
@@ -118,7 +122,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<Product> getAllProductsByCategory(long categoryId) {
+    public Iterable<Product> getAllPublishProductsByCategory(long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElse(null);
         if (category == null) {
             return Collections.emptyList();

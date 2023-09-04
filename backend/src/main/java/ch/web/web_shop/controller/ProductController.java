@@ -2,6 +2,7 @@ package ch.web.web_shop.controller;
 
 import java.util.List;
 
+import ch.web.web_shop.dto.product.ProductDtoMapper;
 import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.service.FileStorageService;
 import ch.web.web_shop.service.IProductService;
@@ -41,12 +42,15 @@ public class ProductController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private ProductDtoMapper productDtoMapper;
+
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProductResponseDto>> getAllProducts(@RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(title);
 
-        List<ProductResponseDto> productResponseDtosList = productService.convertToDto(products);
+        List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(products);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -87,7 +91,7 @@ public class ProductController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<List<ProductResponseDto>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
         List<Product> products = productService.getAllProducts(userId, title);
-        List<ProductResponseDto> productResponseDtosList = productService.convertToDto(products);
+        List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(products);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -99,7 +103,7 @@ public class ProductController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<ProductResponseDto> getProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
         Product product = productService.getProductById(userId, id);
-        ProductResponseDto productResponseDto = productService.convertToDto(product);
+        ProductResponseDto productResponseDto = productDtoMapper.convertToDto(product);
         return ResponseEntity.ok(productResponseDto);
     }
 
@@ -142,7 +146,7 @@ public class ProductController {
     @GetMapping("/published")
     public ResponseEntity<List<ProductResponseDto>> findByPublished(@RequestParam(required = false) String title) {
         List<Product> publishedProducts = productService.getPublishedProducts(title);
-        List<ProductResponseDto> productResponseDtosList = productService.convertToDto(publishedProducts);
+        List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(publishedProducts);
         if (publishedProducts.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -154,7 +158,7 @@ public class ProductController {
     @GetMapping("/published/{id}")
     public ResponseEntity<ProductResponseDto> getPublishedProductById(@PathVariable("id") long id) {
         Product publishedProduct = productService.getPublishedProductById(id);
-        ProductResponseDto productResponseDto = productService.convertToDto(publishedProduct);
+        ProductResponseDto productResponseDto = productDtoMapper.convertToDto(publishedProduct);
         return ResponseEntity.ok(productResponseDto);
     }
 

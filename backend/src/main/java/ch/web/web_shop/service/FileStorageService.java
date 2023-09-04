@@ -1,7 +1,7 @@
 package ch.web.web_shop.service;
 
 import ch.web.web_shop.exception.FileStorageException;
-import ch.web.web_shop.exception.MyFileNotFoundException;
+import ch.web.web_shop.exception.FileNotFoundException;
 import ch.web.web_shop.model.File;
 import ch.web.web_shop.model.Product;
 import ch.web.web_shop.property.FileStorageProperties;
@@ -77,7 +77,7 @@ public class FileStorageService implements IFileStorageService {
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            StoreFileToDatabase(file, product);
+            storeFileToDatabase(file, product);
 
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
@@ -85,7 +85,7 @@ public class FileStorageService implements IFileStorageService {
         }
     }
 
-   private void StoreFileToDatabase(MultipartFile file, Product product) {
+   private void storeFileToDatabase(MultipartFile file, Product product) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String contentType = file.getContentType();
@@ -104,10 +104,10 @@ public class FileStorageService implements IFileStorageService {
             if(resource.exists()) {
                 return resource;
             } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
+                throw new FileNotFoundException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
+            throw new FileNotFoundException("File not found " + fileName, ex);
         }
     }
 
