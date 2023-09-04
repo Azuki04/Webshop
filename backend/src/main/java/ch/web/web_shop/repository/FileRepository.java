@@ -9,4 +9,5 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<FileModel, Long> {
    List<FileModel> findByProduct(ProductModel product);
 
+    void deleteByProduct(ProductModel product);
 }

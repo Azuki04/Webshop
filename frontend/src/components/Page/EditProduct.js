@@ -277,7 +277,7 @@ class EditProduct extends React.Component {
     };
     if (currentUser.roles.includes("ROLE_ADMIN")) {
       axios
-          .delete(`${process.env.REACT_APP_API_URL}/products/admin/${currentUser.id}/${currentProduct.id}`,config)
+          .delete(`${process.env.REACT_APP_API_URL}/products/admin/${currentProduct.id}`,config)
           .then((response) => response.data)
           .then((data) => {
             this.setState({ products: data });
