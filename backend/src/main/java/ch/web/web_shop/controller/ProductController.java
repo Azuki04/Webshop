@@ -2,9 +2,9 @@ package ch.web.web_shop.controller;
 
 import java.util.List;
 
-import ch.web.web_shop.dto.product.ProductDtoMapper;
+import ch.web.web_shop.dto.product.IProductDtoMapper;
 import ch.web.web_shop.dto.product.ProductResponseDto;
-import ch.web.web_shop.service.FileStorageService;
+import ch.web.web_shop.service.IFileStorageService;
 import ch.web.web_shop.service.IProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
@@ -40,10 +40,10 @@ public class ProductController {
     private IProductService productService;
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private IFileStorageService fileStorageService;
 
     @Autowired
-    private ProductDtoMapper productDtoMapper;
+    private IProductDtoMapper productDtoMapper;
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
