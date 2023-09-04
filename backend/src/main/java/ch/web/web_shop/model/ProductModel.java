@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "products")
-public class Product {
+public class ProductModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,25 +50,25 @@ public class Product {
     // category 1:n
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private CategoryModel category;
 
     // user 1:n
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserModel user;
 
 
-    public Product() {
+    public ProductModel() {
         // Default constructor required by JPA
     }
 
-    public Product(int price) {
+    public ProductModel(int price) {
         // Default constructor required by JPA
         this.price = price;
     }
 
-    public Product(String title, String description, String content, int price, int stock,
-                   Category category, User user) {
+    public ProductModel(String title, String description, String content, int price, int stock,
+                        CategoryModel category, UserModel user) {
         this.title = title;
         this.description = description;
         this.content = content;
@@ -135,19 +135,19 @@ public class Product {
         this.published = published;
     }
 
-    public Category getCategory() {
+    public CategoryModel getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryModel category) {
         this.category = category;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 

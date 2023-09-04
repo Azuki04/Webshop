@@ -1,9 +1,9 @@
 package ch.web.web_shop.dto.product;
 
 
-import ch.web.web_shop.model.Category;
+import ch.web.web_shop.model.CategoryModel;
 
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.UserModel;
 
 import java.util.List;
 
@@ -34,14 +34,14 @@ public class ProductResponseDto {
     private boolean published;
 
 
-    private Category category;
+    private CategoryModel category;
 
-    private User user;
+    private UserModel user;
 
     private final List<String> imagePaths;
 
 
-    public ProductResponseDto(long id, String title, String description, String content, int price, int stock, boolean published, Category category, User user, List<String> imagePaths) {
+    public ProductResponseDto(long id, String title, String description, String content, int price, int stock, boolean published, CategoryModel category, UserModel user, List<String> imagePaths) {
         // Default constructor
         this.id = id;
         this.title = title;
@@ -111,19 +111,19 @@ public class ProductResponseDto {
         this.published = published;
     }
 
-    public Category getCategory() {
+    public CategoryModel getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryModel category) {
         this.category = category;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 

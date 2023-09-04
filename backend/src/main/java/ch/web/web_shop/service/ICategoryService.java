@@ -1,20 +1,20 @@
 package ch.web.web_shop.service;
 
 import ch.web.web_shop.dto.category.CategoryTreeDto;
-import ch.web.web_shop.model.Category;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.CategoryModel;
+import ch.web.web_shop.model.ProductModel;
 
 import java.util.List;
 
 public interface ICategoryService {
 
-    Iterable<Category> getAllCategories();
+    Iterable<CategoryModel> getAllCategories();
 
-    Iterable<Product> getAllPublishProductsByCategory(long categoryId);
+    Iterable<ProductModel> getAllPublishProductsByCategory(long categoryId);
 
-    Category getCategoryById(long categoryId);
+    CategoryModel getCategoryById(long categoryId);
 
-    Iterable<Category> getAllSubCategoriesByParentCategory(long categoryId);
+    Iterable<CategoryModel> getAllSubCategoriesByParentCategory(long categoryId);
 
     List<CategoryTreeDto> getAllCategoryTree();
 

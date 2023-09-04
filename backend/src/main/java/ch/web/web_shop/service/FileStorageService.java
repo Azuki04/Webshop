@@ -2,8 +2,8 @@ package ch.web.web_shop.service;
 
 import ch.web.web_shop.exception.FileStorageException;
 import ch.web.web_shop.exception.FileNotFoundException;
-import ch.web.web_shop.model.File;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.FileModel;
+import ch.web.web_shop.model.ProductModel;
 import ch.web.web_shop.property.FileStorageProperties;
 import ch.web.web_shop.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class FileStorageService implements IFileStorageService {
         }
     }
     @Override
-    public void storeFile(MultipartFile[] files, Product product) {
+    public void storeFile(MultipartFile[] files, ProductModel product) {
         for (MultipartFile file : files) {
 
         // Normalize file name
@@ -85,7 +85,7 @@ public class FileStorageService implements IFileStorageService {
         }
     }
 
-   private void storeFileToDatabase(MultipartFile file, Product product) {
+   private void storeFileToDatabase(MultipartFile file, ProductModel product) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String contentType = file.getContentType();
@@ -93,7 +93,7 @@ public class FileStorageService implements IFileStorageService {
         String alt = "ID"+product.getId() + "_Image_" + product.getTitle();
 
         // Save file to database
-       fileRepository.save(new File(fileName, contentType, size, alt, product));
+       fileRepository.save(new FileModel(fileName, contentType, size, alt, product));
     }
 
     @Override

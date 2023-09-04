@@ -4,9 +4,9 @@ import ch.web.web_shop.dto.cart.AddToCartDto;
 import ch.web.web_shop.dto.cart.CartDto;
 import ch.web.web_shop.dto.cart.CartItemDto;
 import ch.web.web_shop.exception.CartItemNotExistException;
-import ch.web.web_shop.model.Cart;
-import ch.web.web_shop.model.Product;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.CartModel;
+import ch.web.web_shop.model.ProductModel;
+import ch.web.web_shop.model.UserModel;
 import ch.web.web_shop.repository.CartRepository;
 import ch.web.web_shop.repository.ProductRepository;
 import ch.web.web_shop.repository.UserRepository;
@@ -47,13 +47,13 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart addToCart(AddToCartDto addToCartDto, HttpServletRequest token) {
-        Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
-        Optional<Product> product = productRepository.findById(addToCartDto.getProductId());
-        Cart cartProduct = cartRepository.findCartByUserAndProduct(user, product);
+    public CartModel addToCart(AddToCartDto addToCartDto, HttpServletRequest token) {
+        Optional<UserModel> user = userRepository.findByUsername(getUsernameFromToken(token));
+        Optional<ProductModel> product = productRepository.findById(addToCartDto.getProductId());
+        CartModel cartProduct = cartRepository.findCartByUserAndProduct(user, product);
 
         if (cartProduct == null) {
-            Cart cart = new Cart(product, addToCartDto.getQuantity(), user);
+            CartModel cart = new CartModel(product, addToCartDto.getQuantity(), user);
             cartRepository.save(cart);
             return cart;
         } else {
@@ -71,9 +71,9 @@ public class CartService implements ICartService {
     @Override
     public CartDto listCartItems(HttpServletRequest token) {
 
-        Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
+        Optional<UserModel> user = userRepository.findByUsername(getUsernameFromToken(token));
 
-        List<Cart> cartList = cartRepository.findCartByUser(user);
+        List<CartModel> cartList = cartRepository.findCartByUser(user);
 
         List<CartItemDto> cartItems = getCartItems(cartList);
 
@@ -90,24 +90,24 @@ public class CartService implements ICartService {
         return totalCost;
     }
 
-    private static List<CartItemDto> getCartItems(List<Cart> cartList) {
+    private static List<CartItemDto> getCartItems(List<CartModel> cartList) {
         List<CartItemDto> cartItems = new ArrayList<>();
 
-        for (Cart cart : cartList) {
+        for (CartModel cart : cartList) {
             CartItemDto cartItemDto = getDtoFromCart(cart);
             cartItems.add(cartItemDto);
         }
         return cartItems;
     }
 
-    private static CartItemDto getDtoFromCart(Cart cart) {
+    private static CartItemDto getDtoFromCart(CartModel cart) {
         return new CartItemDto(cart);
     }
 
     @Override
     public void updateCartItem(AddToCartDto cartDto) {
         //TODO: check if quantity is not higher than stock
-        Cart cart = cartRepository.getOne(cartDto.getId());
+        CartModel cart = cartRepository.getOne(cartDto.getId());
         cart.setQuantity(cartDto.getQuantity());
         cart.setCreatedDate(new Date());
         if(cart.getQuantity() == 0){
@@ -119,7 +119,7 @@ public class CartService implements ICartService {
 
     @Override
     public void deleteCartItem(long ItemId, HttpServletRequest token) throws CartItemNotExistException {
-        Cart cart = cartRepository.findById(ItemId).orElseThrow(() -> new CartItemNotExistException("Cart item not found"));
+        CartModel cart = cartRepository.findById(ItemId).orElseThrow(() -> new CartItemNotExistException("Cart item not found"));
         long userIdFromCart = cart.getUser().getId();
         long userIdFromToken = userRepository.findByUsername(getUsernameFromToken(token)).get().getId();
 
@@ -132,7 +132,7 @@ public class CartService implements ICartService {
 
     @Override
     public void deleteAllCartItemsFromUser(HttpServletRequest token) {
-        Optional<User> user = userRepository.findByUsername(getUsernameFromToken(token));
+        Optional<UserModel> user = userRepository.findByUsername(getUsernameFromToken(token));
         cartRepository.deleteByUser(user);
     }
 }

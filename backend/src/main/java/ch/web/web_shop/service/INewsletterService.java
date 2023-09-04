@@ -1,10 +1,10 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.newsletter.NewsletterDTO;
-import ch.web.web_shop.model.Newsletter;
+import ch.web.web_shop.dto.newsletter.NewsletterDto;
+import ch.web.web_shop.model.NewsletterModel;
 
 public interface INewsletterService {
 
 
-    Newsletter createNewsletter(NewsletterDTO newsletterDTO);
+    NewsletterModel createNewsletter(NewsletterDto newsletterDTO);
 }

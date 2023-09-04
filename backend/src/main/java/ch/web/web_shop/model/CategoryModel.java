@@ -24,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Table(name = "category")
-public class Category {
+public class CategoryModel {
 
     @Getter
     @Id
@@ -37,16 +37,16 @@ public class Category {
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "parentCategory")
-    private Category parentCategory;
+    private CategoryModel parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")
-    private List<Category> subCategories = new ArrayList<>();
+    private List<CategoryModel> subCategories = new ArrayList<>();
 
-    public Category(String name) {
+    public CategoryModel(String name) {
         this.name = name;
     }
 
-    public Category(String name, Category parentCategory) {
+    public CategoryModel(String name, CategoryModel parentCategory) {
         this.name = name;
         this.parentCategory = parentCategory;
     }

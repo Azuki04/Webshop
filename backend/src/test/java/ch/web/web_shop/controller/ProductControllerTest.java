@@ -1,9 +1,9 @@
 package ch.web.web_shop.controller;
 
-import ch.web.web_shop.dto.product.ProductDTO;
-import ch.web.web_shop.model.Category;
-import ch.web.web_shop.model.Product;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.dto.product.ProductDto;
+import ch.web.web_shop.model.CategoryModel;
+import ch.web.web_shop.model.ProductModel;
+import ch.web.web_shop.model.UserModel;
 import ch.web.web_shop.service.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -41,14 +38,14 @@ class ProductControllerTest {
     void testGetProductById() {
         // Create test data
         long productId = 1;
-        Product product = new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User());
+        ProductModel product = new ProductModel("Test Product", "Test Description", null, 10, 5,
+                new CategoryModel(),new UserModel());
 
         // Mock the productService
         when(productService.getProductById(productId)).thenReturn(product);
 
         // Call the controller method
-        ResponseEntity<Product> response = productController.getProductById(productId);
+        ResponseEntity<ProductModel> response = productController.getProductById(productId);
 
         // Verify the response
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -59,16 +56,16 @@ class ProductControllerTest {
     void testUpdateProduct() {
         // Create test data
         long productId = 1;
-        ProductDTO productDTO = new ProductDTO("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User());
+        ProductDto productDTO = new ProductDto("Test Product", "Test Description", null, 10, 5,
+                new CategoryModel(),new UserModel());
 
         // Mock the productService
-        Product updatedProduct = new Product("Test Product", "Test Description", null, 10, 5,
-                new Category(),new User());
-        when(productService.updateProduct(eq(productId), any(ProductDTO.class))).thenReturn(updatedProduct);
+        ProductModel updatedProduct = new ProductModel("Test Product", "Test Description", null, 10, 5,
+                new CategoryModel(),new UserModel());
+        when(productService.updateProduct(eq(productId), any(ProductDto.class))).thenReturn(updatedProduct);
 
         // Call the controller method
-        ResponseEntity<Product> response = productController.updateProduct(productId, productDTO);
+        ResponseEntity<ProductModel> response = productController.updateProduct(productId, productDTO);
 
         // Verify the response
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());

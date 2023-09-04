@@ -1,12 +1,8 @@
 package ch.web.web_shop.dto.product;
 
-import ch.web.web_shop.model.Category;
+import ch.web.web_shop.model.CategoryModel;
 
-import ch.web.web_shop.model.User;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import ch.web.web_shop.model.UserModel;
 
 /**
  * v1.0
@@ -14,7 +10,7 @@ import jakarta.validation.constraints.Size;
  * ProductDTO is used to:
  * - store the data of the products
  */
-public class ProductDTO {
+public class ProductDto {
 
 
     private String title;
@@ -33,17 +29,17 @@ public class ProductDTO {
     private boolean published;
 
 
-    private Category category;
+    private CategoryModel category;
 
-    private User user;
+    private UserModel user;
 
 
-    public ProductDTO() {
+    public ProductDto() {
         // Default constructor
     }
 
-    public ProductDTO(String title, String description, String content, int price, int stock,
-                       Category category, User user) {
+    public ProductDto(String title, String description, String content, int price, int stock,
+                      CategoryModel category, UserModel user) {
         this.title = title;
         this.description = description;
         this.content = content;
@@ -98,18 +94,18 @@ public class ProductDTO {
         this.published = published;
     }
 
-    public Category getCategory() {
+    public CategoryModel getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryModel category) {
         this.category = category;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 }

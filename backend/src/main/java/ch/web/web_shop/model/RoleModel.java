@@ -11,7 +11,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "role")
-public class Role {
+public class RoleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,11 +20,11 @@ public class Role {
     @Column(length = 20)
     private ERole name;
 
-    public Role() {
+    public RoleModel() {
 
     }
 
-    public Role(ERole name) {
+    public RoleModel(ERole name) {
         this.name = name;
     }
 

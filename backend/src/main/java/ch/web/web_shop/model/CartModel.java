@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "cart")
-public class Cart {
+public class CartModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,24 +21,24 @@ public class Cart {
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    private ProductModel product;
 
     @JsonIgnore
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = UserModel.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
-    private User user;
+    private UserModel user;
 
 
     private int quantity;
 
-    public Cart(Optional<Product> product, Integer quantity, Optional<User> user) {
+    public CartModel(Optional<ProductModel> product, Integer quantity, Optional<UserModel> user) {
         this.product = product.get();
         this.quantity = quantity;
         this.user = user.get();
         this.createdDate = new Date();
     }
 
-    public Cart() {
+    public CartModel() {
 
     }
 
@@ -50,11 +50,11 @@ public class Cart {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
@@ -66,11 +66,11 @@ public class Cart {
         this.createdDate = createdDate;
     }
 
-    public Product getProduct() {
+    public ProductModel getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductModel product) {
         this.product = product;
     }
 

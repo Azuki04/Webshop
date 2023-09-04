@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
  * NewsletterDTO is used to:
  * - store the email addresses of the users who want to receive the newsletter
  */
-public class NewsletterDTO {
+public class NewsletterDto {
 
     @NotEmpty(message = "Email is mandatory")
     @NotNull(message = "Email cannot be null")
@@ -19,7 +19,7 @@ public class NewsletterDTO {
     private String email;
 
     //Empty Constructor
-    public NewsletterDTO() {
+    public NewsletterDto() {
         //Empty Constructor
     }
 

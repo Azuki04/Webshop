@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "product_image")
-public class File {
+public class FileModel {
 
 
     @Id
@@ -18,10 +18,10 @@ public class File {
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    private ProductModel product;
 
 
-    public File(String name, String type, long size, String alt, Product product) {
+    public FileModel(String name, String type, long size, String alt, ProductModel product) {
         this.name = name;
         this.type = type;
         this.size = size;
@@ -29,14 +29,14 @@ public class File {
         this.product = product;
     }
 
-    public File(String name, String type, long size, String alt) {
+    public FileModel(String name, String type, long size, String alt) {
         this.name = name;
         this.type = type;
         this.size = size;
         this.alt = alt;
     }
 
-    public File() {
+    public FileModel() {
 
     }
 
@@ -80,11 +80,11 @@ public class File {
         this.alt = alt;
     }
 
-    public Product getProduct() {
+    public ProductModel getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductModel product) {
         this.product = product;
     }
 }

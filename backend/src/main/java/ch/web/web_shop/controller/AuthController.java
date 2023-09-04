@@ -17,9 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import ch.web.web_shop.model.ERole;
-import ch.web.web_shop.model.Role;
+import ch.web.web_shop.model.RoleModel;
 import ch.web.web_shop.repository.RoleRepository;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.UserModel;
 import ch.web.web_shop.repository.UserRepository;
 
 import ch.web.web_shop.payload.request.LoginRequest;
@@ -118,17 +118,17 @@ public class AuthController {
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
+        UserModel user = new UserModel(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+        Set<RoleModel> roles = new HashSet<>();
         // user can have multiple roles
         // if no role is specified, set user role as default
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+            RoleModel userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
@@ -145,13 +145,13 @@ public class AuthController {
 
                      */
                     case "seller":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_SELLER)
+                        RoleModel modRole = roleRepository.findByName(ERole.ROLE_SELLER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                        RoleModel userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }
@@ -165,7 +165,7 @@ public class AuthController {
     }
 
     @GetMapping("/role")
-    public ResponseEntity<List<Role>> getAllRole() {
+    public ResponseEntity<List<RoleModel>> getAllRole() {
         try {
             return ResponseEntity.ok(roleRepository.findAll());
         } catch (Exception ex) {

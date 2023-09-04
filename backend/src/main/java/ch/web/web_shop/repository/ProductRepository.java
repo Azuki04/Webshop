@@ -3,29 +3,29 @@ package ch.web.web_shop.repository;
 import java.util.Collection;
 import java.util.List;
 
-import ch.web.web_shop.model.Category;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.CategoryModel;
+import ch.web.web_shop.model.UserModel;
 import org.springframework.data.repository.CrudRepository;
 
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.ProductModel;
 
-public interface ProductRepository extends CrudRepository<Product, Long> {
-    Iterable<Product> getAllProductsByCategory(Category category);
+public interface ProductRepository extends CrudRepository<ProductModel, Long> {
+    Iterable<ProductModel> getAllProductsByCategory(CategoryModel category);
 
-    List<Product> findByPublished(boolean published);
-	List<Product> findByTitleContaining(String title);
+    List<ProductModel> findByPublished(boolean published);
+	List<ProductModel> findByTitleContaining(String title);
 
-	List<Product> findByUser(User user);
+	List<ProductModel> findByUser(UserModel user);
 
-    Product findByPublishedAndId(boolean b, long productId);
+    ProductModel findByPublishedAndId(boolean b, long productId);
 
-	List<Product> findByUserAndTitleContaining(User user, String title);
+	List<ProductModel> findByUserAndTitleContaining(UserModel user, String title);
 
-    List<Product> findByTitleContainingAndPublished(String title, boolean published);
+    List<ProductModel> findByTitleContainingAndPublished(String title, boolean published);
 
-    List<Product> findByCategoryId(long categoryId);
+    List<ProductModel> findByCategoryId(long categoryId);
 
-    List<Product> findByCategoryName(String categoryName);
+    List<ProductModel> findByCategoryName(String categoryName);
 
-    Collection<? extends Product> findByCategoryIdAndPublished(long categoryId, boolean published);
+    Collection<? extends ProductModel> findByCategoryIdAndPublished(long categoryId, boolean published);
 }

@@ -1,8 +1,8 @@
 package ch.web.web_shop.configuration;
 
 import ch.web.web_shop.model.ERole;
-import ch.web.web_shop.model.Role;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.RoleModel;
+import ch.web.web_shop.model.UserModel;
 import ch.web.web_shop.repository.RoleRepository;
 import ch.web.web_shop.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,14 +30,14 @@ public class UserConfig {
         }
         return args -> {
             // Erstelle einen Benutzer
-            User user = new User("student", "student@wiss-edu.ch", passwordEncoder.encode("password"));
+            UserModel user = new UserModel("student", "student@wiss-edu.ch", passwordEncoder.encode("password"));
 
             // Erstelle eine Rolle für den Benutzer
-            Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+            RoleModel userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
                     .orElseThrow(() -> new RuntimeException("Rolle ROLE_USER nicht gefunden."));
 
             // Weise die Rolle dem Benutzer zu
-            Set<Role> roles = new HashSet<>();
+            Set<RoleModel> roles = new HashSet<>();
             roles.add(userRole);
             user.setRoles(roles);
 
@@ -46,14 +45,14 @@ public class UserConfig {
             userRepository.save(user);
 
             // Erstelle einen Administratorbenutzer
-            User admin = new User("admin", "admin@wiss-edu.ch", passwordEncoder.encode("admin123"));
+            UserModel admin = new UserModel("admin", "admin@wiss-edu.ch", passwordEncoder.encode("admin123"));
 
             // Erstelle eine Rolle für den Administrator
-            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+            RoleModel adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeException("Rolle ROLE_ADMIN nicht gefunden."));
 
             // Weise die Rolle dem Administrator zu
-            Set<Role> adminRoles = new HashSet<>();
+            Set<RoleModel> adminRoles = new HashSet<>();
             adminRoles.add(adminRole);
             admin.setRoles(adminRoles);
 

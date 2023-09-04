@@ -3,14 +3,14 @@ package ch.web.web_shop.controller;
 import ch.web.web_shop.dto.category.CategoryTreeDto;
 import ch.web.web_shop.dto.product.IProductDtoMapper;
 import ch.web.web_shop.dto.product.ProductResponseDto;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.ProductModel;
 import ch.web.web_shop.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import ch.web.web_shop.model.Category;
+import ch.web.web_shop.model.CategoryModel;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ import java.util.List;
  * <p>
  * Update the code accordingly based on your preference.
  * @Author Sy Viet
- * @see Category
+ * @see CategoryModel
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -69,9 +69,9 @@ public class CategoryController {
      */
     //TODO: change to List
     @GetMapping("")
-    public ResponseEntity<Iterable<Category>> getAllCategories() {
+    public ResponseEntity<Iterable<CategoryModel>> getAllCategories() {
         try {
-            Iterable<Category> categories = categoryService.getAllCategories();
+            Iterable<CategoryModel> categories = categoryService.getAllCategories();
             return ResponseEntity.ok(categories);
         } catch (Exception ex) {
 
@@ -93,9 +93,9 @@ public class CategoryController {
     }
 
     @GetMapping("/subcategories/{id}")
-    public ResponseEntity<Iterable<Category>> getAllSubCategoriesByParentCategory(@PathVariable("id") long categoryId) {
+    public ResponseEntity<Iterable<CategoryModel>> getAllSubCategoriesByParentCategory(@PathVariable("id") long categoryId) {
         try {
-            Iterable<Category> categories = categoryService.getAllSubCategoriesByParentCategory(categoryId);
+            Iterable<CategoryModel> categories = categoryService.getAllSubCategoriesByParentCategory(categoryId);
             return ResponseEntity.ok(categories);
         } catch (Exception ex) {
             System.out.println("no parent category");
@@ -108,11 +108,11 @@ public class CategoryController {
     @GetMapping("/products/{id}")
     public ResponseEntity<List<ProductResponseDto>> getAllProductsByCategory(@PathVariable("id") long categoryId) {
         try {
-            Iterable<Product> products = categoryService.getAllPublishProductsByCategory(categoryId);
+            Iterable<ProductModel> products = categoryService.getAllPublishProductsByCategory(categoryId);
             if (products == null) {
                 return ResponseEntity.noContent().build();
             }
-            List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto((List<Product>) products);
+            List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto((List<ProductModel>) products);
             return ResponseEntity.ok(productResponseDtosList);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import ch.web.web_shop.dto.product.ProductDTO;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.dto.product.ProductDto;
+import ch.web.web_shop.model.ProductModel;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -48,7 +48,7 @@ public class ProductController {
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ProductResponseDto>> getAllProducts(@RequestParam(required = false) String title) {
-        List<Product> products = productService.getAllProducts(title);
+        List<ProductModel> products = productService.getAllProducts(title);
 
         List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(products);
         if (products.isEmpty()) {
@@ -67,15 +67,15 @@ public class ProductController {
 
     @GetMapping("/admin/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
-        Product product = productService.getProductById(id);
+    public ResponseEntity<ProductModel> getProductById(@PathVariable("id") long id) {
+        ProductModel product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("admin/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDTO productDTO) {
-        Product updatedProduct = productService.updateProduct(id, productDTO);
+    public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") long id, @Valid @RequestBody ProductDto productDTO) {
+        ProductModel updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 
@@ -90,7 +90,7 @@ public class ProductController {
     @GetMapping("/seller/{userId}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<List<ProductResponseDto>> getAllProductsByUserId(@PathVariable("userId") long userId, @RequestParam(required = false) String title) {
-        List<Product> products = productService.getAllProducts(userId, title);
+        List<ProductModel> products = productService.getAllProducts(userId, title);
         List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(products);
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -102,7 +102,7 @@ public class ProductController {
     @GetMapping("/seller/{userId}/{id}")
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<ProductResponseDto> getProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id) {
-        Product product = productService.getProductById(userId, id);
+        ProductModel product = productService.getProductById(userId, id);
         ProductResponseDto productResponseDto = productDtoMapper.convertToDto(product);
         return ResponseEntity.ok(productResponseDto);
     }
@@ -118,24 +118,24 @@ public class ProductController {
     // put product by user id and product id
     @PutMapping("/seller/{userId}/{id}")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<Product> updateProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id, @Valid @RequestBody ProductDTO productDTO) {
-        Product updatedProduct = productService.updateProduct(userId, id, productDTO);
+    public ResponseEntity<ProductModel> updateProductByUserIdAndProductId(@PathVariable("userId") long userId, @PathVariable("id") long id, @Valid @RequestBody ProductDto productDTO) {
+        ProductModel updatedProduct = productService.updateProduct(userId, id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 
 
     @PostMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<Product> createProduct(@RequestParam("data") String data, @RequestParam("file") MultipartFile[]  files) {
+    public ResponseEntity<ProductModel> createProduct(@RequestParam("data") String data, @RequestParam("file") MultipartFile[]  files) {
         ObjectMapper objectMapper = new ObjectMapper();
-        ProductDTO productDTO = null;
+        ProductDto productDTO = null;
         try {
-            productDTO = objectMapper.readValue(data, ProductDTO.class);
+            productDTO = objectMapper.readValue(data, ProductDto.class);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
 
-        Product createdProduct = productService.createProduct(productDTO);
+        ProductModel createdProduct = productService.createProduct(productDTO);
 
         fileStorageService.storeFile(files, createdProduct);
 
@@ -145,7 +145,7 @@ public class ProductController {
     //Get all published product Rest API
     @GetMapping("/published")
     public ResponseEntity<List<ProductResponseDto>> findByPublished(@RequestParam(required = false) String title) {
-        List<Product> publishedProducts = productService.getPublishedProducts(title);
+        List<ProductModel> publishedProducts = productService.getPublishedProducts(title);
         List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(publishedProducts);
         if (publishedProducts.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -157,7 +157,7 @@ public class ProductController {
     //Get published product by id Rest API
     @GetMapping("/published/{id}")
     public ResponseEntity<ProductResponseDto> getPublishedProductById(@PathVariable("id") long id) {
-        Product publishedProduct = productService.getPublishedProductById(id);
+        ProductModel publishedProduct = productService.getPublishedProductById(id);
         ProductResponseDto productResponseDto = productDtoMapper.convertToDto(publishedProduct);
         return ResponseEntity.ok(productResponseDto);
     }

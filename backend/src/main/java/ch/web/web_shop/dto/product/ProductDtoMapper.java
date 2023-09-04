@@ -1,7 +1,7 @@
 package ch.web.web_shop.dto.product;
 
-import ch.web.web_shop.model.File;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.FileModel;
+import ch.web.web_shop.model.ProductModel;
 import ch.web.web_shop.repository.FileRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,10 +20,10 @@ public class ProductDtoMapper implements IProductDtoMapper {
 
 
     @Override
-    public List<ProductResponseDto> convertToDto(List<Product> products) {
+    public List<ProductResponseDto> convertToDto(List<ProductModel> products) {
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
-        for (Product product : products) {
+        for (ProductModel product : products) {
 
             productResponseDtoList.add(new ProductResponseDto(
                     product.getId(),
@@ -41,7 +41,7 @@ public class ProductDtoMapper implements IProductDtoMapper {
     }
 
     @Override
-    public ProductResponseDto convertToDto(Product product ) {
+    public ProductResponseDto convertToDto(ProductModel product ) {
 
 
         return new ProductResponseDto(
@@ -57,11 +57,11 @@ public class ProductDtoMapper implements IProductDtoMapper {
                 getFileFromProduct(product));
     }
 
-    private List<String> getFileFromProduct(Product product) {
-        List<File> files = fileRepository.findByProduct(product);
+    private List<String> getFileFromProduct(ProductModel product) {
+        List<FileModel> files = fileRepository.findByProduct(product);
         List<String> imagePaths = new ArrayList<>();
 
-        for (File file : files) {
+        for (FileModel file : files) {
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("api/file/downloadFile/")
                     .path(file.getName())

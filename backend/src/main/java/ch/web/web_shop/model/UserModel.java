@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "User")
-public class User {
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +28,12 @@ public class User {
     @NotBlank
     private String password;
 
-    public User() {
+    public UserModel() {
         // Default constructor required by JPA
     }
 
     // Constructor for testing
-    public User(int id, String name, String email, String password) {
+    public UserModel(int id, String name, String email, String password) {
         this.id = id;
         this.username = name;
         this.email = email;
@@ -41,7 +41,7 @@ public class User {
     }
 
     // normal Constructor
-    public User(String name, String email, String password) {
+    public UserModel(String name, String email, String password) {
         this.username = name;
         this.email = email;
         this.password = password;
@@ -50,7 +50,7 @@ public class User {
     // roles
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleModel> roles = new HashSet<>();
 
     public int getId() {
         return id;
@@ -84,11 +84,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleModel> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<RoleModel> roles) {
         this.roles = roles;
     }
 

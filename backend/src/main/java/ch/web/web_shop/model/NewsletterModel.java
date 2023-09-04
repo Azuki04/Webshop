@@ -26,7 +26,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @ToString
-public class Newsletter {
+public class NewsletterModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class Newsletter {
     @Email(message = "Invalid email format")
     private String email;
 
-    public Newsletter(String email) {
+    public NewsletterModel(String email) {
         this.email = email;
     }
 }

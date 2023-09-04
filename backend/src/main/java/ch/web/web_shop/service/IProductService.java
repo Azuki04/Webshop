@@ -1,26 +1,26 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.product.ProductDTO;
+import ch.web.web_shop.dto.product.ProductDto;
 import ch.web.web_shop.dto.product.ProductResponseDto;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.ProductModel;
 
 import java.util.List;
 
 public interface IProductService {
 
-    List<Product> getAllProducts(String title);
+    List<ProductModel> getAllProducts(String title);
 
-    List<Product> getAllProducts(long userId, String title);
+    List<ProductModel> getAllProducts(long userId, String title);
 
-    Product getProductById(long id);
+    ProductModel getProductById(long id);
 
-    Product getProductById(long userId, long productId);
+    ProductModel getProductById(long userId, long productId);
 
-    Product createProduct(ProductDTO productDTO);
+    ProductModel createProduct(ProductDto productDTO);
 
-    Product updateProduct(long id, ProductDTO productDTO);
+    ProductModel updateProduct(long id, ProductDto productDTO);
 
-    Product updateProduct(long userId, long productId, ProductDTO productDTO);
+    ProductModel updateProduct(long userId, long productId, ProductDto productDTO);
 
     void deleteProduct(long id);
 
@@ -28,13 +28,13 @@ public interface IProductService {
 
     void deleteAllProducts();
 
-    List<Product> getPublishedProducts(String title);
+    List<ProductModel> getPublishedProducts(String title);
 
-    Product getPublishedProductById(long productId);
+    ProductModel getPublishedProductById(long productId);
 
 // no need to implement this method in the service
-    List<ProductResponseDto> convertToDto(List<Product> products);
+    List<ProductResponseDto> convertToDto(List<ProductModel> products);
 
-    ProductResponseDto convertToDto(Product product);
+    ProductResponseDto convertToDto(ProductModel product);
 
 }

@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import ch.web.web_shop.dto.product.ProductDTO;
+import ch.web.web_shop.dto.product.ProductDto;
 import ch.web.web_shop.dto.product.ProductResponseDto;
 import ch.web.web_shop.exception.*;
-import ch.web.web_shop.model.File;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.FileModel;
+import ch.web.web_shop.model.UserModel;
 import ch.web.web_shop.repository.FileRepository;
 import ch.web.web_shop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.ProductModel;
 import ch.web.web_shop.repository.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,11 +28,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  *
  * @version 1.0
  * @Author: Sy Viet
- * @see Product
+ * @see ProductModel
  * @see ProductRepository
- * @see ProductDTO
+ * @see ProductDto
  * @see UserRepository
- * @see User
+ * @see UserModel
  * @see ProductLoadException
  * @see ProductNotFoundException
  */
@@ -49,10 +49,10 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> getAllProducts(String title) {
+    public List<ProductModel> getAllProducts(String title) {
         try {
             if (title == null) {
-                return (List<Product>) productRepository.findAll();
+                return (List<ProductModel>) productRepository.findAll();
             } else {
                 return productRepository.findByTitleContaining(title);
             }
@@ -64,10 +64,10 @@ public class ProductService implements IProductService {
     // Get all products for a user
     @Override
     @Transactional(readOnly = true)
-    public List<Product> getAllProducts(long userId, String title) {
+    public List<ProductModel> getAllProducts(long userId, String title) {
         try {
             // Retrieve the user based on the user ID
-            Optional<User> user = userRepository.findById(userId);
+            Optional<UserModel> user = userRepository.findById(userId);
 
             if (user.isPresent() && title == null) {
                 // Retrieve all products associated with the user
@@ -83,8 +83,8 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Product getProductById(long id) {
-        Optional<Product> productData = productRepository.findById(id);
+    public ProductModel getProductById(long id) {
+        Optional<ProductModel> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
             return productData.get();
@@ -96,14 +96,14 @@ public class ProductService implements IProductService {
     //get product by user and by product id
     @Override
     @Transactional(readOnly = true)
-    public Product getProductById(long userId, long productId) {
+    public ProductModel getProductById(long userId, long productId) {
         try {
             // Retrieve the user based on the user ID
-            Optional<User> user = userRepository.findById(userId);
+            Optional<UserModel> user = userRepository.findById(userId);
 
             if (user.isPresent()) {
                 // Retrieve the product based on the product ID
-                Optional<Product> product = productRepository.findById(productId);
+                Optional<ProductModel> product = productRepository.findById(productId);
 
                 if (product.isPresent()) {
                     // Check if the product belongs to the user
@@ -125,9 +125,9 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public Product createProduct(ProductDTO productDTO) {
+    public ProductModel createProduct(ProductDto productDTO) {
         try {
-            Product product = convertToEntity(productDTO);
+            ProductModel product = convertToEntity(productDTO);
             return productRepository.save(product);
         } catch (Exception ex) {
             throw new ProductCouldNotBeSavedException(productDTO.getTitle());
@@ -136,11 +136,11 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public Product updateProduct(long id, ProductDTO productDTO) {
-        Optional<Product> productData = productRepository.findById(id);
+    public ProductModel updateProduct(long id, ProductDto productDTO) {
+        Optional<ProductModel> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
-            Product existingProduct = productData.get();
+            ProductModel existingProduct = productData.get();
             updateProductFromDTO(existingProduct, productDTO);
 
             return productRepository.save(existingProduct);
@@ -153,19 +153,19 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public Product updateProduct(long userId, long productId, ProductDTO productDTO) {
+    public ProductModel updateProduct(long userId, long productId, ProductDto productDTO) {
         try {
             // Retrieve the user based on the user ID
-            Optional<User> user = userRepository.findById(userId);
+            Optional<UserModel> user = userRepository.findById(userId);
 
             if (user.isPresent()) {
                 // Retrieve the product based on the product ID
-                Optional<Product> productData = productRepository.findById(productId);
+                Optional<ProductModel> productData = productRepository.findById(productId);
 
                 if (productData.isPresent()) {
                     // Check if the product belongs to the user
                     if (productData.get().getUser().getId() == userId) {
-                        Product existingProduct = productData.get();
+                        ProductModel existingProduct = productData.get();
                         updateProductFromDTO(existingProduct, productDTO);
 
                         return productRepository.save(existingProduct);
@@ -201,11 +201,11 @@ public class ProductService implements IProductService {
     public void deleteProduct(long userId, long productId) {
         try {
             // Retrieve the user based on the user ID
-            Optional<User> user = userRepository.findById(userId);
+            Optional<UserModel> user = userRepository.findById(userId);
 
             if (user.isPresent()) {
                 // Retrieve the product based on the product ID
-                Optional<Product> product = productRepository.findById(productId);
+                Optional<ProductModel> product = productRepository.findById(productId);
 
                 if (product.isPresent()) {
                     // Check if the product belongs to the user
@@ -237,7 +237,7 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> getPublishedProducts(String title) {
+    public List<ProductModel> getPublishedProducts(String title) {
         try {
             if (title == null) {
                 return productRepository.findByPublished(true);
@@ -255,7 +255,7 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Product getPublishedProductById(long productId) {
+    public ProductModel getPublishedProductById(long productId) {
         try {
             return productRepository.findByPublishedAndId(true, productId);
         } catch (Exception e) {
@@ -264,14 +264,14 @@ public class ProductService implements IProductService {
         }
     }
 
-    private Product convertToEntity(ProductDTO productDTO) {
-        Product product = new Product();
+    private ProductModel convertToEntity(ProductDto productDTO) {
+        ProductModel product = new ProductModel();
         updateProductFromDTO(product, productDTO);
         return product;
     }
 
 
-    private void updateProductFromDTO(Product product, ProductDTO productDTO) {
+    private void updateProductFromDTO(ProductModel product, ProductDto productDTO) {
         product.setTitle(productDTO.getTitle());
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
@@ -283,10 +283,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductResponseDto> convertToDto(List<Product> products) {
+    public List<ProductResponseDto> convertToDto(List<ProductModel> products) {
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
-        for (Product product : products) {
+        for (ProductModel product : products) {
 
             productResponseDtoList.add(new ProductResponseDto(
                     product.getId(),
@@ -304,7 +304,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductResponseDto convertToDto(Product product) {
+    public ProductResponseDto convertToDto(ProductModel product) {
 
 
         return new ProductResponseDto(
@@ -320,11 +320,11 @@ public class ProductService implements IProductService {
                 getFileFromProduct(product));
     }
 
-    private List<String> getFileFromProduct(Product product) {
-        List<File> files = fileRepository.findByProduct(product);
+    private List<String> getFileFromProduct(ProductModel product) {
+        List<FileModel> files = fileRepository.findByProduct(product);
         List<String> imagePaths = new ArrayList<>();
 
-        for (File file : files) {
+        for (FileModel file : files) {
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("api/file/downloadFile/")
                     .path(file.getName())

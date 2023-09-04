@@ -3,7 +3,7 @@ package ch.web.web_shop.jwt;
 import ch.web.web_shop.controller.AuthController;
 
 import ch.web.web_shop.model.ERole;
-import ch.web.web_shop.model.Role;
+import ch.web.web_shop.model.RoleModel;
 import ch.web.web_shop.payload.request.LoginRequest;
 
 import ch.web.web_shop.payload.request.SignupRequest;
@@ -106,7 +106,7 @@ public class AuthControllerTest {
         signupRequest.setRole(strRoles);
 
         // Mock role repository
-        when(roleRepository.findByName(ERole.ROLE_CUSTOMER)).thenReturn(Optional.of(new Role(ERole.ROLE_CUSTOMER)));
+        when(roleRepository.findByName(ERole.ROLE_CUSTOMER)).thenReturn(Optional.of(new RoleModel(ERole.ROLE_CUSTOMER)));
 
         // Perform the registration
         ResponseEntity<?> responseEntity = authController.registerUser(signupRequest);

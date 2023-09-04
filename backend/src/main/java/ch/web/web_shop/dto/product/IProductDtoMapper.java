@@ -1,12 +1,12 @@
 package ch.web.web_shop.dto.product;
 
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.ProductModel;
 
 import java.util.List;
 
 public interface IProductDtoMapper {
 
-    List<ProductResponseDto> convertToDto(List<Product> products);
+    List<ProductResponseDto> convertToDto(List<ProductModel> products);
 
-    ProductResponseDto convertToDto(Product product);
+    ProductResponseDto convertToDto(ProductModel product);
 }

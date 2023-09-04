@@ -1,9 +1,9 @@
 package ch.web.web_shop.repository;
 
 
-import ch.web.web_shop.model.Cart;
-import ch.web.web_shop.model.Product;
-import ch.web.web_shop.model.User;
+import ch.web.web_shop.model.CartModel;
+import ch.web.web_shop.model.ProductModel;
+import ch.web.web_shop.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {
+public interface CartRepository extends JpaRepository<CartModel, Long> {
 
-    List<Cart> findCartByUser(Optional<User> user);
+    List<CartModel> findCartByUser(Optional<UserModel> user);
 
-    void deleteByUser(Optional<User> user);
+    void deleteByUser(Optional<UserModel> user);
 
-   Cart findCartByUserAndProduct(Optional<User> user, Optional<Product> product);
+   CartModel findCartByUserAndProduct(Optional<UserModel> user, Optional<ProductModel> product);
 }

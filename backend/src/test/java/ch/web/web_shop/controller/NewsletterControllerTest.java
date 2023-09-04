@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ch.web.web_shop.model.Newsletter;
+import ch.web.web_shop.model.NewsletterModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -23,7 +23,7 @@ class NewsletterControllerTest {
 
     @Test
     void createNewsletter_ValidNewsletter_Success() throws Exception {
-        Newsletter newsletter = new Newsletter();
+        NewsletterModel newsletter = new NewsletterModel();
         newsletter.setEmail("test@example.com");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/newsletter")

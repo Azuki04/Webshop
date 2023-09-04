@@ -14,11 +14,11 @@ class ProductTest {
         String content = "Test content";
         int price = 100;
         int stock = 10;
-        Category category = new Category("Test Category");
-        User user= new User(1,"test", "test@test.com", "password");
+        CategoryModel category = new CategoryModel("Test Category");
+        UserModel user= new UserModel(1,"test", "test@test.com", "password");
 
         // Create a new product
-        Product product = new Product(title, description, content, price, stock, category, user);
+        ProductModel product = new ProductModel(title, description, content, price, stock, category, user);
 
         // Test the product attributes
         Assertions.assertEquals(title, product.getTitle());

@@ -1,6 +1,6 @@
 package ch.web.web_shop.configuration;
 
-import ch.web.web_shop.model.Category;
+import ch.web.web_shop.model.CategoryModel;
 import ch.web.web_shop.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,30 +18,30 @@ public class CategoryConfig {
 
         return args -> {
             // Create and save categories in the database
-            Category clothing = new Category("Clothing");
-            Category shoes = new Category("Shoes", clothing);
-            Category tShirt = new Category("T-Shirt", clothing);
-            Category pants = new Category("Pants", clothing);
-            Category shorts = new Category("shorts", pants);
+            CategoryModel clothing = new CategoryModel("Clothing");
+            CategoryModel shoes = new CategoryModel("Shoes", clothing);
+            CategoryModel tShirt = new CategoryModel("T-Shirt", clothing);
+            CategoryModel pants = new CategoryModel("Pants", clothing);
+            CategoryModel shorts = new CategoryModel("shorts", pants);
 
-            Category tvAudio = new Category("Tv & Audio");
+            CategoryModel tvAudio = new CategoryModel("Tv & Audio");
 
-            Category toy = new Category("Toy");
-            Category lego = new Category("Lego", toy);
-            Category ball = new Category("Ball", toy);
-            Category gameBoy = new Category("Game-boy", toy);
+            CategoryModel toy = new CategoryModel("Toy");
+            CategoryModel lego = new CategoryModel("Lego", toy);
+            CategoryModel ball = new CategoryModel("Ball", toy);
+            CategoryModel gameBoy = new CategoryModel("Game-boy", toy);
 
-            Category tools = new Category("Tools");
-            Category computerGaming = new Category("Computer & Gaming");
-            Category householdKitchen = new Category("Household & Kitchen");
-            Category beautyHealth = new Category("Beauty & Health");
+            CategoryModel tools = new CategoryModel("Tools");
+            CategoryModel computerGaming = new CategoryModel("Computer & Gaming");
+            CategoryModel householdKitchen = new CategoryModel("Household & Kitchen");
+            CategoryModel beautyHealth = new CategoryModel("Beauty & Health");
 
-            Category sport = new Category("Sport");
-            Category tennis = new Category("Tennis", sport);
-            Category football = new Category("Football", sport);
+            CategoryModel sport = new CategoryModel("Sport");
+            CategoryModel tennis = new CategoryModel("Tennis", sport);
+            CategoryModel football = new CategoryModel("Football", sport);
 
-            Category office = new Category("Office");
-            Category paper = new Category("Paper", office);
+            CategoryModel office = new CategoryModel("Office");
+            CategoryModel paper = new CategoryModel("Paper", office);
 
             // Save the categories
             repository.saveAll(List.of(

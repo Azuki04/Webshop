@@ -1,13 +1,13 @@
 package ch.web.web_shop.dto.image;
 
 
-public class UploadFileResponse {
+public class UploadFileResponseDto {
     private String fileName;
     private String fileDownloadUri;
     private String fileType;
     private long size;
 
-    public UploadFileResponse(String fileName, String fileDownloadUri, String fileType, long size) {
+    public UploadFileResponseDto(String fileName, String fileDownloadUri, String fileType, long size) {
         this.fileName = fileName;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;

@@ -1,6 +1,6 @@
 package ch.web.web_shop.controller;
 
-import ch.web.web_shop.dto.image.UploadFileResponse;
+import ch.web.web_shop.dto.image.UploadFileResponseDto;
 import ch.web.web_shop.service.IFileStorageService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -35,7 +35,7 @@ public class FileController {
 
 
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public UploadFileResponseDto uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFileOnly(file);
 
         // create an Url for the file
@@ -44,14 +44,14 @@ public class FileController {
                 .path(fileName)
                 .toUriString();
 
-        return new UploadFileResponse(fileName, fileDownloadUri,
+        return new UploadFileResponseDto(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
 
 
 
     @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<UploadFileResponseDto> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))

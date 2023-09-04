@@ -1,6 +1,6 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.product.ProductDTO;
+import ch.web.web_shop.dto.product.ProductDto;
 import ch.web.web_shop.exception.*;
 import ch.web.web_shop.model.*;
 import ch.web.web_shop.repository.ProductRepository;
@@ -26,25 +26,25 @@ class ProductServiceTest {
 
     @Test
     void testGetAllProducts_NoTitle() {
-        List<Product> productList = new ArrayList<>();
-        productList.add(new Product());
-        productList.add(new Product());
+        List<ProductModel> productList = new ArrayList<>();
+        productList.add(new ProductModel());
+        productList.add(new ProductModel());
 
         when(productRepository.findAll()).thenReturn(productList);
 
-        List<Product> result = productService.getAllProducts(null);
+        List<ProductModel> result = productService.getAllProducts(null);
         assertEquals(2, result.size());
     }
 
     @Test
     void testGetAllProducts_WithTitle() {
-        List<Product> productList = new ArrayList<>();
-        productList.add(new Product());
-        productList.add(new Product());
+        List<ProductModel> productList = new ArrayList<>();
+        productList.add(new ProductModel());
+        productList.add(new ProductModel());
 
         when(productRepository.findByTitleContaining("test")).thenReturn(productList);
 
-        List<Product> result = productService.getAllProducts("test");
+        List<ProductModel> result = productService.getAllProducts("test");
         assertEquals(2, result.size());
     }
 
@@ -60,10 +60,10 @@ class ProductServiceTest {
     @Test
     void testGetProductById_Success() {
         long productId = 1;
-        Product product = new Product();
+        ProductModel product = new ProductModel();
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        Product result = productService.getProductById(productId);
+        ProductModel result = productService.getProductById(productId);
         assertEquals(product, result);
     }
 
@@ -79,33 +79,33 @@ class ProductServiceTest {
 
     @Test
     void testCreateProduct_Success() {
-        ProductDTO productDTO = new ProductDTO();
+        ProductDto productDTO = new ProductDto();
         productDTO.setTitle("Test Product");
         productDTO.setDescription("Test Description");
         productDTO.setPrice(10);
         productDTO.setStock(5);
         productDTO.setPublished(false);
-        productDTO.setCategory(new Category());
+        productDTO.setCategory(new CategoryModel());
 
-        Product product = new Product();
+        ProductModel product = new ProductModel();
         product.setTitle("Test Product");
         product.setDescription("Test Description");
         product.setPrice(10);
         product.setStock(5);
         product.setPublished(false);
-        product.setCategory(new Category());
+        product.setCategory(new CategoryModel());
 
-        when(productRepository.save(Mockito.any(Product.class))).thenReturn(product);
+        when(productRepository.save(Mockito.any(ProductModel.class))).thenReturn(product);
 
-        Product result = productService.createProduct(productDTO);
+        ProductModel result = productService.createProduct(productDTO);
         assertEquals(product, result);
     }
 
 
     @Test
     void testCreateProduct_Exception() {
-        ProductDTO productDTO = new ProductDTO();
-        when(productRepository.save(Mockito.any(Product.class))).thenThrow(RuntimeException.class);
+        ProductDto productDTO = new ProductDto();
+        when(productRepository.save(Mockito.any(ProductModel.class))).thenThrow(RuntimeException.class);
 
         assertThrows(ProductCouldNotBeSavedException.class, () -> {
             productService.createProduct(productDTO);
@@ -115,12 +115,12 @@ class ProductServiceTest {
     @Test
     void testUpdateProduct_Success() {
         long productId = 1;
-        ProductDTO productDTO = new ProductDTO();
-        Product existingProduct = new Product();
+        ProductDto productDTO = new ProductDto();
+        ProductModel existingProduct = new ProductModel();
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(existingProduct)).thenReturn(existingProduct);
 
-        Product result = productService.updateProduct(productId, productDTO);
+        ProductModel result = productService.updateProduct(productId, productDTO);
 
         assertEquals(existingProduct, result);
         verify(productRepository, times(1)).save(existingProduct);
@@ -129,7 +129,7 @@ class ProductServiceTest {
     @Test
     void testUpdateProduct_NotFound() {
         long productId = 1;
-        ProductDTO productDTO = new ProductDTO();
+        ProductDto productDTO = new ProductDto();
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class, () -> {

@@ -1,7 +1,6 @@
 package ch.web.web_shop.controller;
 
-import ch.web.web_shop.controller.CategoryController;
-import ch.web.web_shop.model.Category;
+import ch.web.web_shop.model.CategoryModel;
 import ch.web.web_shop.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,10 +32,10 @@ class CategoryControllerTest {
     @Test
     void testGetAllCategories() {
         // Prepare test data
-        Category category1 = new Category("Category 1");
-        Category category2 = new Category("Category 2");
+        CategoryModel category1 = new CategoryModel("Category 1");
+        CategoryModel category2 = new CategoryModel("Category 2");
 
-        List<Category> categories = new ArrayList<>();
+        List<CategoryModel> categories = new ArrayList<>();
         categories.add(category1);
         categories.add(category2);
 
@@ -44,7 +43,7 @@ class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenReturn(categories);
 
         // Call the controller method
-        ResponseEntity<Iterable<Category>> response = categoryController.getAllCategories();
+        ResponseEntity<Iterable<CategoryModel>> response = categoryController.getAllCategories();
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -60,7 +59,7 @@ class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenThrow(RuntimeException.class);
 
         // Call the controller method
-        ResponseEntity<Iterable<Category>> response = categoryController.getAllCategories();
+        ResponseEntity<Iterable<CategoryModel>> response = categoryController.getAllCategories();
 
         // Verify the response
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

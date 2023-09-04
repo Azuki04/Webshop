@@ -1,7 +1,7 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.newsletter.NewsletterDTO;
-import ch.web.web_shop.model.Newsletter;
+import ch.web.web_shop.dto.newsletter.NewsletterDto;
+import ch.web.web_shop.model.NewsletterModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ public class NewsletterService implements INewsletterService {
 
     @Transactional
     @Override
-    public Newsletter createNewsletter(NewsletterDTO newsletterDTO) {
-        Newsletter newsletter = new Newsletter(newsletterDTO.getEmail());
+    public NewsletterModel createNewsletter(NewsletterDto newsletterDTO) {
+        NewsletterModel newsletter = new NewsletterModel(newsletterDTO.getEmail());
         return newsletterRepository.save(newsletter);
     }
 }

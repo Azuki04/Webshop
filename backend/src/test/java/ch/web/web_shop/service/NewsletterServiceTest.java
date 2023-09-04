@@ -1,7 +1,7 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.dto.newsletter.NewsletterDTO;
-import ch.web.web_shop.model.Newsletter;
+import ch.web.web_shop.dto.newsletter.NewsletterDto;
+import ch.web.web_shop.model.NewsletterModel;
 import ch.web.web_shop.repository.NewsletterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,12 +28,12 @@ class NewsletterServiceTest {
 
     @Test
     void testCreateNewsletter_Success() {
-        NewsletterDTO newsletterDTO = new NewsletterDTO();
-        Newsletter newsletter = new Newsletter();
+        NewsletterDto newsletterDTO = new NewsletterDto();
+        NewsletterModel newsletter = new NewsletterModel();
 
-        when(newsletterRepository.save(any(Newsletter.class))).thenReturn(newsletter);
+        when(newsletterRepository.save(any(NewsletterModel.class))).thenReturn(newsletter);
 
-        Newsletter result = newsletterService.createNewsletter(newsletterDTO);
+        NewsletterModel result = newsletterService.createNewsletter(newsletterDTO);
 
         assertEquals(newsletter, result);
     }

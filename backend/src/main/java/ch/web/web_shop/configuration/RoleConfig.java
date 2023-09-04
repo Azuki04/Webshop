@@ -2,7 +2,7 @@ package ch.web.web_shop.configuration;
 
 
 import ch.web.web_shop.model.ERole;
-import ch.web.web_shop.model.Role;
+import ch.web.web_shop.model.RoleModel;
 import ch.web.web_shop.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +27,9 @@ public class RoleConfig {
         }
         return args -> {
             // Erstelle die gewünschten Rollen
-            Role adminRole = new Role(ERole.ROLE_ADMIN);
-            Role customerRole = new Role(ERole.ROLE_CUSTOMER);
-            Role sellerRole = new Role(ERole.ROLE_SELLER);
+            RoleModel adminRole = new RoleModel(ERole.ROLE_ADMIN);
+            RoleModel customerRole = new RoleModel(ERole.ROLE_CUSTOMER);
+            RoleModel sellerRole = new RoleModel(ERole.ROLE_SELLER);
 
             // Speichere die Rollen in der Datenbank
             repository.saveAll(List.of(adminRole, customerRole, sellerRole));

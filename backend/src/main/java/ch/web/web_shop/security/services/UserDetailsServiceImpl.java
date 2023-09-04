@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ch.web.web_shop.repository.UserRepository;
-import ch.web.web_shop.model.User;
-import ch.web.web_shop.model.Role;
+import ch.web.web_shop.model.UserModel;
+import ch.web.web_shop.model.RoleModel;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -23,11 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role r : user.getRoles()) {
+        for (RoleModel r : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(r.getName()));
         }
 

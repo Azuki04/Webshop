@@ -1,6 +1,6 @@
 package ch.web.web_shop.service;
 
-import ch.web.web_shop.model.Category;
+import ch.web.web_shop.model.CategoryModel;
 import ch.web.web_shop.repository.CategoryRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,15 +34,15 @@ public class CategoryServiceTest {
     @Test
     public void testGetAllCategories() {
         // Create sample categories
-        Category category1 = new Category("Category 1");
-        Category category2 = new Category("Category 2");
-        List<Category> categories = Arrays.asList(category1, category2);
+        CategoryModel category1 = new CategoryModel("Category 1");
+        CategoryModel category2 = new CategoryModel("Category 2");
+        List<CategoryModel> categories = Arrays.asList(category1, category2);
 
         // Mock the category repository's behavior
         when(categoryRepository.findAll()).thenReturn(categories);
 
         // Call the service method
-        Iterable<Category> result = categoryService.getAllCategories();
+        Iterable<CategoryModel> result = categoryService.getAllCategories();
 
         // Verify the result
         assertEquals(categories, result);

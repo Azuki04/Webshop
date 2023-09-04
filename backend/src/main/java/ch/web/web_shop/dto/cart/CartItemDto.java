@@ -1,7 +1,7 @@
 package ch.web.web_shop.dto.cart;
 
-import ch.web.web_shop.model.Cart;
-import ch.web.web_shop.model.Product;
+import ch.web.web_shop.model.CartModel;
+import ch.web.web_shop.model.ProductModel;
 import jakarta.validation.constraints.NotNull;
 
 public class CartItemDto {
@@ -9,12 +9,12 @@ public class CartItemDto {
     @NotNull
     private Integer quantity;
     @NotNull
-    private Product product;
+    private ProductModel product;
 
     public CartItemDto() {
     }
 
-    public CartItemDto(Cart cart) {
+    public CartItemDto(CartModel cart) {
         this.setId(cart.getId());
         this.setQuantity(cart.getQuantity());
         this.setProduct(cart.getProduct());
@@ -44,11 +44,11 @@ public class CartItemDto {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    public Product getProduct() {
+    public ProductModel getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductModel product) {
         this.product = product;
     }
 
