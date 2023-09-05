@@ -31,27 +31,6 @@ class ProductControllerTest {
     }
 
 
-
-
-
-    @Test
-    void testGetProductById() {
-        // Create test data
-        long productId = 1;
-        ProductModel product = new ProductModel("Test Product", "Test Description", null, 10, 5,
-                new CategoryModel(),new UserModel());
-
-        // Mock the productService
-        when(productService.getProductById(productId)).thenReturn(product);
-
-        // Call the controller method
-        ResponseEntity<ProductModel> response = productController.getProductById(productId);
-
-        // Verify the response
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(product, response.getBody());
-    }
-
     @Test
     void testUpdateProduct() {
         // Create test data

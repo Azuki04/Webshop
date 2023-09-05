@@ -67,9 +67,10 @@ public class ProductController {
 
     @GetMapping("/admin/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductModel> getProductById(@PathVariable("id") long id) {
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) {
         ProductModel product = productService.getProductById(id);
-        return ResponseEntity.ok(product);
+        ProductResponseDto productResponseDto = productDtoMapper.convertToDto(product);
+        return ResponseEntity.ok(productResponseDto);
     }
 
     @PutMapping("admin/{id}")
