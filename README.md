@@ -1,5 +1,5 @@
 
-# Webshop
+# Webshop v3.0
 
 ### von Sy Viet 
 ## Instalation
@@ -20,7 +20,7 @@ npm start
 ```
 7. Öffnen Sie anschließend Ihren Webbrowser und navigieren Sie zur folgenden URL: [http://localhost:3000](http://localhost:3000)
 
-## Instalation mit Docker
+## Instalation mit Docker v1.2
 
 voraussetzung: Docker muss installiert sein.
 
