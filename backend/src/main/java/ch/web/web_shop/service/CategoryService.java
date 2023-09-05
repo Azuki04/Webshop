@@ -40,14 +40,9 @@ public class CategoryService implements ICategoryService {
 
     }
 
-    /**
-     * Retrieves all categories.
-     *
-     * @return An iterable collection of categories.
-     */
     @Override
     @Transactional(readOnly = true)
-    public Iterable<CategoryModel> getAllCategories() {
+    public List<CategoryModel> getAllCategories() {
         return categoryRepository.findAll();
     }
 
@@ -114,39 +109,34 @@ public class CategoryService implements ICategoryService {
         }
     }
 
-
-    @Override
-    public CategoryModel getCategoryById(long categoryId) {
-        return categoryRepository.findById(categoryId).get();
-    }
-
     @Override
     @Transactional(readOnly = true)
-    public Iterable<ProductModel> getAllPublishProductsByCategory(long categoryId) {
+    public List<ProductModel> getPublishedProductsRecursive(long categoryId) {
         CategoryModel category = categoryRepository.findById(categoryId).orElse(null);
         if (category == null) {
             return Collections.emptyList();
         }
 
-        List<ProductModel> publishedProducts = new ArrayList<>();
-        collectPublishedProductsRecursive(category, publishedProducts);
-
-        return publishedProducts;
+        return collectPublishedProductsRecursive(category);
     }
 
-    private void collectPublishedProductsRecursive(CategoryModel category, List<ProductModel> products) {
-
-        products.addAll(productRepository.findByCategoryIdAndPublished(category.getId(), true));
+    private List<ProductModel> collectPublishedProductsRecursive(CategoryModel category) {
+        List<ProductModel> publishedProducts = new ArrayList<>();
+        
+        publishedProducts.addAll(productRepository.findByCategoryIdAndPublished(category.getId(), true));
 
         List<CategoryModel> subcategories = categoryRepository.getSubcategoriesByParentCategoryId(category.getId());
         for (CategoryModel subCategory : subcategories) {
-            collectPublishedProductsRecursive(subCategory, products);
+            publishedProducts.addAll( collectPublishedProductsRecursive(subCategory));
         }
+        
+        return publishedProducts;
+        
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<CategoryModel> getAllSubCategoriesByParentCategory(long categoryId) {
+    public List<CategoryModel> getAllSubCategoriesByParentCategory(long categoryId) {
         CategoryModel parentCategory = categoryRepository.findById(categoryId).get();
 
         return categoryRepository.getSubcategoriesByParentCategoryId(parentCategory.getId());

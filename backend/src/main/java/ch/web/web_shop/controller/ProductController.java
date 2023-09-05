@@ -129,18 +129,18 @@ public class ProductController {
     @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<ProductModel> createProduct(@RequestParam("data") String data, @RequestParam("file") MultipartFile[] files) {
         ObjectMapper objectMapper = new ObjectMapper();
-        ProductDto productDTO = null;
+        ProductDto productDTO;
         try {
             productDTO = objectMapper.readValue(data, ProductDto.class);
+
+            ProductModel createdProduct = productService.createProduct(productDTO);
+
+            fileStorageService.storeFile(files, createdProduct);
+
+            return ResponseEntity.ok(createdProduct);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
-        ProductModel createdProduct = productService.createProduct(productDTO);
-
-        fileStorageService.storeFile(files, createdProduct);
-
-        return ResponseEntity.ok(createdProduct);
     }
 
     //Get all published product Rest API
@@ -155,7 +155,6 @@ public class ProductController {
         return ResponseEntity.ok(productResponseDtosList);
     }
 
-    //Get published product by id Rest API
     @GetMapping("/published/{id}")
     public ResponseEntity<ProductResponseDto> getPublishedProductById(@PathVariable("id") long id) {
         ProductModel publishedProduct = productService.getPublishedProductById(id);

@@ -8,13 +8,11 @@ import java.util.List;
 
 public interface ICategoryService {
 
-    Iterable<CategoryModel> getAllCategories();
+    List<CategoryModel> getAllCategories();
 
-    Iterable<ProductModel> getAllPublishProductsByCategory(long categoryId);
+    List<ProductModel> getPublishedProductsRecursive(long categoryId);
 
-    CategoryModel getCategoryById(long categoryId);
-
-    Iterable<CategoryModel> getAllSubCategoriesByParentCategory(long categoryId);
+    List<CategoryModel> getAllSubCategoriesByParentCategory(long categoryId);
 
     List<CategoryTreeDto> getAllCategoryTree();
 

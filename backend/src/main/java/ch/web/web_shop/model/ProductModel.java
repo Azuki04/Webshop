@@ -63,7 +63,6 @@ public class ProductModel {
     }
 
     public ProductModel(int price) {
-        // Default constructor required by JPA
         this.price = price;
     }
 
