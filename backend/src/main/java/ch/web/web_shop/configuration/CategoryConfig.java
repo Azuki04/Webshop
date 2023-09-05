@@ -23,8 +23,10 @@ public class CategoryConfig {
             CategoryModel tShirt = new CategoryModel("T-Shirt", clothing);
             CategoryModel pants = new CategoryModel("Pants", clothing);
             CategoryModel shorts = new CategoryModel("shorts", pants);
+            CategoryModel cargo = new CategoryModel("Cargo", pants);
 
             CategoryModel tvAudio = new CategoryModel("Tv & Audio");
+            CategoryModel soundBox = new CategoryModel("Sound-Box", tvAudio);
 
             CategoryModel toy = new CategoryModel("Toy");
             CategoryModel lego = new CategoryModel("Lego", toy);
@@ -32,25 +34,34 @@ public class CategoryConfig {
             CategoryModel gameBoy = new CategoryModel("Game-boy", toy);
 
             CategoryModel tools = new CategoryModel("Tools");
+
             CategoryModel computerGaming = new CategoryModel("Computer & Gaming");
+            CategoryModel display = new CategoryModel("Display", computerGaming);
+            CategoryModel computer = new CategoryModel("Computer", computerGaming);
+            CategoryModel computerHp = new CategoryModel("HP-Gaming", computer);
+            CategoryModel computeRazer = new CategoryModel("Razer-Gaming", computer);
+
             CategoryModel householdKitchen = new CategoryModel("Household & Kitchen");
+            CategoryModel knife = new CategoryModel("Knife", householdKitchen);
+            CategoryModel glass = new CategoryModel("Glass");
             CategoryModel beautyHealth = new CategoryModel("Beauty & Health");
 
             CategoryModel sport = new CategoryModel("Sport");
             CategoryModel tennis = new CategoryModel("Tennis", sport);
             CategoryModel football = new CategoryModel("Football", sport);
 
+
             CategoryModel office = new CategoryModel("Office");
             CategoryModel paper = new CategoryModel("Paper", office);
+            CategoryModel pen = new CategoryModel("pen", office);
 
             // Save the categories
             repository.saveAll(List.of(
-                    clothing, shoes, tShirt, pants,
-                    tvAudio,
-                    toy, lego, ball, gameBoy,
-                    tools, computerGaming, householdKitchen, beautyHealth,
-                    sport, tennis, football,
-                    office, paper, shorts
+                    clothing, shoes, tShirt, pants, cargo, shorts,
+                    tvAudio, soundBox, toy, lego, ball, gameBoy,
+                    tools, computerGaming, display, computer, computerHp, computeRazer,
+                    householdKitchen, glass, knife, beautyHealth, sport, tennis, football,
+                    office, paper, pen
             ));
         };
     }
