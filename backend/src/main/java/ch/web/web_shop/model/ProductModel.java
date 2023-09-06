@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * v1.0
  *
@@ -56,6 +59,15 @@ public class ProductModel {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartModel> carts = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<FileModel> files = new ArrayList<>();
+
 
 
     public ProductModel() {

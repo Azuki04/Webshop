@@ -162,9 +162,6 @@ public class ProductService implements IProductService {
             ProductModel product = productRepository.findById(productId)
                     .orElseThrow(() -> new ProductNotFoundException(String.valueOf(productId)));
 
-            cartRepository.deleteByProduct(product);
-            fileRepository.deleteByProduct(product);
-
             productRepository.deleteById(productId);
         } catch (Exception e) {
             throw new ProductNotFoundException(String.valueOf(productId));
@@ -180,9 +177,6 @@ public class ProductService implements IProductService {
 
         ensureProductBelongsToUser(product, userId);
 
-        cartRepository.deleteByProduct(product);
-        fileRepository.deleteByProduct(product);
-
         productRepository.deleteById(productId);
     }
 
@@ -190,8 +184,6 @@ public class ProductService implements IProductService {
     @Transactional
     public void deleteAllProducts() {
         try {
-            cartRepository.deleteAll();
-            fileRepository.deleteAll();
             productRepository.deleteAll();
         } catch (Exception e) {
             throw new ProductDeleteException();
