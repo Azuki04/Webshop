@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "../../common/with-router";
 import { Button } from "../Button";
 import "../css/SalesMonitoring.css";
 import axios from "axios";
@@ -7,66 +8,134 @@ import authHeader from "../services/Auth-header";
 import GlobalStorageContext from "../services/GlobalStorage";
 
 class Home extends Component {
-    static contextType = GlobalStorageContext;
+  static contextType = GlobalStorageContext;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      products: [],
-      searchTitle: "",
-      categoryTree: [],
-      selectedCategory: 'All', // Track the selected category
-    };
-
-    this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.searchTitle = this.searchTitle.bind(this);
-    this.searchCategory = this.searchCategory.bind(this);
-    this.addProductToCart = this.addProductToCart.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.renderCategories = this.renderCategories.bind(this);
-    this.addExampleProductToCart = this.addExampleProductToCart.bind(this);
-  }
+  state = {
+    products: [],
+    searchTitle: "",
+    categoryTree: [],
+    selectedCategory: "All", // Track the selected category
+    noProductsFound: false, // Track if no products were found for the search
+  };
 
   componentDidMount() {
-    this.fetchProducts();
+    const params = this.props.router.location.search
+
+    const searchTitle = new URLSearchParams(params).get("searchTitle")
+    console.log(searchTitle)
+    // parse search params
+    if (searchTitle) {
+      this.setState({ searchTitle }, () => {
+        this.searchTitle(searchTitle);
+        console.log(this.state.searchTitle)
+      })
+
+
+    } else {
+      this.fetchProducts().then(r => console.log(r));
+    }
+
+    this.fetchCategories().then(r => console.log(r));
+  }
+
+
+  fetchData = async () => {
+    const { searchTitle } = new URLSearchParams(
+        this.props.router.location.search
+    );
+
+    if (searchTitle) {
+      await this.setState({ searchTitle });
+      await this.searchTitle();
+    } else {
+      this.fetchProducts();
+    }
+
     this.fetchCategories();
-  }
+  };
 
-  fetchProducts() {
-    fetch(process.env.REACT_APP_API_URL + "/products/published")
-        .then((response) => response.json())
-        .then((data) => this.setState({ products: data }));
-  }
+  fetchProducts = async (searchTitle = "") => {
+    try {
+      const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/products/published`
+      );
+      const data = await response.json();
+      this.setState({ products: data });
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
-  fetchCategories() {
-    fetch(process.env.REACT_APP_API_URL + "/category/categoryTree")
-        .then((response) => response.json())
-        .then((data) => this.setState({ categoryTree: data }));
-  }
+  fetchCategories = async () => {
+    try {
+      const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/category/categoryTree`
+      );
+      const data = await response.json();
+      this.setState({ categoryTree: data });
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
-
-
-  onChangeSearchTitle(e) {
+  onChangeSearchTitle = (e) => {
     this.setState({
       searchTitle: e.target.value,
     });
-  }
+  };
 
-  searchCategory(categoryId) {
-    fetch(process.env.REACT_APP_API_URL + `/category/products/${categoryId}`)
-        .then((response) => response.json())
-        .then((data) => this.setState({ products: data }));
-  }
+  searchCategory = async (categoryId) => {
+    try {
+      const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/category/products/${categoryId}`
+      );
+      const data = await response.json();
+      this.setState({ products: data });
+    } catch (error) {
+      console.error("Error searching by category:", error);
+    }
+  };
 
-  searchTitle() {
+  searchTitle = async () => {
+    this.props.router.navigate(
+        `${this.props.router.location.pathname}?searchTitle=${this.state.searchTitle}`,
+        { replace: true }
+    );
     const title = this.state.searchTitle;
-    fetch(process.env.REACT_APP_API_URL + "/products/published?title=" + title)
-        .then((response) => response.json())
-        .then((data) => this.setState({ products: data }));
-  }
+    try {
+      const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/products/published?title=${title}`
+      );
 
-  addProductToCart(productId) {
+      if (response.ok) {
+        const responseData = await response.text();
+        try {
+          const data = JSON.parse(responseData);
+          if (Array.isArray(data)) {
+            // Products found, update state with the results
+            this.setState({ products: data, noProductsFound: data.length === 0 });
+          } else {
+            // Invalid response, set noProductsFound to true
+            this.setState({ products: [], noProductsFound: true });
+          }
+        } catch (jsonError) {
+          // Invalid JSON response, set noProductsFound to true
+          console.error("Error parsing JSON:", jsonError);
+          this.setState({ products: [], noProductsFound: true });
+        }
+      } else {
+        console.error("Error searching by title:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error searching by title:", error);
+    }
+  };
 
+
+
+
+
+  addProductToCart = async (productId) => {
     const config = {
       headers: authHeader(),
     };
@@ -76,51 +145,46 @@ class Home extends Component {
       quantity: 1,
     };
 
-    axios
-        .post(process.env.REACT_APP_API_URL + "/cart", payload, config)
-        .then((response) => {
+    try {
+      const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/cart`,
+          payload,
+          config
+      );
 
-          this.addExampleProductToCart(payload);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }
+      this.addExampleProductToCart(payload);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
 
-  addExampleProductToCart(product) {
+  addExampleProductToCart = (product) => {
     const { cartItems, setCartItems } = this.context;
 
-    // Überprüfe, ob das Produkt bereits im Warenkorb existiert
-    const existingCartItem = cartItems.find(item => item.productId === product.productId);
+    const existingCartItem = cartItems.find(
+        (item) => item.productId === product.productId
+    );
 
     if (!existingCartItem) {
-      // Das Produkt ist nicht im Warenkorb, füge es hinzu
       setCartItems([...cartItems, product]);
     } else {
-      // Das Produkt ist bereits im Warenkorb, erhöhe die Anzahl um 1 (oder füge es erneut hinzu, wie du es möchtest)
       existingCartItem.quantity += 1;
       setCartItems([...cartItems]);
     }
-  }
+  };
 
-
-
-  handleCategoryChange(event) {
+  handleCategoryChange = (event) => {
     const selectedCategoryId = event.target.value;
 
-    // Call your fetchProductsByCategoryId function here
-    if (selectedCategoryId === 'All') {
-      // Fetch all products
+    if (selectedCategoryId === "All") {
       this.fetchProducts();
     } else {
-      // Fetch products by category ID
-      this.searchCategory(selectedCategoryId)
+      this.searchCategory(selectedCategoryId);
     }
 
     this.setState({ selectedCategory: selectedCategoryId });
-  }
+  };
 
-  //recursion function to render categories
   renderCategories = (categories) => {
     return categories.map((category) => (
         <React.Fragment key={category.id}>
@@ -132,10 +196,8 @@ class Home extends Component {
         </React.Fragment>
     ));
   };
-
   render() {
-    const { searchTitle, products, categoryTree, selectedCategory } = this.state;
-
+    const { searchTitle, products, categoryTree, selectedCategory, noProductsFound } = this.state;
     return (
         <div>
           <h4>Welcome to shop.ch</h4>
@@ -175,27 +237,32 @@ class Home extends Component {
           </div>
 
           <div id="product">
-            {products.map((product) => (
-                <div className="card" key={product.id}>
-                  <Link to={`/products/detail/${product.id}`}>
-                    <img src={product.imagePaths[0]} alt="picture" />
-                  </Link>
-                  <div className="content">
-                    <Link to={`/products/detail/${product.id}`}>
-                      <h3>{product.title}</h3>
-                    </Link>
-                    <span>CHF {product.price}.00</span>
-                    <p>{product.description}</p>
-                    <button onClick={() => this.addProductToCart(product.id)}>
-                      Add to cart
-                    </button>
-                  </div>
-                </div>
-            ))}
+            {noProductsFound ? (
+                <h4>No products found for the search: {searchTitle}</h4>
+            ) : (
+                products.map((product) => (
+                    <div className="card" key={product.id}>
+                      <Link to={`/products/detail/${product.id}`}>
+                        <img src={product.imagePaths[0]} alt="picture" />
+                      </Link>
+                      <div className="content">
+                        <Link to={`/products/detail/${product.id}`}>
+                          <h3>{product.title}</h3>
+                        </Link>
+                        <span>CHF {product.price}.00</span>
+                        <p>{product.description}</p>
+                        <button onClick={() => this.addProductToCart(product.id)}>
+                          Add to cart
+                        </button>
+                      </div>
+                    </div>
+                ))
+            )}
           </div>
+
         </div>
     );
   }
 }
 
-export default Home;
+export default withRouter(Home);
