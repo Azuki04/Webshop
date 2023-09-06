@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * v1.0
  *
@@ -58,12 +61,20 @@ public class ProductModel {
     private UserModel user;
 
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartModel> carts = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<FileModel> files = new ArrayList<>();
+
+
+
     public ProductModel() {
         // Default constructor required by JPA
     }
 
     public ProductModel(int price) {
-        // Default constructor required by JPA
         this.price = price;
     }
 

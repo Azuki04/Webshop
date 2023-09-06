@@ -55,7 +55,7 @@ public class ProductService implements IProductService {
     public List<ProductModel> getAllProducts(String title) {
         try {
             if (title == null) {
-                return (List<ProductModel>) productRepository.findAll();
+                return productRepository.findAll();
             } else {
                 return productRepository.findByTitleContaining(title);
             }
@@ -83,19 +83,19 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductModel getProductById(long id) {
-        Optional<ProductModel> productData = productRepository.findById(id);
+    public ProductModel getProductById(long productId) {
+        Optional<ProductModel> productData = productRepository.findById(productId);
 
         if (productData.isPresent()) {
             return productData.get();
         } else {
-            throw new ProductNotFoundException(String.valueOf(id));
+            throw new ProductNotFoundException(String.valueOf(productId));
         }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ProductModel getProductById(long userId, long productId) {
+    public ProductModel getProductById(long userId, long productId) throws ProductNotFoundException {
 
         ProductModel product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(String.valueOf(productId)));
@@ -110,19 +110,19 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public ProductModel createProduct(ProductDto productDTO) {
+    public ProductModel createProduct(ProductDto productDto) {
         try {
-            ProductModel product = convertToEntity(productDTO);
+            ProductModel product = convertToEntity(productDto);
             return productRepository.save(product);
         } catch (Exception ex) {
-            throw new ProductCouldNotBeSavedException(productDTO.getTitle());
+            throw new ProductCouldNotBeSavedException(productDto.getTitle());
         }
     }
 
     @Override
     @Transactional
-    public ProductModel updateProduct(long id, ProductDto productDTO) {
-        Optional<ProductModel> productData = productRepository.findById(id);
+    public ProductModel updateProduct(long productId, ProductDto productDTO) {
+        Optional<ProductModel> productData = productRepository.findById(productId);
 
         if (productData.isPresent()) {
             ProductModel existingProduct = productData.get();
@@ -130,7 +130,7 @@ public class ProductService implements IProductService {
 
             return productRepository.save(existingProduct);
         } else {
-            throw new ProductNotFoundException(String.valueOf(id));
+            throw new ProductNotFoundException(String.valueOf(productId));
         }
     }
 
@@ -162,9 +162,6 @@ public class ProductService implements IProductService {
             ProductModel product = productRepository.findById(productId)
                     .orElseThrow(() -> new ProductNotFoundException(String.valueOf(productId)));
 
-            cartRepository.deleteByProduct(product);
-            fileRepository.deleteByProduct(product);
-
             productRepository.deleteById(productId);
         } catch (Exception e) {
             throw new ProductNotFoundException(String.valueOf(productId));
@@ -180,9 +177,6 @@ public class ProductService implements IProductService {
 
         ensureProductBelongsToUser(product, userId);
 
-        cartRepository.deleteByProduct(product);
-        fileRepository.deleteByProduct(product);
-
         productRepository.deleteById(productId);
     }
 
@@ -190,8 +184,6 @@ public class ProductService implements IProductService {
     @Transactional
     public void deleteAllProducts() {
         try {
-            cartRepository.deleteAll();
-            fileRepository.deleteAll();
             productRepository.deleteAll();
         } catch (Exception e) {
             throw new ProductDeleteException();
@@ -224,22 +216,22 @@ public class ProductService implements IProductService {
         }
     }
 
-    private ProductModel convertToEntity(ProductDto productDTO) {
+    private ProductModel convertToEntity(ProductDto productDto) {
         ProductModel product = new ProductModel();
-        updateProductFromDTO(product, productDTO);
+        updateProductFromDTO(product, productDto);
         return product;
     }
 
 
-    private void updateProductFromDTO(ProductModel product, ProductDto productDTO) {
-        product.setTitle(productDTO.getTitle());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
-        product.setContent(productDTO.getContent());
-        product.setPublished(productDTO.isPublished());
-        product.setCategory(productDTO.getCategory());
-        product.setUser(productDTO.getUser());
+    private void updateProductFromDTO(ProductModel product, ProductDto productDto) {
+        product.setTitle(productDto.getTitle());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setStock(productDto.getStock());
+        product.setContent(productDto.getContent());
+        product.setPublished(productDto.isPublished());
+        product.setCategory(productDto.getCategory());
+        product.setUser(productDto.getUser());
     }
 
 

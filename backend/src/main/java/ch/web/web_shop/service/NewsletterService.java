@@ -21,8 +21,8 @@ public class NewsletterService implements INewsletterService {
 
     @Transactional
     @Override
-    public NewsletterModel createNewsletter(NewsletterDto newsletterDTO) {
-        NewsletterModel newsletter = new NewsletterModel(newsletterDTO.getEmail());
+    public NewsletterModel createNewsletter(NewsletterDto newsletterDto) {
+        NewsletterModel newsletter = new NewsletterModel(newsletterDto.getEmail());
         return newsletterRepository.save(newsletter);
     }
 }

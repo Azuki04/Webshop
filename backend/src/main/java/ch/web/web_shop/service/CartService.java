@@ -62,19 +62,27 @@ public class CartService implements ICartService {
         CartModel cartProduct = cartRepository.findCartByUserAndProduct(user, product);
 
         if (cartProduct == null) {
-            CartModel cart = new CartModel(product, addToCartDto.getQuantity(), user);
-            cartRepository.save(cart);
-            return cart;
+            return createNewCartEntity(addToCartDto, product, user);
         } else {
-            int updatedQuantity = addToCartDto.getQuantity() + cartProduct.getQuantity();
-            if(cartProduct.getProduct().getStock() < updatedQuantity){
-                updatedQuantity = cartProduct.getProduct().getStock();
-            }
-            cartProduct.setQuantity(updatedQuantity);
-            cartProduct.setCreatedDate(new Date());
-            cartRepository.save(cartProduct);
+            updateQuantityCart(addToCartDto, cartProduct);
             return cartProduct;
         }
+    }
+
+    private CartModel createNewCartEntity(AddToCartDto addToCartDto, Optional<ProductModel> product, Optional<UserModel> user) {
+        CartModel cart = new CartModel(product, addToCartDto.getQuantity(), user);
+        cartRepository.save(cart);
+        return cart;
+    }
+
+    private void updateQuantityCart(AddToCartDto addToCartDto, CartModel cartProduct) {
+        int updatedQuantity = addToCartDto.getQuantity() + cartProduct.getQuantity();
+        if(cartProduct.getProduct().getStock() < updatedQuantity){
+            updatedQuantity = cartProduct.getProduct().getStock();
+        }
+        cartProduct.setQuantity(updatedQuantity);
+        cartProduct.setCreatedDate(new Date());
+        cartRepository.save(cartProduct);
     }
 
     @Override

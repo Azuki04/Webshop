@@ -67,11 +67,11 @@ public class CategoryController {
      * @return ResponseEntity with a list of categories if successful,
      * or an error response if an exception occurs.
      */
-    //TODO: change to List
+
     @GetMapping("")
-    public ResponseEntity<Iterable<CategoryModel>> getAllCategories() {
+    public ResponseEntity<List<CategoryModel>> getAllCategories() {
         try {
-            Iterable<CategoryModel> categories = categoryService.getAllCategories();
+            List<CategoryModel> categories = categoryService.getAllCategories();
             return ResponseEntity.ok(categories);
         } catch (Exception ex) {
 
@@ -93,9 +93,9 @@ public class CategoryController {
     }
 
     @GetMapping("/subcategories/{id}")
-    public ResponseEntity<Iterable<CategoryModel>> getAllSubCategoriesByParentCategory(@PathVariable("id") long categoryId) {
+    public ResponseEntity<List<CategoryModel>> getAllSubCategoriesByParentCategory(@PathVariable("id") long categoryId) {
         try {
-            Iterable<CategoryModel> categories = categoryService.getAllSubCategoriesByParentCategory(categoryId);
+            List<CategoryModel> categories = categoryService.getAllSubCategoriesByParentCategory(categoryId);
             return ResponseEntity.ok(categories);
         } catch (Exception ex) {
             System.out.println("no parent category");
@@ -108,11 +108,11 @@ public class CategoryController {
     @GetMapping("/products/{id}")
     public ResponseEntity<List<ProductResponseDto>> getAllProductsByCategory(@PathVariable("id") long categoryId) {
         try {
-            Iterable<ProductModel> products = categoryService.getAllPublishProductsByCategory(categoryId);
+            List<ProductModel> products = categoryService.getPublishedProductsRecursive(categoryId);
             if (products == null) {
                 return ResponseEntity.noContent().build();
             }
-            List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto((List<ProductModel>) products);
+            List<ProductResponseDto> productResponseDtosList = productDtoMapper.convertToDto(products);
             return ResponseEntity.ok(productResponseDtosList);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

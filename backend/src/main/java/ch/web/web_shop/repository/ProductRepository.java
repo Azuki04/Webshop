@@ -5,12 +5,12 @@ import java.util.List;
 
 import ch.web.web_shop.model.CategoryModel;
 import ch.web.web_shop.model.UserModel;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import ch.web.web_shop.model.ProductModel;
 
-public interface ProductRepository extends CrudRepository<ProductModel, Long> {
-    Iterable<ProductModel> getAllProductsByCategory(CategoryModel category);
+public interface ProductRepository extends JpaRepository<ProductModel, Long> {
+    List<ProductModel> getAllProductsByCategory(CategoryModel category);
 
     List<ProductModel> findByPublished(boolean published);
 	List<ProductModel> findByTitleContaining(String title);

@@ -43,7 +43,7 @@ class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenReturn(categories);
 
         // Call the controller method
-        ResponseEntity<Iterable<CategoryModel>> response = categoryController.getAllCategories();
+        ResponseEntity<List<CategoryModel>> response = categoryController.getAllCategories();
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -59,7 +59,7 @@ class CategoryControllerTest {
         when(categoryService.getAllCategories()).thenThrow(RuntimeException.class);
 
         // Call the controller method
-        ResponseEntity<Iterable<CategoryModel>> response = categoryController.getAllCategories();
+        ResponseEntity<List<CategoryModel>> response = categoryController.getAllCategories();
 
         // Verify the response
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
